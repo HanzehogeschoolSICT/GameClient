@@ -2,3 +2,8 @@ nbproject/
 build.xml
 manifest.mf
 *.class
+
+# Intellij
+.idea/*
+*.iml
+/out/
