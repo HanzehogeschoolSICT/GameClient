@@ -5,17 +5,29 @@
  */
 package framework;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 /**
- *
+ * This is the main Application Class. Runs in JavaFX thread. 
+ * Idk what needs to happen here lol
+ * It will hold the loaded Game Objects. 
  * @author Wouter
  */
-public class GameClient {
+public class GameClient extends Application{
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        //launch(args);
+        MessageBus bus = MessageBus.getBus();
+        
+    }
+
+    @Override
+    public void start(Stage primaryStage){
+        
     }
     
 }

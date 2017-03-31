@@ -12,23 +12,37 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * TODO: Handle the sending of Objects (not just Strings)... 
+ * Perhaps a Message Object with an ArrayList<Object>?
  * @author Wouter
  */
 public class MessageBus {
     
-    private static String arguments = "";
-    private static HashMap<String,String> handlers;
-
+    private HashMap<String,String> handlers;
+    private static MessageBus mb;
+    /**
+     * The constructor puts the available messages in the handlers map,
+     * so that they can be called later. 
+     * K  Prefix
+     * E  String, "package.class@method_to_call"
+     * Remaining parts of the string (not matched by prefix) are passed to the 
+     * method
+     */
     public MessageBus(){
         handlers = new HashMap();
         handlers.put("hallo", "reflectiontest.TestTwo@talitha_hoi_machine");
         handlers.put("turn", "reflectiontest.TestOne@test");
         handlers.put("bye handler", "reflectiontest.TestOne@doei");
     }
+    public static MessageBus getBus(){
+        if(mb == null){
+            mb = new MessageBus();
+        }
+        return mb;
+    }
     public void put(String input_message){
         String key_to_go_for = findMessage(input_message);
-        arguments = input_message.replaceFirst("^" + key_to_go_for + " ", "");
+        String arguments = input_message.replaceFirst("^" + key_to_go_for + " ", "");
         String[] class_and_method = handlers.get(key_to_go_for).split("@");
         handleMessage(class_and_method[0], class_and_method[1], arguments);
     }

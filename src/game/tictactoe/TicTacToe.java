@@ -5,10 +5,12 @@
  */
 package game.tictactoe;
 
-/**
- *
+import game.abstraction.AbstractGame;
+
+/** 
+ * 
  * @author Wouter
  */
-public class TicTacToe {
+public class TicTacToe extends AbstractGame{
     
 }

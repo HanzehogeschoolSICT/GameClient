@@ -6,7 +6,7 @@
 package debug;
 
 /**
- *
+ * This class has to have a threaded input reader to send to the message bus.
  * @author Wouter
  */
 public class Console {

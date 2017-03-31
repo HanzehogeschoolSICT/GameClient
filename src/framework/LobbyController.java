@@ -6,7 +6,8 @@
 package framework;
 
 /**
- *
+ * Get the lists for Players and Challenges. Give these to the View.
+ * Give the view to the ApplicationPane. 
  * @author Wouter
  */
 public class LobbyController {

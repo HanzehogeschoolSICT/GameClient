@@ -6,7 +6,8 @@
 package game;
 
 /**
- *
+ * This class takes care of what games are loaded. It makes the objects for the
+ * loaded game and hands them over to the GameClient. 
  * @author Wouter
  */
 public class GameLoader {

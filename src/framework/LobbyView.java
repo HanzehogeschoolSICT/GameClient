@@ -6,7 +6,9 @@
 package framework;
 
 /**
- *
+ * This class needs to display the list of Players and Challenges, given by
+ * the LobbyController. Pushed to ApplicationPane by the controller. 
+ * Needs to handle the "Challenge" and "Accept" / "Decline" buttons. 
  * @author Wouter
  */
 public class LobbyView {
