@@ -1,0 +1,88 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 31, 2017, 12:07:46 PM
+    Author     : Talitha
+*/
+.button {
+    -fx-font-size:16px;
+    -fx-pref-width:100px;
+    -fx-padding: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+}
+
+.label {
+    -fx-font:25px Tahoma;
+}
+
+#sidebar{
+    -fx-background-color:#707275;
+    -fx-pref-width:150px;
+    -fx-padding:10px 0px 0px 0px;
+    -fx-spacing:5px;
+}
+
+#sidebarButton {
+    -fx-font-size:18px;
+    -fx-pref-width:150px;
+    -fx-background-color:#7c7d7f, transparent;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+}
+
+#sidebarButton:hover{
+    -fx-background-color:#6c6d70;
+}
+
+#tictactoesettings{
+    -fx-alignment:center;
+    -fx-border:solid;
+    -fx-background-color:#6762b4;
+    -fx-background-radius:5px;
+    -fx-max-width:450px;
+    -fx-max-height:550px;
+}
+
+#opponent{
+    -fx-background-color:#dd2aeb;
+    -fx-hgap:50;
+    -fx-vgap:50;
+    -fx-insets:100;
+    
+}
+
+#opponentText{
+    
+}
+
+#opponentButton{
+    
+}
+
+#difficulty{
+    
+}
+
+#difficultyText{
+    
+}
+
+#difficultyButton{
+    
+}
+
+#symbol{
+    -fx-valignment:center;
+}
+
+#symbolText{
+    
+}
+
+#symbolButton{
+    -fx-alignment:center;
+}
