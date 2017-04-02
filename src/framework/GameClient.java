@@ -6,6 +6,8 @@
 package framework;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -76,6 +78,17 @@ public class GameClient extends Application{
         }
         catch(IOException e){
             System.out.println("Oops mag niet");
+        }
+        return null;
+    }
+    
+    public static Pane loadPane(Controller c, String location){
+        try{
+            FXMLLoader loader = new FXMLLoader(GameClient.class.getResource(location));
+            loader.setController(c);
+            return loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
