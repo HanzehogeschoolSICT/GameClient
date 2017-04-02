@@ -5,13 +5,13 @@
  */
 package game.reversi;
 
-import framework.View;
+import framework.Controller;
 
 /**
  *
  * @author Talitha
  */
-public class ReversiView implements View{
+public class ReversiView implements Controller{
     
     private String location;
     

@@ -9,7 +9,8 @@ and open the template in the editor.
 */
 .button {
     -fx-font-size:16px;
-    -fx-pref-width:100px;
+    -fx-pref-width:200px;
+    -fx-pref-height:50px;
     -fx-padding: 5px;
     -fx-border-insets: 5px;
     -fx-background-insets: 5px;
@@ -17,6 +18,31 @@ and open the template in the editor.
 
 .label {
     -fx-font:25px Tahoma;
+}
+
+#topPane {
+    -fx-pref-height:100;
+    -fx-pref-width:685;
+    -fx-background-color:#eaf0f9;
+}
+
+#leftPane, #rightPane {
+    -fx-pref-height:465;
+    -fx-pref-width:150;
+    -fx-background-color:#eaf0f9;
+}
+
+#bottomPane {
+    -fx-pref-height:70;
+    -fx-pref-width:150;
+    -fx-background-color:#eaf0f9;
+}
+
+#contentSettings {
+    -fx-pref-height:420;
+    -fx-pref-width:375;
+    -fx-max-width:550;
+    -fx-background-color:#6762b4;
 }
 
 #sidebar{
@@ -38,32 +64,53 @@ and open the template in the editor.
     -fx-background-color:#6c6d70;
 }
 
-#tictactoesettings{
-    -fx-alignment:center;
-    -fx-border:solid;
-    -fx-background-color:#6762b4;
-    -fx-background-radius:5px;
-    -fx-max-width:450px;
-    -fx-max-height:550px;
+#settingButton {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
 }
 
-#opponent{
-    -fx-background-color:#dd2aeb;
-    -fx-hgap:50;
-    -fx-vgap:50;
-    -fx-insets:100;
-    
+#settingButton:hover {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7cbbea, #253c75),
+        linear-gradient(#385ba0, #21376b),
+        linear-gradient(#2b4a91, #18284c);
+}
+
+#settingButton:active {
+    -fx-background-color:#000000;
+}
+
+#tictactoesettings{
+    -fx-background-color:#6762b4;
+    -fx-max-width:500;
+    -fx-max-height:600;
+}
+
+#opponent {
+    -fx-hgap:10;
+    -fx-background-color:#839bbf;
+    -fx-padding:0 10 0 10;
+}
+
+#difficulty, #symbol, #start {
+    -fx-hgap:10;
+    -fx-background-color:#6b7f9e;
+    -fx-padding:0 10 0 10;
 }
 
 #opponentText{
-    
+
 }
 
 #opponentButton{
-    
-}
-
-#difficulty{
     
 }
 
@@ -75,14 +122,10 @@ and open the template in the editor.
     
 }
 
-#symbol{
-    -fx-valignment:center;
-}
-
 #symbolText{
     
 }
 
 #symbolButton{
-    -fx-alignment:center;
+
 }

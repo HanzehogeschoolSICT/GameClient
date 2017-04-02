@@ -51,7 +51,7 @@ public class GameClient extends Application{
     }
     
 
-    public static void load(View v, BorderPane p, String position){
+    public static void load(Controller v, BorderPane p, String position){
         Pane newPane = loadPane(v.getLocation());
         // Add our new pane that we just loaded
         Platform.runLater(() -> {
@@ -69,7 +69,7 @@ public class GameClient extends Application{
         });
     }
     
-    private static Pane loadPane(String location){
+    public static Pane loadPane(String location){
         try{
             Pane newPane = FXMLLoader.load(GameClient.class.getResource(location));
             return newPane;

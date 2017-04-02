@@ -9,6 +9,6 @@ package framework;
  *
  * @author Talitha
  */
-public interface View {
+public interface Controller {
     public String getLocation();    
 }

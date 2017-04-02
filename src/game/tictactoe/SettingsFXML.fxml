@@ -7,62 +7,52 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
+<?import javafx.geometry.Insets?>
 
-<GridPane id="tictactoesettings">
-    <GridPane id="opponent"
-              GridPane.columnIndex="0"
-              GridPane.rowIndex="0">
-        <Label id="opponentText"
-              text="Who's your opponent?" 
-              GridPane.columnIndex="0"
-              GridPane.rowIndex="0" />
-        <HBox 
-              GridPane.rowIndex="1"
-              GridPane.columnIndex="0">
-            <Button id="opponentButton" text="Computer" />
-            <Button id="opponentButton" text="Player"  />
-            <Button id="opponentButton" text="Search"  />
-        </HBox>
-        <gridLinesVisible>true</gridLinesVisible>
-    </GridPane>
-    <GridPane id="difficulty"
-              GridPane.columnIndex="0"
-              GridPane.rowIndex="1" >
-        <Label id="difficultyText"
-              text="Choose the difficulty"
-              GridPane.columnIndex="0"
-              GridPane.rowIndex="0"
-              GridPane.columnSpan="3" />
-        <HBox GridPane.rowIndex="1"
-              GridPane.columnIndex="0">
-              <Button id="difficultyButton" text="Easy" />
-              <Button id="difficultyButton" text="Normal" />
-              <Button id="difficultyButton" text="Hard" />
-        </HBox>
-    </GridPane>
-    <GridPane id="symbol"
-              GridPane.columnIndex="0"
-              GridPane.rowIndex="2">
-        <Label id="symbolText"
-              text="What symbol do you want to play with?"
-              GridPane.columnIndex="0"
-              GridPane.rowIndex="0"
-              GridPane.columnSpan="2" />
-        <HBox GridPane.rowIndex="2"
-              GridPane.columnIndex="0"
-              alignment="center">
-              <Label minWidth="50"/>
-              <Button id="symbolButton" text="Cross" />
-              <Button id="symbolButton" text="Circle" />
-        </HBox>
-    </GridPane>
-    <Button id="startButton" 
-            text="Start"
-            GridPane.columnIndex="0"
-            GridPane.rowIndex="3" 
-            />
-    <gridLinesVisible>false</gridLinesVisible>
-    <stylesheets>
-        <URL value="@../../framework/assets/style.css" />
-    </stylesheets>
-</GridPane>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.TicTacToeSettings">
+   <top>
+      <Pane id="topPane"  />
+   </top>
+   <left>
+      <Pane id="leftPane" />
+   </left>
+   <right>
+      <Pane id="rightPane" />
+   </right>
+   <bottom>
+      <Pane id="bottomPane" />
+   </bottom>
+   <center>
+      <GridPane id="contentSettings" fx:id="settingsPane">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="370.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane id="opponent" >
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentComputerButton" text="Computer" GridPane.rowIndex="1" onAction="#handleOpponentComputerButton"/>
+                  <Button GridPane.halignment="CENTER" id="settingButton" text="Player" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleOpponentPlayerButton"/>
+                  <Button GridPane.halignment="CENTER" id="settingButton" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" onAction="#handleOpponentSearchButton"/>
+                  <Label  GridPane.halignment="CENTER" id="opponentText" text="Who's your opponent?" GridPane.columnSpan="3" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

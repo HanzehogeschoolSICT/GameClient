@@ -5,17 +5,17 @@
  */
 package debug;
 
-import framework.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import framework.Controller;
 
 /**
  *
  * @author Talitha
  */
-public class TestView implements View
+public class TestView implements Controller
 {
     private String location;
     
