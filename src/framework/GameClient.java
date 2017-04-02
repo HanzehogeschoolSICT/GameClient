@@ -22,7 +22,9 @@ public class GameClient extends Application{
     public static void main(String[] args) {
         //launch(args);
         MessageBus bus = MessageBus.getBus();
-        
+        Network nw = new Network();
+        bus.register("NETWORK", nw);
+        bus.call("NETWORK", "challenge", null);
     }
 
     @Override

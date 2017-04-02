@@ -5,6 +5,7 @@
  */
 package framework;
 
+import framework.interfaces.Messagable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 public class MessageBus {
     
     private HashMap<String,String> handlers;
+    private HashMap<String,Messagable> object_handlers;
     private static MessageBus mb;
     /**
      * The constructor puts the available messages in the handlers map,
@@ -46,6 +48,21 @@ public class MessageBus {
         String[] class_and_method = handlers.get(key_to_go_for).split("@");
         handleMessage(class_and_method[0], class_and_method[1], arguments);
     }
+    public void register(String key, Messagable m){
+        object_handlers.put(key, m);
+    }
+    public void remove(String key){
+        object_handlers.remove(key);
+    }
+    public void call(String object, String message, Object[] args){
+        try{
+           Messagable m = object_handlers.get(object);
+           m.call(message, args);
+        }catch(Exception e){
+            System.out.println("Object " + object + " isn't registered");
+        }
+    }
+    
     private void handleMessage(String class_name, String method_name, String arguments){
         try {
             Class<?> c = Class.forName(class_name);
