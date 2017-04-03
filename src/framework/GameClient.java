@@ -40,7 +40,7 @@ public class GameClient extends Application{
     public void start(Stage primaryStage){
         root = new Group();
         try {
-            root = FXMLLoader.load(getClass().getResource("../framework/assets/FXML.fxml"));
+            root = FXMLLoader.load(getClass().getResource("assets/FXML.fxml"));
         } catch (IOException ex) {
             System.out.println("Can't find file");
             System.exit(1);

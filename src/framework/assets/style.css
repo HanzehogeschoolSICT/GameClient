@@ -20,6 +20,11 @@ and open the template in the editor.
     -fx-font:25px Tahoma;
 }
 
+#startText {
+    -fx-font: 50px Tahoma;
+    
+}
+
 #backgroundpane {
     -fx-background-color:#eaf0f9;
 }
