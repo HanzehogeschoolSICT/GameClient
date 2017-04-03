@@ -5,14 +5,12 @@
  */
 package framework;
 
-import debug.TestView;
 import game.reversi.ReversiSettings;
 import game.tictactoe.TicTacToeSettings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
@@ -27,15 +25,22 @@ public class GameSelectMenu {
     private Text text;
     @FXML
     private BorderPane parent;
+    @FXML 
+    private Button TicTacToeButton;
+    @FXML
+    private Button ReversiButton;
     
     @FXML
     private void handleReversiButtonAction(ActionEvent event) {
-        System.out.println(event);
+        TicTacToeButton.setStyle("");
+        ReversiButton.setStyle("-fx-background-color:#525254");
         GameClient.load(new ReversiSettings(), parent, "CENTER");
     }
     
     @FXML
     private void handleTictactoeButtonAction(ActionEvent event) {
+        TicTacToeButton.setStyle("-fx-background-color:#525254");
+        ReversiButton.setStyle("");
         GameClient.load(new TicTacToeSettings(), parent, "CENTER");
     }
 }

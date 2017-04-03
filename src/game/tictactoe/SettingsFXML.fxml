@@ -11,9 +11,13 @@
 <?import framework.models.UtilityGridPane?>
 
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.TicTacToeSettings">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.TicTacToeSettings" id="backgroundpane">
    <top>
-      <Pane id="topPane"  />
+      <BorderPane id="topPane">
+          <center>
+              <Label id="gameText" GridPane.halignment="CENTER" text="TicTacToe"/>
+          </center> 
+      </BorderPane>
    </top>
    <left>
       <Pane id="leftPane" />

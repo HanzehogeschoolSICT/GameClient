@@ -18,10 +18,12 @@
             fx:id="sidebar">
             <Button
                 id="sidebarButton"
+                fx:id="TicTacToeButton"
                 text="Tic-Tac-Toe"
                 onAction="#handleTictactoeButtonAction" />
             <Button
                 id="sidebarButton" 
+                fx:id="ReversiButton"
                 text="Reversi"
                 onAction="#handleReversiButtonAction"    />
         </VBox>

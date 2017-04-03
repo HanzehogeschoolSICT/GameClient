@@ -20,9 +20,12 @@ and open the template in the editor.
     -fx-font:25px Tahoma;
 }
 
+#backgroundpane {
+    -fx-background-color:#eaf0f9;
+}
+
 #topPane {
     -fx-pref-height:100;
-    -fx-pref-width:685;
     -fx-background-color:#eaf0f9;
 }
 
@@ -36,6 +39,11 @@ and open the template in the editor.
     -fx-pref-height:70;
     -fx-pref-width:150;
     -fx-background-color:#eaf0f9;
+}
+
+#gameText {
+    -fx-opacity: 0.6;
+    -fx-font-size:40px;
 }
 
 #contentSettings {
@@ -82,10 +90,6 @@ and open the template in the editor.
         linear-gradient(#7cbbea, #253c75),
         linear-gradient(#385ba0, #21376b),
         linear-gradient(#2b4a91, #18284c);
-}
-
-#settingButton:active {
-    -fx-background-color:#000000;
 }
 
 #tictactoesettings{

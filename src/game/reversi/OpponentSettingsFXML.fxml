@@ -7,9 +7,13 @@
 <?import javafx.scene.layout.*?>
 <?import framework.models.UtilityGridPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.reversi.ReversiSettings">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.reversi.ReversiSettings" id="backgroundpane">
    <top>
-      <Pane id="topPane"  />
+      <BorderPane id="topPane">
+          <center>
+              <Label id="gameText" GridPane.halignment="CENTER" text="Reversi"/>
+          </center> 
+      </BorderPane>
    </top>
    <left>
       <Pane id="leftPane" />
