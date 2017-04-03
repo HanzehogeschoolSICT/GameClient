@@ -42,7 +42,7 @@ and open the template in the editor.
     -fx-pref-height:420;
     -fx-pref-width:375;
     -fx-max-width:550;
-    -fx-background-color:#6762b4;
+    -fx-background-color:#eaf0f9;
 }
 
 #sidebar{
@@ -106,26 +106,13 @@ and open the template in the editor.
     -fx-padding:0 10 0 10;
 }
 
-#opponentText{
-
-}
-
-#opponentButton{
-    
-}
-
-#difficultyText{
-    
-}
-
-#difficultyButton{
-    
-}
-
-#symbolText{
-    
-}
-
-#symbolButton{
-
+#colorSettingButton {
+    -fx-background-radius:5em;
+    -fx-min-width:75px;
+    -fx-min-height:75px;
+    -fx-max-width:75px;
+    -fx-pref-width:75px;
+    -fx-max-height:75px;
+    -fx-padding:0px;
+    -fx-insets:0px;
 }

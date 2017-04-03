@@ -6,7 +6,7 @@
 package framework;
 
 import debug.TestView;
-import game.reversi.ReversiView;
+import game.reversi.ReversiSettings;
 import game.tictactoe.TicTacToeSettings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +31,7 @@ public class GameSelectMenu {
     @FXML
     private void handleReversiButtonAction(ActionEvent event) {
         System.out.println(event);
-        GameClient.load(new ReversiView(), parent, "CENTER");
+        GameClient.load(new ReversiSettings(), parent, "CENTER");
     }
     
     @FXML
