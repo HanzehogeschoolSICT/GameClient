@@ -6,6 +6,8 @@
 package framework;
 
 import framework.interfaces.Messagable;
+import framework.interfaces.Networkable;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,8 +24,8 @@ import java.util.logging.Logger;
  */
 public class Network implements Runnable, Messagable{
     // The name we will appear with publically. 
-    // TODO: Increment when name is taken. 
-    private final String public_name = "itv2d1.5";
+    //private final String public_name = "itv2d1.5";
+    private final String public_name = "test_client_v1";
     private Socket server;
     private DataOutputStream send_to_server;
     private ArrayList<String> messages;
@@ -49,7 +51,7 @@ public class Network implements Runnable, Messagable{
                 messages.add(data);
                 receive(data); 
                 synchronized(this){
-                    System.out.println("We got something: " + data);
+                    //System.out.println("We got something: " + data);
                     notifyAll();
                 }
             }
@@ -68,13 +70,32 @@ public class Network implements Runnable, Messagable{
         }
     }
 
+    private String sendAndReturn(String args, ArrayList<String> match){
+        send(args);
+        // Match the expected output against given outputs
+        while(true){
+            synchronized(this){ 
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            String m = messages.get(messages.size()-1);
+            for(String to_match: match){
+                if(m.startsWith(to_match)){
+                    return m;
+                }
+            }
+        }
+    }
     private synchronized void receive(String message){
         String[] message_list = message.split(" ");
         if(message_list[0].equals("ERR")){
-            System.out.println(message + " message");
+            //System.out.println(message + " message");
         }
         else if(message_list[0].equals("OK")){
-            System.out.println("OK message");
+            //System.out.println("OK message");
         }
         else{
             
@@ -93,35 +114,36 @@ public class Network implements Runnable, Messagable{
         so we know what to do with it. 
         */
         System.out.println(message);
+        ArrayList<String> messages_to_return = new ArrayList();
+        ArrayList<String> match = new ArrayList();
         switch(message){
             case "login":
                 int count = 0;
-                send("login " + public_name +"\n");
-                boolean response = false;
-                try {
-                    while(!response){
-                        synchronized(this){
-                            wait();
-                        }
-                        // There's a new message!
-                        String m = messages.get(messages.size()-1);
-                        if(m.equals("ERR Duplicate name exists")){
-                            count++;
-                            send("login " + public_name + "." + count + "\n");
-                        }
-                        if(m.equals("OK")){
-                            response = true;
-                        }
-                    }
-                } catch (InterruptedException ex) {
-                    System.out.println("We were interrupted while trying to login.");
+                match.add("OK");
+                match.add("ERR Duplicate name exists");
+                boolean name_set = false;
+                while(!name_set){
+                    String m;
+                    if(count == 0)
+                        m = sendAndReturn("login " + public_name +"\n", match);
+                    else
+                        m = sendAndReturn("login " + public_name + "." + count + "\n", match);
+                    count++;
+                    if(m.startsWith("OK"))
+                        name_set = true;
                 }
+                if(count == 0)
+                    messages_to_return.add("logged_in:" + public_name);
+                else
+                    messages_to_return.add("logged_in:" + public_name + "." + count);
                 break;
             case "get games":
-                send("get gamelist\n");
+                match.add("SVR GAMELIST");
+                messages_to_return.add(sendAndReturn("get gamelist\n", match));
                 break;
             case "get players":
-                send("get playerlist\n");
+                match.add("SVR PLAYER");
+                messages_to_return.add(sendAndReturn("get playerlist\n", match));
                 // Get the player list. 
                 break;
             case "challenge":
