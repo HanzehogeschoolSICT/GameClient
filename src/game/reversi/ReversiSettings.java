@@ -86,9 +86,7 @@ public class ReversiSettings implements Controller{
     }
     @FXML
     private void handleDifficultyEasyButton(ActionEvent event) {
-        difficultyEasyButton.setStyle("-fx-background-color: #000");
-        difficultyNormalButton.setStyle("");
-        difficultyHardButton.setStyle("");
+        setStyleOneButton(difficultyEasyButton, difficultyNormalButton, difficultyHardButton, "-fx-background-color:#000");
     }
     
     @FXML
@@ -122,4 +120,14 @@ public class ReversiSettings implements Controller{
         
     }
     
+    private void setStyleOneButton(Button b1Styled, Button b2, Button b3, String style){
+        b1Styled.setStyle(style);
+        b2.setStyle("");
+        b3.setStyle("");
+    }
+    
+    private void setStyleOneButton(Button b1Styled, Button b2, String style){
+        b1Styled.setStyle(style);
+        b2.setStyle("");
+    }
 }
