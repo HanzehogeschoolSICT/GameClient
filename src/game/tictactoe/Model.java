@@ -12,9 +12,9 @@ public class Model {
         board = new char[3][3];
     }
 
-    public char getSymbol(int row, int column) {
-        return board[row][column];
-    }
+    // public char getSymbol(int row, int column) {
+    //    return board[row][column];
+    //}
 
     public void setSymbol(int row, int column, char symbol) {
         board[row][column] = symbol;

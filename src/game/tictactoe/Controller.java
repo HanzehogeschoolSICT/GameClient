@@ -15,6 +15,7 @@ public class Controller {
     @FXML private GridPane grid;
     private Model model;
     public char currentTurn;
+    public String currentWinner;
 
     public Controller() {
         this.model = new Model();
@@ -25,9 +26,15 @@ public class Controller {
     }
 
     public void doMove(char currentTurn, int row, int column) {
-        model.setSymbol(row, column, currentTurn);
-        updateBoard(model.getBoard(), grid);
+
+            model.setSymbol(row, column, currentTurn);
+            updateBoard(model.getBoard(), grid);
+            checkLegalMove();
         switchTurns(currentTurn);
+    }
+
+    public boolean checkLegalMove() {
+        return true;
     }
 
     public void switchTurns(char Turn) {
@@ -75,6 +82,11 @@ public class Controller {
             }
         }
 
+    }
+
+    public boolean checkWinner(char Board[][]) {
+        currentWinner = "X";
+        return true;
     }
 
     @FXML
