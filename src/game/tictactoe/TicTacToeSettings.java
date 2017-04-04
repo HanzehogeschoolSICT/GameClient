@@ -42,12 +42,7 @@ public class TicTacToeSettings implements Controller {
     private Button symbolCrossButton;
     @FXML
     private Button symbolCircleButton;
-    
-<<<<<<< HEAD
-    
-    
-=======
->>>>>>> gui
+
     private String location;
     
     public TicTacToeSettings(){

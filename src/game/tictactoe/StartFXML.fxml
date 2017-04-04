@@ -6,11 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<<<<<<< HEAD
-<GridPane id="start" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.Settings">
-=======
+
 <GridPane id="start" xmlns:fx="http://javafx.com/fxml/1">
->>>>>>> gui
+
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
     </columnConstraints>
