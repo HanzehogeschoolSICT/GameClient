@@ -3,6 +3,9 @@ package game.tictactoe;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 /**
  *
@@ -11,12 +14,10 @@ import javafx.scene.layout.GridPane;
 public class Controller {
     @FXML private GridPane grid;
     private Model model;
-    private View view;
     public char currentTurn;
 
     public Controller() {
         this.model = new Model();
-        this.view = new View();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("tictactoe/FXML.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -25,7 +26,7 @@ public class Controller {
 
     public void doMove(char currentTurn, int row, int column) {
         model.setSymbol(row, column, currentTurn);
-        view.updateBoard(model.getBoard(), grid);
+        updateBoard(model.getBoard(), grid);
         switchTurns(currentTurn);
     }
 
@@ -36,6 +37,44 @@ public class Controller {
         else {
             currentTurn = 'x';
         }
+    }
+
+    private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {
+        Line line = new Line();
+        line.setStartX(beginX);
+        line.setStartY(endX);
+        line.setEndX(beginY);
+        line.setEndY(endY);
+        grid.add(line, column, row);
+    }
+
+    public void drawO(int row, int column, GridPane grid) {
+        Circle c1 = new Circle(50,50,100);
+        c1.setStroke(Color.BLACK);
+        c1.setFill(null);
+        c1.setStrokeWidth(3);
+        grid.add(c1, column , row);
+    }
+
+    public void drawX(int row, int column, GridPane grid) {
+        double x = 166;
+        double y = 125;
+        createLine(x - 100, y - 100, x + 100, y + 100, column, row, grid);
+        createLine(x + 100, y - 100, x - 100, y + 100, column, row, grid);
+    }
+
+    public void updateBoard(char board[][], GridPane grid) {
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(board[i][j] == 'o') {
+                    drawO(i,j,grid);
+                }
+                if(board[i][j] == 'x') {
+                    drawX(i,j,grid);
+                }
+            }
+        }
+
     }
 
     @FXML
