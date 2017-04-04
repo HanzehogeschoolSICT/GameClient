@@ -20,15 +20,15 @@
     <RowConstraints minHeight="200.0" maxHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
   </rowConstraints>
     <children>
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked1" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked2" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked3" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked4" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked7" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked8" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked9" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked" GridPane.columnIndex="2" GridPane.rowIndex="2" />
     </children>
   </GridPane>
   </BorderPane>

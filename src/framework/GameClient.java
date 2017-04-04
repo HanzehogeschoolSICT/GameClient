@@ -29,8 +29,6 @@ import java.util.logging.Logger;
  */
 public class GameClient extends Application{
 
-    
-
     private Parent root;
     private Thread consoleThread;
     private Thread networkThread;

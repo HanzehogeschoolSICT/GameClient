@@ -3,6 +3,8 @@ package game.tictactoe;
 import framework.interfaces.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -12,8 +14,9 @@ import javafx.scene.shape.Line;
  *
  * @author Mark
  */
-public class TicTacToeController implements Controller{
-    @FXML private GridPane grid;
+public class TicTacToeController implements Controller {
+    @FXML
+    private GridPane grid;
     private Model model;
     private char currentTurn;
     private String currentWinner;
@@ -21,28 +24,37 @@ public class TicTacToeController implements Controller{
     public TicTacToeController() {
         this.model = new Model();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("tictactoe/FXML.fxml"));
-
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         currentTurn = 'x';
     }
 
     private void doMove(char currentTurn, int row, int column) {
-
+        if(checkLegalMove(row,column)) {
             model.setSymbol(row, column, currentTurn);
             updateBoard(model.getBoard(), grid);
-        switchTurns(currentTurn);
+            switchTurns(currentTurn);
+        }
+        else {
+            
+        }
     }
 
-    //public boolean checkLegalMove() {
-    //    return true;
-    //}
+    public boolean checkLegalMove(int row, int column) {
+        char[][] board = model.getBoard();
+        if(board[row][column] == 'x' || board[row][column] == 'o') {
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
 
     private void switchTurns(char Turn) {
         if (Turn == 'x') {
             currentTurn = 'o';
-        }
-        else {
+        } else {
             currentTurn = 'x';
         }
     }
@@ -57,11 +69,11 @@ public class TicTacToeController implements Controller{
     }
 
     private void drawO(int row, int column, GridPane grid) {
-        Circle c1 = new Circle(50,50,100);
+        Circle c1 = new Circle(50, 50, 100);
         c1.setStroke(Color.BLACK);
         c1.setFill(null);
         c1.setStrokeWidth(3);
-        grid.add(c1, column , row);
+        grid.add(c1, column, row);
     }
 
     private void drawX(int row, int column, GridPane grid) {
@@ -72,13 +84,13 @@ public class TicTacToeController implements Controller{
     }
 
     private void updateBoard(char board[][], GridPane grid) {
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
-                if(board[i][j] == 'o') {
-                    drawO(i,j,grid);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == 'o') {
+                    drawO(i, j, grid);
                 }
-                if(board[i][j] == 'x') {
-                    drawX(i,j,grid);
+                if (board[i][j] == 'x') {
+                    drawX(i, j, grid);
                 }
             }
         }
@@ -86,36 +98,14 @@ public class TicTacToeController implements Controller{
     }
 
     //public boolean checkWinner(char Board[][]) {
-    //    currentWinner = "X";
-    //    return true;
+        //currentWinner = "X";
+        //   return true;
     //}
 
     @FXML
-    public void squareClicked1() { doMove(currentTurn, 0, 0 ); ;
-    }
-    @FXML
-    public void squareClicked2() { doMove(currentTurn, 0, 1 );
-    }
-    @FXML
-    public void squareClicked3() { doMove(currentTurn, 0, 2 );
-    }
-    @FXML
-    public void squareClicked4() { doMove(currentTurn, 1, 0 );
-    }
-    @FXML
-    public void squareClicked5() { doMove(currentTurn, 1, 1 );
-    }
-    @FXML
-    public void squareClicked6() { doMove(currentTurn, 1, 2 );
-    }
-    @FXML
-    public void squareClicked7() { doMove(currentTurn, 2, 0 );
-    }
-    @FXML
-    public void squareClicked8() { doMove(currentTurn, 2, 1 );
-    }
-    @FXML
-    public void squareClicked9() { doMove(currentTurn, 2, 2 );
+    public void squareClicked(MouseEvent event) {
+        Label l = (Label) event.getSource();
+        doMove(currentTurn, GridPane.getRowIndex(l),GridPane.getColumnIndex(l));
     }
 
     @Override
