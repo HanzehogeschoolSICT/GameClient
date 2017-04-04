@@ -115,8 +115,7 @@ public class GameClient extends Application{
         consoleThread.start();
         networkThread.start();
         
-        //Thread.sleep(1000);
-        //bus.register("NETWORK", nw);
+        bus.register("NETWORK", nw);
         //bus.call("NETWORK", "login", null);
         //bus.call("NETWORK", "get players", null);
     }

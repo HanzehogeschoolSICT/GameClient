@@ -99,21 +99,41 @@ public class Network implements Runnable, Messagable{
         }
     }
     private synchronized void receive(String message){
-        String[] message_list = message.split(" ");
-        if(message_list[0].equals("ERR")){
-            //System.out.println(message + " message");
+//        if(message_list[0].equals("ERR")){
+//            //System.out.println(message + " message");
+//        }
+//        else if(message_list[0].equals("OK")){
+//            //System.out.println("OK message");
+//        }
+//        else{
+//            
+//            switch(message_list[1]){
+//                case "GAMELIST":
+//                    // We got the game list
+//                    break;
+//                
+//            }
+//        }
+        if(message.startsWith("SVR GAME MATCH")){
+            // We're in a match
         }
-        else if(message_list[0].equals("OK")){
-            //System.out.println("OK message");
+        if(message.startsWith("SVR GAME WIN")){
+            // We won
         }
-        else{
-            
-            switch(message_list[1]){
-                case "GAMELIST":
-                    // We got the game list
-                    break;
-                
-            }
+        if(message.startsWith("SVR GAME LOSS")){
+            // We lost
+        }
+        if(message.startsWith("SVR GAME DRAW")){
+            // Game ended, no winner
+        }
+        if(message.startsWith("SVR GAME YOURTURN")){
+            // It's our turn, start timeout
+        }
+        if(message.startsWith("SVR GAME CHALLENGE")){
+            // We were challenged or it was cancelled
+        }
+        if(message.startsWith("SVR GAME MOVE")){
+            // A move was made, either us or them
         }
     }
     @Override
@@ -123,9 +143,10 @@ public class Network implements Runnable, Messagable{
         so we know what to do with it. 
         */
         System.out.println(message);
+        String[] message_args = message.split("\\s+"); // split on whitespace
         ArrayList<String> messages_to_return = new ArrayList();
         ArrayList<String> match = new ArrayList();
-        switch(message){
+        switch(message_args[0]){
             case "login":
                 int count = 0;
                 match.add("OK");
@@ -146,18 +167,52 @@ public class Network implements Runnable, Messagable{
                 else
                     messages_to_return.add("logged_in:" + public_name + "." + count);
                 break;
-            case "get games":
-                match.add("SVR GAMELIST");
-                messages_to_return.add(sendAndReturn("get gamelist\n", match));
-                break;
-            case "get players":
-                match.add("SVR PLAYER");
-                messages_to_return.add(sendAndReturn("get playerlist\n", match));
-                // Get the player list. 
-                break;
+            case "get":
+                switch(message_args[1]){
+                    case "games":
+                        match.add("SVR GAMELIST");
+                        messages_to_return.add(sendAndReturn("get gamelist\n", match));
+                        break;
+                    case "players":
+                        match.add("SVR PLAYER");
+                        messages_to_return.add(sendAndReturn("get playerlist\n", match));
+                        break;
+                }
+            
             case "challenge":
+                switch(message_args[1]){
+                    case "accept":
+                        match.add("ERR Invalid challenge number");
+                        match.add("ERR Illegal argument(s) for command");
+                        match.add("OK");
+                        messages_to_return.add(sendAndReturn(message + "\n", match));
+                        break;
+                    default:
+                        match.add("OK");
+                        match.add("ERR Unknown player:");
+                        match.add("ERR Unknown game:");
+                        messages_to_return.add(sendAndReturn(message + "\n", match));
+                        break;
+                }
                 // Challenge a player based on name. must exist in playerlist.
                 break;
+            case "subscribe":
+                // Subscribe for a game
+                match.add("ERR No game name entered");
+                match.add("ERR Unknown game:");
+                match.add("ERR No game name entered");
+                match.add("OK");
+                messages_to_return.add(sendAndReturn(message + "\n", match));
+                break;
+            case "forfeit":
+                match.add("OK");
+                match.add("ERR Not in any match");
+                messages_to_return.add(sendAndReturn("forfeit\n", match));
+                break;
+        }
+        if(args != null){
+            Networkable n = (Networkable) args[0];
+            n.putData(messages_to_return);
         }
     }
 }
