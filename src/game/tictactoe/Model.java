@@ -8,7 +8,8 @@ public class Model {
     char[][] board;
 
     public Model() {
-    board = new char[3][3];
+
+        board = new char[3][3];
     }
 
     public char getSymbol(int row, int column) {
@@ -20,6 +21,7 @@ public class Model {
     }
 
     public char[][] getBoard() {
+
         return board;
     }
 }
