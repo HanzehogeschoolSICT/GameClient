@@ -32,9 +32,10 @@ public class MessageBus {
      */
     public MessageBus(){
         handlers = new HashMap();
-        handlers.put("hallo", "reflectiontest.TestTwo@talitha_hoi_machine");
-        handlers.put("turn", "reflectiontest.TestOne@test");
-        handlers.put("bye handler", "reflectiontest.TestOne@doei");
+        object_handlers = new HashMap();
+        // Call with MessageBus mb.put("turn");
+        //handlers.put("turn", "reflectiontest.TestOne@test");
+        
     }
     public static MessageBus getBus(){
         if(mb == null){

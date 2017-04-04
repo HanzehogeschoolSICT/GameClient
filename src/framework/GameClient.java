@@ -7,6 +7,7 @@ package framework;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import debug.Console;
 
 /**
  * This is the main Application Class. Runs in JavaFX thread. 
@@ -19,12 +20,17 @@ public class GameClient extends Application{
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //launch(args);
         MessageBus bus = MessageBus.getBus();
         Network nw = new Network();
+        new Thread(nw).start();
+        Console c = new Console();
+        new Thread(c).start();
+        Thread.sleep(1000);
         bus.register("NETWORK", nw);
-        bus.call("NETWORK", "challenge", null);
+        bus.call("NETWORK", "login", null);
+        bus.call("NETWORK", "get players", null);
     }
 
     @Override
