@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 /**
@@ -45,6 +44,8 @@ public class TicTacToeSettings implements Controller {
     private BorderPane rightPane;
 
     private String location;
+
+    private char playSymbol = 'x';
     
     public TicTacToeSettings(){
         location = "../game/tictactoe/SettingsFXML.fxml";
@@ -114,17 +115,19 @@ public class TicTacToeSettings implements Controller {
     private void handleSymbolCrossButton(ActionEvent event) {
         symbolCrossButton.setStyle("-fx-background-color: #000");
         symbolCircleButton.setStyle("");
+        playSymbol = 'x';
     }
     
     @FXML
     private void handleSymbolCircleButton(ActionEvent event) {
         symbolCrossButton.setStyle("");
         symbolCircleButton.setStyle("-fx-background-color: #000");
+        playSymbol = 'o';
     }
     
     @FXML
     private void handleStartButton(ActionEvent event) {
-        TicTacToeController ctrl = new TicTacToeController();
+        TicTacToeController ctrl = new TicTacToeController(playSymbol);
         GameClient.load(ctrl, "CENTER");
     }
 }

@@ -15,29 +15,32 @@ import javafx.scene.shape.Line;
  * @author Mark
  */
 public class TicTacToeController implements Controller {
-    @FXML
-    private GridPane grid;
+    @FXML private GridPane grid;
     private Model model;
     private char currentTurn;
-    private String currentWinner;
+    private boolean isWinner = false;
 
-    public TicTacToeController() {
+    public TicTacToeController(char currentTurn) {
         this.model = new Model();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("tictactoe/FXML.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        currentTurn = 'x';
+        this.currentTurn = currentTurn;
     }
 
     private void doMove(char currentTurn, int row, int column) {
-        if(checkLegalMove(row,column)) {
-            model.setSymbol(row, column, currentTurn);
-            updateBoard(model.getBoard(), grid);
-            switchTurns(currentTurn);
+        if(!isWinner) {
+            if (checkLegalMove(row, column) && !isWinner) {
+                model.setSymbol(row, column, currentTurn);
+                updateBoard(model.getBoard(), grid);
+                switchTurns(currentTurn);
+                checkWinner(currentTurn);
+            }
+            if (isWinner) {
+                System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
+            }
         }
-        else {
-            
-        }
+
     }
 
     public boolean checkLegalMove(int row, int column) {
@@ -97,10 +100,32 @@ public class TicTacToeController implements Controller {
 
     }
 
-    //public boolean checkWinner(char Board[][]) {
-        //currentWinner = "X";
-        //   return true;
-    //}
+    public void checkWinner(char currentTurn) {
+        char[][] board = model.getBoard();
+        // Check horizontal and vertical for winners
+        for (int n = 0; n < 3; n += 2) {
+            int hor = 0;
+            int ver = 0;
+            for (int i = 0; i < 3; i++) {
+                if (board[n][i] == currentTurn) hor++;
+                if (board[i][n] == currentTurn) ver++;
+                if (hor == 3|| ver == 3) isWinner = true;
+            }
+
+        }
+
+        for(int n = 2; n > -1; n--) {
+            int diag1 = 0;
+            int diag2 = 0;
+            for (int i = 0; i < 3; i++) {
+                if (board[i][i] == currentTurn) diag1++;
+                if (board[i][n] == currentTurn) diag2++;
+                if (diag1 == 3|| diag2 == 3) isWinner = true;
+            }
+        }
+
+    }
+
 
     @FXML
     public void squareClicked(MouseEvent event) {
