@@ -5,10 +5,8 @@
  */
 package framework;
 
+import debug.Console;
 import framework.interfaces.Controller;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +16,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import debug.Console;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is the main Application Class. Runs in JavaFX thread. 
@@ -66,7 +67,7 @@ public class GameClient extends Application{
     }
 
     public static void load(Controller v, BorderPane p, String position){
-        Pane newPane = loadPane(v.getLocation());
+        Pane newPane = loadPane(v,v.getLocation());
         // Add our new pane that we just loaded
         Platform.runLater(() -> {
             switch(position){
