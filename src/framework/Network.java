@@ -56,9 +56,18 @@ public class Network implements Runnable, Messagable{
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
+            System.out.println("I was interrupted!");
         }
+        System.out.println("Exiting Network...");
+    }
+    public void exit(){
+        while(!server.isClosed())
+            try {
+                server.close();
+            } catch (IOException ex) {
+                System.out.println("Couldn't close.");
+            }
+        System.out.println("Closed connection to server");
     }
     
     private void send(String args){

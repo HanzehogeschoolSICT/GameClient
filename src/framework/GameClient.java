@@ -29,25 +29,21 @@ import debug.Console;
 public class GameClient extends Application{
 
     private Parent root;
+    private Thread consoleThread;
+    private Thread networkThread;
+    private Network nw;
+    private Console c;
+    
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException {
-        MessageBus bus = MessageBus.getBus();
-        Network nw = new Network();
-        new Thread(nw).start();
-        Console c = new Console();
-        new Thread(c).start();
-        //Thread.sleep(1000);
-        bus.register("NETWORK", nw);
-        bus.call("NETWORK", "login", null);
-        bus.call("NETWORK", "get players", null);
+    public static void main(String[] args){
         launch(args);
-
     }
 
     @Override
     public void start(Stage primaryStage){
+        initialize();
         root = new Group();
         try {
             root = FXMLLoader.load(getClass().getResource("assets/FXML.fxml"));
@@ -61,7 +57,13 @@ public class GameClient extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    
+    @Override
+    public void stop() throws Exception{
+        nw.exit();
+        c.exit();
+        networkThread.interrupt();
+        consoleThread.interrupt();
+    }
 
     public static void load(Controller v, BorderPane p, String position){
         Pane newPane = loadPane(v.getLocation());
@@ -101,5 +103,21 @@ public class GameClient extends Application{
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    private void initialize() {
+        MessageBus bus = MessageBus.getBus();
+        nw = new Network();
+        c = new Console();
+        networkThread = new Thread(nw);
+        consoleThread = new Thread(c);
+        
+        consoleThread.start();
+        networkThread.start();
+        
+        //Thread.sleep(1000);
+        //bus.register("NETWORK", nw);
+        //bus.call("NETWORK", "login", null);
+        //bus.call("NETWORK", "get players", null);
     }
 }
