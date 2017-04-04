@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.tictactoe;
 
-import game.abstraction.AbstractGame;
+import javafx.application.Application;
 
-/** 
- * 
- * @author Wouter
+/**
+ *
+ * @author Mark
  */
-public class TicTacToe extends AbstractGame{
-    
+public class TicTacToe{
+    public TicTacToe() {
+        Controller controller = new Controller();
+    }
+    public static void main(String[] args) {
+        Application.launch(View.class, args);
+    }
 }

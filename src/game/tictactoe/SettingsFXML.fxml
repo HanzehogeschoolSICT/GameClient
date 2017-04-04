@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.geometry.Insets?>
+<?import framework.models.UtilityGridPane?>
+
+
+
+
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.TicTacToeSettings" id="backgroundpane">
+   <top>
+      <BorderPane id="topPane">
+          <center>
+              <Label id="gameText" GridPane.halignment="CENTER" text="TicTacToe"/>
+          </center> 
+      </BorderPane>
+
+   </top>
+   <left>
+      <Pane id="leftPane" />
+   </left>
+   <right>
+      <Pane id="rightPane" />
+   </right>
+   <bottom>
+      <Pane id="bottomPane" />
+   </bottom>
+   <center>
+
+      <UtilityGridPane id="contentSettings" fx:id="settingsPane">
+
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="370.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane id="opponent" >
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentComputerButton" text="Computer" GridPane.rowIndex="1" onAction="#handleOpponentComputerButton"/>
+                  <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentPlayerButton" text="Player" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleOpponentPlayerButton"/>
+                  <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentSearchButton" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" onAction="#handleOpponentSearchButton"/>
+
+                  <Label  GridPane.halignment="CENTER" id="opponentText" text="Who's your opponent?" GridPane.columnSpan="3" />
+               </children>
+            </GridPane>
+         </children>
+
+      </UtilityGridPane>
+
+   </center>
+</BorderPane>

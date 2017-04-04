@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<GridPane id="symbol" xmlns:fx="http://javafx.com/fxml/1" >
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
+    </columnConstraints>
+     <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+
+        <Button fx:id="symbolCrossButton" GridPane.halignment="CENTER" id="settingButton" text="Cross" GridPane.rowIndex="1" onAction="#handleSymbolCrossButton"/>
+        <Button fx:id="symbolCircleButton" GridPane.halignment="CENTER" id="settingButton" text="Circle" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleSymbolCircleButton"/>
+        <Label  fx:id="blub" GridPane.halignment="CENTER" id="symbolText" text="What symbol do you want to play with?" GridPane.columnSpan="3" />
+
+    </children>
+</GridPane>
