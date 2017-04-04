@@ -10,14 +10,14 @@
                          prefHeight="900.0" prefWidth="1137.0"
                          xmlns="http://javafx.com/javafx/8.0.121" BorderPane.alignment="CENTER">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="379.0" maxWidth="379.0" prefWidth="379.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="379.0" maxWidth="379.0" prefWidth="379.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="379.0" maxWidth="379.0" prefWidth="379.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" maxWidth="200.0" prefWidth="200.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" maxWidth="200.0" prefWidth="200.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" maxWidth="200.0" prefWidth="200.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="269.0" maxHeight="269.0" prefHeight="269.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="269.0" maxHeight="269.0" prefHeight="269.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="269.0" maxHeight="269.0" prefHeight="269.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="200.0" maxHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="200.0" maxHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="200.0" maxHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
   </rowConstraints>
     <children>
       <Label prefHeight="269.0" prefWidth="379.0" onMouseClicked="#squareClicked1" GridPane.columnIndex="0" GridPane.rowIndex="0"/>

@@ -120,6 +120,6 @@ public class TicTacToeController implements Controller{
 
     @Override
     public String getLocation() {
-        return null;
+        return "../game/tictactoe/FXML.fxml";
     }
 }

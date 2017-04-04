@@ -124,9 +124,7 @@ public class TicTacToeSettings implements Controller {
     
     @FXML
     private void handleStartButton(ActionEvent event) {
-        settingsPane.removeRowsExcept(0);
         TicTacToeController ctrl = new TicTacToeController();
-        Pane game = GameClient.loadPane(ctrl, "../game/tictactoe/FXML.fxml");
-        settingsPane.add(game, 0, 1);
+        GameClient.load(ctrl, "CENTER");
     }
 }
