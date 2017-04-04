@@ -28,12 +28,15 @@ import debug.Console;
  */
 public class GameClient extends Application{
 
+    
+
     private Parent root;
     private Thread consoleThread;
     private Thread networkThread;
     private Network nw;
     private Console c;
-    
+
+    private static BorderPane parent;
     /**
      * @param args the command line arguments
      */
@@ -67,14 +70,22 @@ public class GameClient extends Application{
 
     public static void load(Controller v, BorderPane p, String position){
         Pane newPane = loadPane(v.getLocation());
-        // Add our new pane that we just loaded
+        putPane(newPane, p, position);
+    }
+    
+    public static void load(Controller v, String position){
+        Pane newPane = loadPane(v.getLocation());
+        putPane(newPane, parent, position);
+    }
+    
+    private static void putPane(Pane to_place, BorderPane p, String position){
         Platform.runLater(() -> {
             switch(position){
                 case "CENTER":
-                    p.setCenter(newPane);
+                    p.setCenter(to_place);
                     break;
                 case "LEFT":
-                    p.setLeft(newPane);
+                    p.setLeft(to_place);
                     break;
                 default:
                     System.out.println("You can only set LEFT (menu) and CENTER (game).");
@@ -118,5 +129,9 @@ public class GameClient extends Application{
         bus.register("NETWORK", nw);
         //bus.call("NETWORK", "login", null);
         //bus.call("NETWORK", "get players", null);
+    }
+    
+    public static void setParent(BorderPane parent) {
+        GameClient.parent = parent;
     }
 }

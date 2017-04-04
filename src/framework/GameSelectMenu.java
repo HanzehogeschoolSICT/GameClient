@@ -38,6 +38,7 @@ public class GameSelectMenu {
     public void initialize(){
         Image image = new Image("framework/assets/spooky.png");
         imageView.setImage(image);
+        GameClient.setParent(parent);
     }
     @FXML
     private void handleReversiButtonAction(ActionEvent event) {
@@ -50,6 +51,6 @@ public class GameSelectMenu {
     private void handleTictactoeButtonAction(ActionEvent event) {
         TicTacToeButton.setStyle("-fx-background-color:#525254");
         ReversiButton.setStyle("");
-        GameClient.load(new TicTacToeSettings(), parent, "CENTER");
+        GameClient.load(new TicTacToeSettings(), "CENTER");
     }
 }
