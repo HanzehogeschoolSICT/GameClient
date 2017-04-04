@@ -4,10 +4,10 @@ package game.tictactoe;
  *
  * @author Mark
  */
-public class Model {
-    char[][] board;
+class Model {
+    private char[][] board;
 
-    public Model() {
+    Model() {
 
         board = new char[3][3];
     }
@@ -16,11 +16,11 @@ public class Model {
     //    return board[row][column];
     //}
 
-    public void setSymbol(int row, int column, char symbol) {
+    void setSymbol(int row, int column, char symbol) {
         board[row][column] = symbol;
     }
 
-    public char[][] getBoard() {
+    char[][] getBoard() {
 
         return board;
     }

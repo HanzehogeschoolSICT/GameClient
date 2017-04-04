@@ -4,8 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.Scene?>
 <?import javafx.scene.text.TextFlow?>
-<Scene xmlns:fx="http://javafx.com/fxml" fx:id="scene" fx:controller="game.tictactoe.Controller">
-  <BorderPane prefHeight="1000.0" prefWidth="1137.0" xmlns:fx="http://javafx.com/fxml/1">
+  <BorderPane prefHeight="1000.0" prefWidth="1137.0" xmlns:fx="http://javafx.com/fxml/1" id="TicTacToe">
   <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="grid" gridLinesVisible="true" maxHeight="900.0" maxWidth="1137.0"
                          minHeight="900.0" minWidth="1137.0"
                          prefHeight="900.0" prefWidth="1137.0"
@@ -33,5 +32,4 @@
     </children>
   </GridPane>
   </BorderPane>
-  </Scene>
 

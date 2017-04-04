@@ -5,13 +5,11 @@
  */
 package game.tictactoe;
 
-import framework.interfaces.Controller;
 import framework.GameClient;
+import framework.interfaces.Controller;
 import framework.models.UtilityGridPane;
-import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -43,6 +41,8 @@ public class TicTacToeSettings implements Controller {
     private Button symbolCrossButton;
     @FXML
     private Button symbolCircleButton;
+    @FXML
+    private BorderPane rightPane;
 
     private String location;
     
@@ -124,6 +124,9 @@ public class TicTacToeSettings implements Controller {
     
     @FXML
     private void handleStartButton(ActionEvent event) {
-        
+        settingsPane.removeRowsExcept(0);
+        TicTacToeController ctrl = new TicTacToeController();
+        Pane game = GameClient.loadPane(ctrl, "../game/tictactoe/FXML.fxml");
+        settingsPane.add(game, 0, 1);
     }
 }

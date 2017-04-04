@@ -12,9 +12,7 @@
 
 
 
-
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.TicTacToeSettings" id="backgroundpane">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" id="backgroundpane">
    <top>
       <BorderPane id="topPane">
           <center>
