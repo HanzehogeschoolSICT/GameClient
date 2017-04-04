@@ -5,6 +5,16 @@
  */
 package framework;
 
+import game.reversi.ReversiSettings;
+import game.tictactoe.TicTacToeSettings;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+
 /**
  * This goes in the information box.
  * Get the list of games (MessageBus -> Network)
@@ -13,5 +23,33 @@ package framework;
  * @author Wouter
  */
 public class GameSelectMenu {
+    @FXML
+    private Text text;
+    @FXML
+    private BorderPane parent;
+    @FXML 
+    private Button TicTacToeButton;
+    @FXML
+    private Button ReversiButton;
+    @FXML
+    private ImageView imageView;
+
+    @FXML
+    public void initialize(){
+        Image image = new Image("framework/assets/spooky.png");
+        imageView.setImage(image);
+    }
+    @FXML
+    private void handleReversiButtonAction(ActionEvent event) {
+        TicTacToeButton.setStyle("");
+        ReversiButton.setStyle("-fx-background-color:#525254");
+        GameClient.load(new ReversiSettings(), parent, "CENTER");
+    }
     
+    @FXML
+    private void handleTictactoeButtonAction(ActionEvent event) {
+        TicTacToeButton.setStyle("-fx-background-color:#525254");
+        ReversiButton.setStyle("");
+        GameClient.load(new TicTacToeSettings(), parent, "CENTER");
+    }
 }

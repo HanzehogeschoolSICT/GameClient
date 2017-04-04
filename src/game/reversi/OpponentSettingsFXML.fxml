@@ -5,27 +5,15 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import java.net.*?>
-<?import javafx.geometry.Insets?>
-<<<<<<< HEAD
-
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.Settings">
-   <top>
-      <Pane id="topPane"  />
-=======
 <?import framework.models.UtilityGridPane?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.TicTacToeSettings" id="backgroundpane">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.reversi.ReversiSettings" id="backgroundpane">
    <top>
       <BorderPane id="topPane">
           <center>
-              <Label id="gameText" GridPane.halignment="CENTER" text="TicTacToe"/>
+              <Label id="gameText" GridPane.halignment="CENTER" text="Reversi"/>
           </center> 
       </BorderPane>
->>>>>>> gui
    </top>
    <left>
       <Pane id="leftPane" />
@@ -37,11 +25,7 @@
       <Pane id="bottomPane" />
    </bottom>
    <center>
-<<<<<<< HEAD
-      <GridPane id="contentSettings" fx:id="settingsPane">
-=======
       <UtilityGridPane id="contentSettings" fx:id="settingsPane">
->>>>>>> gui
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="370.0" />
         </columnConstraints>
@@ -64,21 +48,13 @@
               </rowConstraints>
                <children>
                   <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentComputerButton" text="Computer" GridPane.rowIndex="1" onAction="#handleOpponentComputerButton"/>
-<<<<<<< HEAD
-                  <Button GridPane.halignment="CENTER" id="settingButton" text="Player" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleOpponentPlayerButton"/>
-                  <Button GridPane.halignment="CENTER" id="settingButton" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" onAction="#handleOpponentSearchButton"/>
-=======
                   <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentPlayerButton" text="Player" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleOpponentPlayerButton"/>
                   <Button GridPane.halignment="CENTER" id="settingButton" fx:id="opponentSearchButton" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" onAction="#handleOpponentSearchButton"/>
->>>>>>> gui
                   <Label  GridPane.halignment="CENTER" id="opponentText" text="Who's your opponent?" GridPane.columnSpan="3" />
                </children>
             </GridPane>
          </children>
-<<<<<<< HEAD
-      </GridPane>
-=======
       </UtilityGridPane>
->>>>>>> gui
    </center>
 </BorderPane>
+

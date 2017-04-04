@@ -1,0 +1,127 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 31, 2017, 12:07:46 PM
+    Author     : Talitha
+*/
+.button {
+    -fx-font-size:16px;
+    -fx-pref-width:200px;
+    -fx-pref-height:50px;
+    -fx-padding: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+}
+
+.label {
+    -fx-font:25px Tahoma;
+}
+
+#startText {
+    -fx-font: 50px Tahoma;
+    
+}
+
+#backgroundpane {
+    -fx-background-color:#eaf0f9;
+}
+
+#topPane {
+    -fx-pref-height:100;
+    -fx-background-color:#eaf0f9;
+}
+
+#leftPane, #rightPane {
+    -fx-pref-height:465;
+    -fx-pref-width:150;
+    -fx-background-color:#eaf0f9;
+}
+
+#bottomPane {
+    -fx-pref-height:70;
+    -fx-pref-width:150;
+    -fx-background-color:#eaf0f9;
+}
+
+#gameText {
+    -fx-opacity: 0.6;
+    -fx-font-size:40px;
+}
+
+#contentSettings {
+    -fx-pref-height:420;
+    -fx-pref-width:375;
+    -fx-max-width:550;
+    -fx-background-color:#eaf0f9;
+}
+
+#sidebar{
+    -fx-background-color:#707275;
+    -fx-pref-width:150px;
+    -fx-padding:10px 0px 0px 0px;
+    -fx-spacing:5px;
+}
+
+#sidebarButton {
+    -fx-font-size:18px;
+    -fx-pref-width:150px;
+    -fx-background-color:#7c7d7f, transparent;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+}
+
+#sidebarButton:hover{
+    -fx-background-color:#6c6d70;
+}
+
+#settingButton {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+}
+
+#settingButton:hover {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7cbbea, #253c75),
+        linear-gradient(#385ba0, #21376b),
+        linear-gradient(#2b4a91, #18284c);
+}
+
+#tictactoesettings{
+    -fx-background-color:#6762b4;
+    -fx-max-width:500;
+    -fx-max-height:600;
+}
+
+#opponent {
+    -fx-hgap:10;
+    -fx-background-color:#839bbf;
+    -fx-padding:0 10 0 10;
+}
+
+#difficulty, #symbol, #start {
+    -fx-hgap:10;
+    -fx-background-color:#6b7f9e;
+    -fx-padding:0 10 0 10;
+}
+
+#colorSettingButton {
+    -fx-background-radius:5em;
+    -fx-min-width:75px;
+    -fx-min-height:75px;
+    -fx-max-width:75px;
+    -fx-pref-width:75px;
+    -fx-max-height:75px;
+    -fx-padding:0px;
+    -fx-insets:0px;
+}

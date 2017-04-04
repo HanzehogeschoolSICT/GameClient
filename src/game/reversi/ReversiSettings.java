@@ -3,25 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.tictactoe;
+package game.reversi;
 
 import framework.Controller;
 import framework.GameClient;
 import framework.models.UtilityGridPane;
-import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 /**
  *
  * @author Talitha
  */
-public class TicTacToeSettings implements Controller {
+public class ReversiSettings implements Controller{
     @FXML
     private UtilityGridPane settingsPane;
     @FXML
@@ -31,29 +28,23 @@ public class TicTacToeSettings implements Controller {
     @FXML
     private Button opponentSearchButton;
     @FXML
+    private Label blub;
+    @FXML
     private Button difficultyEasyButton;
     @FXML
     private Button difficultyNormalButton;
     @FXML
     private Button difficultyHardButton;
     @FXML
-    private Label blub;
+    private Button colorBlackButton;
     @FXML
-    private Button symbolCrossButton;
-    @FXML
-    private Button symbolCircleButton;
+    private Button colorWhiteButton;
     
-<<<<<<< HEAD
-    
-    
-=======
->>>>>>> gui
     private String location;
     
-    public TicTacToeSettings(){
-        location = "../game/tictactoe/SettingsFXML.fxml";
+    public ReversiSettings(){
+        location = "../game/reversi/OpponentSettingsFXML.fxml";
     }
-
     @Override
     public String getLocation() {
         return location;
@@ -62,11 +53,11 @@ public class TicTacToeSettings implements Controller {
     @FXML
     private void handleOpponentComputerButton(ActionEvent event) {
         settingsPane.removeRowsExcept(0);
-        Pane difficultySettings = GameClient.loadPane(this, "../game/tictactoe/DifficultySettingsFXML.fxml");
+        Pane difficultySettings = GameClient.loadPane(this, "../game/reversi/DifficultySettingsFXML.fxml");
         settingsPane.add(difficultySettings, 0, 1);
-        Pane symbolSettings = GameClient.loadPane(this, "../game/tictactoe/SymbolSettingsFXML.fxml");
+        Pane symbolSettings = GameClient.loadPane(this, "../game/reversi/ColorSettingsFXML.fxml");
         settingsPane.add(symbolSettings, 0, 2);
-        Pane start = GameClient.loadPane(this, "../game/tictactoe/StartFXML.fxml");
+        Pane start = GameClient.loadPane(this, "../game/reversi/StartFXML.fxml");
         settingsPane.add(start, 0, 3);
         opponentComputerButton.setStyle("-fx-background-color: #000");
         opponentPlayerButton.setStyle("");
@@ -76,15 +67,16 @@ public class TicTacToeSettings implements Controller {
     @FXML
     private void handleOpponentPlayerButton(ActionEvent event) {
         settingsPane.removeRowsExcept(0);
-        Pane symbolSettings = GameClient.loadPane(this, "../game/tictactoe/SymbolSettingsFXML.fxml");
+        Pane symbolSettings = GameClient.loadPane(this, "../game/reversi/ColorSettingsFXML.fxml");
         settingsPane.add(symbolSettings, 0, 1);
         blub.setText("Player 1: Choose a symbol.");
-        Pane start = GameClient.loadPane(this, "../game/tictactoe/StartFXML.fxml");
+        Pane start = GameClient.loadPane(this, "../game/reversi/StartFXML.fxml");
         settingsPane.add(start, 0, 2);
         opponentPlayerButton.setStyle("-fx-background-color: #000");
         opponentComputerButton.setStyle("");
         opponentSearchButton.setStyle("");
     }
+    
     @FXML
     private void handleOpponentSearchButton(ActionEvent event) {
         settingsPane.removeRowsExcept(0);
@@ -92,12 +84,9 @@ public class TicTacToeSettings implements Controller {
         opponentComputerButton.setStyle("");
         opponentPlayerButton.setStyle("");
     }
-    
     @FXML
     private void handleDifficultyEasyButton(ActionEvent event) {
-        difficultyEasyButton.setStyle("-fx-background-color: #000");
-        difficultyNormalButton.setStyle("");
-        difficultyHardButton.setStyle("");
+        setStyleOneButton(difficultyEasyButton, difficultyNormalButton, difficultyHardButton, "-fx-background-color:#000");
     }
     
     @FXML
@@ -115,19 +104,30 @@ public class TicTacToeSettings implements Controller {
     }
     
     @FXML
-    private void handleSymbolCrossButton(ActionEvent event) {
-        symbolCrossButton.setStyle("-fx-background-color: #000");
-        symbolCircleButton.setStyle("");
+    private void handleColorBlackButton(ActionEvent event) {
+        colorBlackButton.setStyle("-fx-background-color:#000; -fx-effect: dropshadow( three-pass-box , rgba(0,0,255,1) , 10, 0.5 , 0 , 0)");
+        colorWhiteButton.setStyle("-fx-background-color:white;");
     }
     
     @FXML
-    private void handleSymbolCircleButton(ActionEvent event) {
-        symbolCrossButton.setStyle("");
-        symbolCircleButton.setStyle("-fx-background-color: #000");
+    private void handleColorWhiteButton(ActionEvent event) {
+        colorBlackButton.setStyle("-fx-background-color:black; ");
+        colorWhiteButton.setStyle("-fx-background-color:white; -fx-effect: dropshadow( three-pass-box , rgba(0,0,255,1) , 10, 0.5 , 0 , 0 )");
     }
     
     @FXML
     private void handleStartButton(ActionEvent event) {
         
+    }
+    
+    private void setStyleOneButton(Button b1Styled, Button b2, Button b3, String style){
+        b1Styled.setStyle(style);
+        b2.setStyle("");
+        b3.setStyle("");
+    }
+    
+    private void setStyleOneButton(Button b1Styled, Button b2, String style){
+        b1Styled.setStyle(style);
+        b2.setStyle("");
     }
 }

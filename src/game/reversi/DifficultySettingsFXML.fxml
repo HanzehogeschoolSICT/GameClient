@@ -6,11 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<<<<<<< HEAD
-<GridPane id="difficulty" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.tictactoe.Settings">
-=======
 <GridPane id="difficulty" xmlns:fx="http://javafx.com/fxml/1">
->>>>>>> gui
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
@@ -21,16 +17,9 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-<<<<<<< HEAD
-        <Button GridPane.halignment="CENTER" id="settingButton" text="Easy" GridPane.rowIndex="1" onAction="#handleDifficultyEasyButton"/>
-        <Button GridPane.halignment="CENTER" id="settingButton" text="Normal" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleDifficultyNormalButton"/>
-        <Button GridPane.halignment="CENTER" id="settingButton" text="Hard" GridPane.columnIndex="2" GridPane.rowIndex="1" onAction="#handleDifficultyHardButton"/>
-=======
         <Button fx:id="difficultyEasyButton" GridPane.halignment="CENTER" id="settingButton" text="Easy" GridPane.rowIndex="1" onAction="#handleDifficultyEasyButton"/>
         <Button fx:id="difficultyNormalButton" GridPane.halignment="CENTER" id="settingButton" text="Normal" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleDifficultyNormalButton"/>
         <Button fx:id="difficultyHardButton" GridPane.halignment="CENTER" id="settingButton" text="Hard" GridPane.columnIndex="2" GridPane.rowIndex="1" onAction="#handleDifficultyHardButton"/>
->>>>>>> gui
         <Label  GridPane.halignment="CENTER" id="opponentText" text="Choose the difficulty." GridPane.columnSpan="3" />
     </children>
 </GridPane>
-
