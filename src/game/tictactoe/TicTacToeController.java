@@ -22,9 +22,6 @@ public class TicTacToeController implements Controller {
 
     public TicTacToeController(char currentTurn) {
         this.model = new Model();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("tictactoe/FXML.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
         this.currentTurn = currentTurn;
     }
 

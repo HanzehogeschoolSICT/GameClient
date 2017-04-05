@@ -76,6 +76,10 @@ public class GameClient extends Application{
         Pane newPane = loadPane(v, v.getLocation());
         putPane(newPane, parent, position);
     }
+    public static void load(Controller v, String position, String location){
+        Pane newPane = loadPane(v, location);
+        putPane(newPane, parent, location);
+    }
     
     private static void putPane(Pane to_place, BorderPane p, String position){
         Platform.runLater(() -> {
