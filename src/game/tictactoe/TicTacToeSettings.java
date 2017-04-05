@@ -6,6 +6,7 @@
 package game.tictactoe;
 
 import framework.GameClient;
+import framework.MessageBus;
 import framework.interfaces.Controller;
 import framework.models.UtilityGridPane;
 import javafx.event.ActionEvent;
@@ -84,6 +85,9 @@ public class TicTacToeSettings implements Controller {
     }
     @FXML
     private void handleOpponentSearchButton(ActionEvent event) {
+        ServerController sc = new ServerController();
+        MessageBus mb = MessageBus.getBus();
+        mb.register("GAME", sc);
         settingsPane.removeRowsExcept(0);
         opponentSearchButton.setStyle("-fx-background-color: #000");
         opponentComputerButton.setStyle("");

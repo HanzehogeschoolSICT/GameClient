@@ -73,47 +73,42 @@ public class Network implements Runnable, Messagable{
     private void send(String args){
         try {
             send_to_server.writeBytes(args);
-            System.out.println("sent " + args);
         } catch (IOException ex) {
             Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private String sendAndReturn(String args, ArrayList<String> match){
+        int count = messages.size();
         send(args);
-        // Match the expected output against given outputs
-        while(true){
-            synchronized(this){ 
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            String m = messages.get(messages.size()-1);
-            for(String to_match: match){
-                if(m.startsWith(to_match)){
-                    return m;
+        synchronized(this){ 
+            // Match the expected output against given outputs
+            while(true){
+
+                    try {
+                        if(messages.size() == count){
+                            wait();
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                while(count != messages.size()){
+                    String m = messages.get(count);
+                    System.out.println("Checking " + m);
+                    for(String to_match: match){
+                        if(m.startsWith(to_match)){
+                            return m;
+                        }
+                    }
+                    count++;
                 }
             }
         }
     }
     private synchronized void receive(String message){
-//        if(message_list[0].equals("ERR")){
-//            //System.out.println(message + " message");
-//        }
-//        else if(message_list[0].equals("OK")){
-//            //System.out.println("OK message");
-//        }
-//        else{
-//            
-//            switch(message_list[1]){
-//                case "GAMELIST":
-//                    // We got the game list
-//                    break;
-//                
-//            }
-//        }
+        System.out.println(message);
+        /*
         if(message.startsWith("SVR GAME MATCH")){
             // We're in a match
         }
@@ -135,6 +130,11 @@ public class Network implements Runnable, Messagable{
         if(message.startsWith("SVR GAME MOVE")){
             // A move was made, either us or them
         }
+        */
+        if(message.startsWith("SVR GAME")){
+            MessageBus mb = MessageBus.getBus();
+            mb.call("GAME", message, null);
+        }
     }
     @Override
     public void call(String message, Object[] args) {
@@ -147,10 +147,20 @@ public class Network implements Runnable, Messagable{
         ArrayList<String> messages_to_return = new ArrayList();
         ArrayList<String> match = new ArrayList();
         switch(message_args[0]){
+            case "open":
+                break;
+                
+            case "close":
+                break;
+                
+            case "exit":
+                
+                break;
             case "login":
                 int count = 0;
                 match.add("OK");
                 match.add("ERR Duplicate name exists");
+                match.add("ERR Already logged in");
                 boolean name_set = false;
                 while(!name_set){
                     String m;
@@ -159,7 +169,7 @@ public class Network implements Runnable, Messagable{
                     else
                         m = sendAndReturn("login " + public_name + "." + count + "\n", match);
                     count++;
-                    if(m.startsWith("OK"))
+                    if(m.startsWith("OK") || m.startsWith("ERR Already logged in"))
                         name_set = true;
                 }
                 if(count == 0)
@@ -178,6 +188,7 @@ public class Network implements Runnable, Messagable{
                         messages_to_return.add(sendAndReturn("get playerlist\n", match));
                         break;
                 }
+                break;
             
             case "challenge":
                 switch(message_args[1]){
@@ -185,7 +196,7 @@ public class Network implements Runnable, Messagable{
                         match.add("ERR Invalid challenge number");
                         match.add("ERR Illegal argument(s) for command");
                         match.add("OK");
-                        messages_to_return.add(sendAndReturn(message + "\n", match));
+                        send(message + "\n");
                         break;
                     default:
                         match.add("OK");
@@ -209,9 +220,15 @@ public class Network implements Runnable, Messagable{
                 match.add("ERR Not in any match");
                 messages_to_return.add(sendAndReturn("forfeit\n", match));
                 break;
+            case "move":
+                send(message + "\n");
         }
         if(args != null){
             Networkable n = (Networkable) args[0];
+            System.out.println("printing messages");
+            for(String m: messages_to_return){
+                System.out.println(m);
+            }
             n.putData(messages_to_return);
         }
     }

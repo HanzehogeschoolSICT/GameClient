@@ -61,6 +61,7 @@ public class MessageBus {
            m.call(message, args);
         }catch(Exception e){
             System.out.println("Object " + object + " isn't registered");
+            e.printStackTrace();
         }
     }
     
