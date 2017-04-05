@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -18,7 +15,7 @@
     <children>
         <ListView fx:id="toChallenge" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
         <ListView fx:id="challenges" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <Button onAction="#challengePlayer" text="Challenge" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <!--<Button onAction="#challengePlayer" text="Challenge" GridPane.rowIndex="1" GridPane.columnIndex="0"/>-->
         <Button onAction="#acceptChallenge" text="Accept" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
     </children>
 </GridPane>
