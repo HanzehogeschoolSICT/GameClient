@@ -98,29 +98,9 @@ public class TicTacToeController implements Controller {
     }
 
     public void checkWinner(char currentTurn) {
-        char[][] board = model.getBoard();
-        // Check horizontal and vertical for winners
-        for (int n = 0; n < 3; n += 2) {
-            int hor = 0;
-            int ver = 0;
-            for (int i = 0; i < 3; i++) {
-                if (board[n][i] == currentTurn) hor++;
-                if (board[i][n] == currentTurn) ver++;
-                if (hor == 3|| ver == 3) isWinner = true;
-            }
-
+        if (model.getWinner() != ' ') {
+            isWinner = true;
         }
-
-        for(int n = 2; n > -1; n--) {
-            int diag1 = 0;
-            int diag2 = 0;
-            for (int i = 0; i < 3; i++) {
-                if (board[i][i] == currentTurn) diag1++;
-                if (board[i][n] == currentTurn) diag2++;
-                if (diag1 == 3|| diag2 == 3) isWinner = true;
-            }
-        }
-
     }
 
 
