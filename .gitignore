@@ -2,6 +2,7 @@ nbproject/
 build.xml
 manifest.mf
 *.class
+build/
 
 # Intellij
 .idea/*
