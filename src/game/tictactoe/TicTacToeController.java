@@ -53,6 +53,7 @@ public class TicTacToeController implements Controller {
         } else {
             currentTurn = 'x';
         }
+		new AI(model, currentTurn).nextMove();
     }
 
     private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {
