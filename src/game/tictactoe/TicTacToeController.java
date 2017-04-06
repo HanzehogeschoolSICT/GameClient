@@ -25,24 +25,20 @@ public class TicTacToeController implements Controller {
         this.currentTurn = currentTurn;
     }
 
-    private void doMove(char currentTurn, int row, int column) {
-        if(!isWinner) {
-            if (checkLegalMove(row, column) && !isWinner) {
-                model.setSymbol(row, column, currentTurn);
-                updateBoard(model.getBoard(), grid);
-                switchTurns(currentTurn);
-                checkWinner(currentTurn);
-            }
-            if (isWinner) {
-                System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
-            }
+    private void doMove(char currentTurn, int column, int row) {
+        if (checkLegalMove(column, row) && !isWinner) {
+            model.setSymbol(column, row, currentTurn);
+            updateBoard(model.getBoard(), grid);
+            switchTurns(currentTurn);
         }
-
+        if (isWinner) {
+            System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
+        }
     }
 
-    public boolean checkLegalMove(int row, int column) {
+    public boolean checkLegalMove(int column, int row) {
         char[][] board = model.getBoard();
-        if(board[row][column] == 'x' || board[row][column] == 'o') {
+        if(board[column][row] == 'x' || board[column][row] == 'o') {
             return false;
         }
         else {
@@ -68,7 +64,7 @@ public class TicTacToeController implements Controller {
         grid.add(line, column, row);
     }
 
-    private void drawO(int row, int column, GridPane grid) {
+    private void drawO(int column, int row, GridPane grid) {
         Circle c1 = new Circle(50, 50, 100);
         c1.setStroke(Color.BLACK);
         c1.setFill(null);
@@ -76,7 +72,7 @@ public class TicTacToeController implements Controller {
         grid.add(c1, column, row);
     }
 
-    private void drawX(int row, int column, GridPane grid) {
+    private void drawX(int column, int row, GridPane grid) {
         double x = 166;
         double y = 125;
         createLine(x - 100, y - 100, x + 100, y + 100, column, row, grid);
@@ -107,7 +103,7 @@ public class TicTacToeController implements Controller {
     @FXML
     public void squareClicked(MouseEvent event) {
         Label l = (Label) event.getSource();
-        doMove(currentTurn, GridPane.getRowIndex(l),GridPane.getColumnIndex(l));
+        doMove(currentTurn, GridPane.getColumnIndex(l), GridPane.getRowIndex(l));
     }
 
     @Override
