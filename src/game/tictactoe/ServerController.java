@@ -6,7 +6,6 @@ import framework.MessageBus;
 import framework.interfaces.Controller;
 import framework.interfaces.Messagable;
 import framework.interfaces.Networkable;
-import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,8 +15,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-import org.json.simple.*;
-import org.json.simple.parser.*;
+import java.util.ArrayList;
+
+//import org.json.simple.*;
+//import org.json.simple.parser.*;
 /**
  * Created by markshizzle on 4-4-2017.
  */
@@ -131,7 +132,7 @@ public class ServerController implements Networkable, Messagable, Controller{
     }
     @Override
     public String getLocation() {
-        return "../game/tictactoe/FXML.fxml";
+        return "../game/tictactoe/TicTacToeBoard.fxml";
     }
     @FXML
     public void squareClicked(MouseEvent event) {

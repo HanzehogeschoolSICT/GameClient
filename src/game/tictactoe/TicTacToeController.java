@@ -2,7 +2,6 @@ package game.tictactoe;
 
 import framework.interfaces.Controller;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -109,6 +108,6 @@ public class TicTacToeController implements Controller {
 
     @Override
     public String getLocation() {
-        return "../game/tictactoe/FXML.fxml";
+        return "../game/tictactoe/TicTacToeBoard.fxml";
     }
 }
