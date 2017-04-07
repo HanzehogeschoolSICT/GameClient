@@ -7,60 +7,61 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * Created by markshizzle on 6-4-2017.
  */
 public class ReversiController implements Controller {
-    @FXML
-    private
-    GridPane grid;
+    @FXML private GridPane grid;
+    @FXML private TextFlow flow;
+    private Text text;
     private Model model;
     private char currentTurn;
     private boolean isFull = false;
     char[][] board;
     boolean[][] legalMoves = new boolean[8][8];
+    int totalW;
+    int totalB;
 
     //private boolean[][] legalMovesW = new boolean[8][8];
     //private boolean[][] legalMovesB = new boolean[8][8];
 
-    public ReversiController(char CurrentTurn) {
+    public ReversiController(char currentTurn) {
         this.model = new Model();
         this.currentTurn = currentTurn;
         board = model.getBoard();
-        getLegalMoves();
 
     }
 
     public void doMove(int row, int column) {
-        System.out.println("\n");
         if(legalMove(row, column, currentTurn, true)) {
             model.setSymbol(row, column, currentTurn);
+            //legalMove(row, column, currentTurn);
             changeTurns();
             drawBoard();
 
         }
         else {
-            System.out.println("Deze zet kan helaas niet..");
-            return;
-        }
-        getLegalMoves();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if(legalMoves[i][j]) {
-                    String kleur = currentTurn == 'w' ? "Wit" : "Zwart";
-                    System.out.println("Succes " + kleur +", jij bent aan de beurt en dit zijn je zetten:" + "\n" + "Legal move is row: " + i + " en kolom: " + j);
-                }
-            }
-        }
+        System.out.println("Deze zet kan helaas niet..");
 
+        }
+        totalW = 0;
+        totalB = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (model.getSymbol(i, j) == 'w' || model.getSymbol(i, j) == 'b') {
-                    System.out.println("Op row: " + i + " en kolom: " + j + " staat de kleur: " + model.getSymbol(i, j) + "\n");
+                if (model.getSymbol(i, j) == 'w') {
+                    totalW++;
+                }
+                else if(model.getSymbol(i,j) == 'b') {
+                    totalB++;
                 }
             }
         }
+        Text text = new Text("Zwart heeft: " + totalB+ " punt(en) en Wit heeft: " + totalW + " punt(en).");
+        flow.getChildren().clear();
+        flow.getChildren().add(text);
     }
 
      void drawBoard() {
@@ -152,7 +153,7 @@ public class ReversiController implements Controller {
                                         if (posX > -1 && posX < 8 && posY > -1 && posY < 8) {
                                             current = model.getSymbol(posY, posX);
                                             oppSymbol = color == 'b' ? 'w' : 'b';
-
+                                            System.out.println("Current: " + current + " opp: " + oppSymbol);
                                             while (current == oppSymbol) {
                                                 model.setSymbol(posY, posX, color);
                                                 posX -= x;

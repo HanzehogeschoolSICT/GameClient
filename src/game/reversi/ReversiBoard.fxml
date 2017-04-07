@@ -2,7 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.TextFlow?>
 <BorderPane prefHeight="1080.0" prefWidth="1137.0" xmlns:fx="http://javafx.com/fxml/1" id="Reversi">
+  <center>
   <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="grid" gridLinesVisible="true" maxHeight="900.0" maxWidth="1137.0"
                          minHeight="700.0" minWidth="1137.0"
                          prefHeight="700.0" prefWidth="1137.0"
@@ -94,5 +96,9 @@
       <Label prefHeight="269.0" prefWidth="80.0" onMouseClicked="#squareClicked" GridPane.columnIndex="7" GridPane.rowIndex="7" />
     </children>
   </GridPane>
+  </center>
+  <bottom>      <TextFlow textAlignment="CENTER" maxHeight="400" maxWidth="400" fx:id="flow"></TextFlow>
+
+  </bottom>
   </BorderPane>
 
