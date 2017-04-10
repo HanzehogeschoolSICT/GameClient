@@ -25,6 +25,9 @@ public class ReversiController implements Controller {
     boolean[][] legalMoves = new boolean[8][8];
     int totalW;
     int totalB;
+    
+    @FXML
+    private GridPane winLoseGrid;
 
     //private boolean[][] legalMovesW = new boolean[8][8];
     //private boolean[][] legalMovesB = new boolean[8][8];

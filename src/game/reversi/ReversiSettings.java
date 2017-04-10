@@ -123,6 +123,7 @@ public class ReversiSettings implements Controller{
     private void handleStartButton(ActionEvent event) {
         ReversiController ctrl = new ReversiController(playSymbol);
         GameClient.load(ctrl, "CENTER");
+        GameClient.load(ctrl, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
         ctrl.drawBoard();
         
     }
