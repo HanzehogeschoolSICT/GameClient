@@ -5,8 +5,8 @@
  */
 package game.reversi;
 
-import framework.interfaces.Controller;
 import framework.GameClient;
+import framework.interfaces.Controller;
 import framework.models.UtilityGridPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,6 +41,8 @@ public class ReversiSettings implements Controller{
     private Button colorWhiteButton;
     
     private String location;
+
+    private char playSymbol;
     
     public ReversiSettings(){
         location = "../game/reversi/OpponentSettingsFXML.fxml";
@@ -107,16 +109,21 @@ public class ReversiSettings implements Controller{
     private void handleColorBlackButton(ActionEvent event) {
         colorBlackButton.setStyle("-fx-background-color:#000; -fx-effect: dropshadow( three-pass-box , rgba(0,0,255,1) , 10, 0.5 , 0 , 0)");
         colorWhiteButton.setStyle("-fx-background-color:white;");
+        playSymbol = 'b';
     }
     
     @FXML
     private void handleColorWhiteButton(ActionEvent event) {
         colorBlackButton.setStyle("-fx-background-color:black; ");
         colorWhiteButton.setStyle("-fx-background-color:white; -fx-effect: dropshadow( three-pass-box , rgba(0,0,255,1) , 10, 0.5 , 0 , 0 )");
+        playSymbol = 'w';
     }
     
     @FXML
     private void handleStartButton(ActionEvent event) {
+        ReversiController ctrl = new ReversiController(playSymbol);
+        GameClient.load(ctrl, "CENTER");
+        ctrl.drawBoard();
         
     }
     

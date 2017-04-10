@@ -2,7 +2,6 @@ package game.tictactoe;
 
 import framework.interfaces.Controller;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -25,24 +24,20 @@ public class TicTacToeController implements Controller {
         this.currentTurn = currentTurn;
     }
 
-    private void doMove(char currentTurn, int row, int column) {
-        if(!isWinner) {
-            if (checkLegalMove(row, column) && !isWinner) {
-                model.setSymbol(row, column, currentTurn);
-                updateBoard(model.getBoard(), grid);
-                switchTurns(currentTurn);
-                checkWinner(currentTurn);
-            }
-            if (isWinner) {
-                System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
-            }
+    private void doMove(char currentTurn, int column, int row) {
+        if (checkLegalMove(column, row) && !isWinner) {
+            model.setSymbol(column, row, currentTurn);
+            updateBoard(model.getBoard(), grid);
+            switchTurns(currentTurn);
         }
-
+        if (isWinner) {
+            System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
+        }
     }
 
-    public boolean checkLegalMove(int row, int column) {
+    public boolean checkLegalMove(int column, int row) {
         char[][] board = model.getBoard();
-        if(board[row][column] == 'x' || board[row][column] == 'o') {
+        if(board[column][row] == 'x' || board[column][row] == 'o') {
             return false;
         }
         else {
@@ -57,6 +52,7 @@ public class TicTacToeController implements Controller {
         } else {
             currentTurn = 'x';
         }
+		new AI(model, currentTurn).nextMove();
     }
 
     private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {
@@ -68,7 +64,7 @@ public class TicTacToeController implements Controller {
         grid.add(line, column, row);
     }
 
-    private void drawO(int row, int column, GridPane grid) {
+    private void drawO(int column, int row, GridPane grid) {
         Circle c1 = new Circle(50, 50, 100);
         c1.setStroke(Color.BLACK);
         c1.setFill(null);
@@ -76,7 +72,7 @@ public class TicTacToeController implements Controller {
         grid.add(c1, column, row);
     }
 
-    private void drawX(int row, int column, GridPane grid) {
+    private void drawX(int column, int row, GridPane grid) {
         double x = 166;
         double y = 125;
         createLine(x - 100, y - 100, x + 100, y + 100, column, row, grid);
@@ -98,40 +94,20 @@ public class TicTacToeController implements Controller {
     }
 
     public void checkWinner(char currentTurn) {
-        char[][] board = model.getBoard();
-        // Check horizontal and vertical for winners
-        for (int n = 0; n < 3; n += 2) {
-            int hor = 0;
-            int ver = 0;
-            for (int i = 0; i < 3; i++) {
-                if (board[n][i] == currentTurn) hor++;
-                if (board[i][n] == currentTurn) ver++;
-                if (hor == 3|| ver == 3) isWinner = true;
-            }
-
+        if (model.getWinner() != ' ') {
+            isWinner = true;
         }
-
-        for(int n = 2; n > -1; n--) {
-            int diag1 = 0;
-            int diag2 = 0;
-            for (int i = 0; i < 3; i++) {
-                if (board[i][i] == currentTurn) diag1++;
-                if (board[i][n] == currentTurn) diag2++;
-                if (diag1 == 3|| diag2 == 3) isWinner = true;
-            }
-        }
-
     }
 
 
     @FXML
     public void squareClicked(MouseEvent event) {
         Label l = (Label) event.getSource();
-        doMove(currentTurn, GridPane.getRowIndex(l),GridPane.getColumnIndex(l));
+        doMove(currentTurn, GridPane.getColumnIndex(l), GridPane.getRowIndex(l));
     }
 
     @Override
     public String getLocation() {
-        return "../game/tictactoe/FXML.fxml";
+        return "../game/tictactoe/TicTacToeBoard.fxml";
     }
 }
