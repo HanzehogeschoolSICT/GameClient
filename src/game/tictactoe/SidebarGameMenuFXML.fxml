@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import framework.models.UtilityGridPane?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+
+<UtilityGridPane id="sidebarGameMenu" xmlns:fx="http://javafx.com/fxml/1">
+    <rowConstraints>
+        <RowConstraints prefHeight="300" />
+        <RowConstraints prefHeight="300" />
+        <RowConstraints prefHeight="300" />
+        <RowConstraints prefHeight="300" />
+        <RowConstraints prefHeight="300" />
+    </rowConstraints>
+    <Label id="timer" text="00:10" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+    <Label text=" ... " GridPane.rowIndex="1" GridPane.columnIndex="0" />
+    <GridPane id="wonLose" GridPane.rowIndex="2" GridPane.columnIndex="0">
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+        <columnConstraints>
+            <ColumnConstraints />
+        </columnConstraints>
+        <Label id="wonLosetext" text="You Won" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+        <Button id="wonLoseButton" text="Play again" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+        <Button id="wonLoseButton" text="Quit" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+    </GridPane>
+    <GridPane id="score" GridPane.rowIndex="3" GridPane.columnIndex="0" >
+        <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+        <rowConstraints>
+            <RowConstraints prefHeight="70" />
+            <RowConstraints prefHeight="70" />
+        </rowConstraints>
+        <columnConstraints>
+            <ColumnConstraints prefWidth="90" />
+            <ColumnConstraints prefWidth="90" />
+        </columnConstraints>
+        
+        <Label text="X" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
+        <Label text="O" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
+        <Label text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
+        <Label text="1" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
+    </GridPane>
+    <Label text="Turn" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+</UtilityGridPane>

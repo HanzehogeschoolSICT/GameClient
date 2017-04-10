@@ -22,7 +22,6 @@ and open the template in the editor.
 
 #startText {
     -fx-font: 50px Tahoma;
-    
 }
 
 #backgroundpane {
@@ -58,11 +57,16 @@ and open the template in the editor.
     -fx-background-color:#eaf0f9;
 }
 
-#sidebar{
+#sidebar, #sidebarGameMenu {
     -fx-background-color:#707275;
     -fx-pref-width:150px;
     -fx-padding:10px 0px 0px 0px;
     -fx-spacing:5px;
+}
+
+#sidebarGameMenu {
+    -fx-pref-width:200px;
+    -fx-border:5px;
 }
 
 #sidebarButton {
@@ -124,4 +128,32 @@ and open the template in the editor.
     -fx-max-height:75px;
     -fx-padding:0px;
     -fx-insets:0px;
+}
+
+#timer {
+    -fx-background-color:#7c7d7f;
+    -fx-padding:20 55 20 55;
+    -fx-background-insets:10 10 10 10;
+}
+
+#wonLose {
+    -fx-background-color:#7c7d7f;
+    -fx-padding:5 5 5 5;
+    -fx-background-insets: 10 10 10 10;
+}
+
+#score {
+    -fx-background-color:#7c7d7f;
+    -fx-padding:5 5 5 5;
+    -fx-background-insets:10 10 10 10;
+}
+
+#wonLoseButton {
+    -fx-font-size:13px;
+    -fx-pref-width:150px;
+    -fx-pref-height:35px;
+}
+
+#wonLoseText {
+    -fx-max-width:150px;
 }

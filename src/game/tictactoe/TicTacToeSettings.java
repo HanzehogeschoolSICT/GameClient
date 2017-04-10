@@ -133,5 +133,6 @@ public class TicTacToeSettings implements Controller {
     private void handleStartButton(ActionEvent event) {
         TicTacToeController ctrl = new TicTacToeController(playSymbol);
         GameClient.load(ctrl, "CENTER");
+        GameClient.load(ctrl, "LEFT", "../game/tictactoe/SidebarGameMenuFXML.fxml");
     }
 }
