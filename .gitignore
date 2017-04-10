@@ -7,3 +7,5 @@ manifest.mf
 .idea/*
 *.iml
 /out/
+/build/
+/dist/
