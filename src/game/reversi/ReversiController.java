@@ -2,6 +2,7 @@ package game.reversi;
 
 import framework.interfaces.Controller;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -26,9 +27,6 @@ public class ReversiController implements Controller {
     int totalW;
     int totalB;
 
-    //private boolean[][] legalMovesW = new boolean[8][8];
-    //private boolean[][] legalMovesB = new boolean[8][8];
-
     public ReversiController(char currentTurn) {
         this.model = new Model();
         this.currentTurn = currentTurn;
@@ -45,7 +43,7 @@ public class ReversiController implements Controller {
 
         }
         else {
-        System.out.println("Deze zet kan helaas niet..");
+        createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
 
         }
         totalW = 0;
@@ -92,6 +90,15 @@ public class ReversiController implements Controller {
 
     }
 
+    public void createDialog(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        alert.showAndWait();
+    }
+
     public void getLegalMoves() {
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
@@ -134,7 +141,7 @@ public class ReversiController implements Controller {
                         while (!found) {
                             posX += x;
                             posY += y;
-                            if (posX < 0 || posX > 8 || posY < 0 || posY > 8) {
+                            if (posX < 0 || posX > 7 || posY < 0 || posY > 7) {
                                 found = true;
                             }
                             else {
@@ -154,7 +161,6 @@ public class ReversiController implements Controller {
                                         if (posX > -1 && posX < 8 && posY > -1 && posY < 8) {
                                             current = model.getSymbol(posY, posX);
                                             oppSymbol = color == 'b' ? 'w' : 'b';
-                                            System.out.println("Current: " + current + " opp: " + oppSymbol);
                                             while (current == oppSymbol) {
                                                 model.setSymbol(posY, posX, color);
                                                 posX -= x;
