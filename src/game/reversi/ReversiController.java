@@ -2,6 +2,7 @@ package game.reversi;
 
 import framework.interfaces.Controller;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -29,9 +30,6 @@ public class ReversiController implements Controller {
     @FXML
     private GridPane winLoseGrid;
 
-    //private boolean[][] legalMovesW = new boolean[8][8];
-    //private boolean[][] legalMovesB = new boolean[8][8];
-
     public ReversiController(char currentTurn) {
         this.model = new Model();
         this.currentTurn = currentTurn;
@@ -48,7 +46,7 @@ public class ReversiController implements Controller {
 
         }
         else {
-        System.out.println("Deze zet kan helaas niet..");
+        createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
 
         }
         totalW = 0;
@@ -82,7 +80,7 @@ public class ReversiController implements Controller {
 
         }
     private void drawO(char colour, int row, int column) {
-        Circle c1 = new Circle(0, 0, 35);
+        Circle c1 = new Circle(0, 0, 38);
         c1.setStroke(Color.BLACK);
         if(colour == 'b') {
             c1.setFill(Color.BLACK);
@@ -93,6 +91,15 @@ public class ReversiController implements Controller {
         c1.setStrokeWidth(3);
         grid.add(c1,column,row);
 
+    }
+
+    public void createDialog(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        alert.showAndWait();
     }
 
     public void getLegalMoves() {
@@ -137,7 +144,7 @@ public class ReversiController implements Controller {
                         while (!found) {
                             posX += x;
                             posY += y;
-                            if (posX < 0 || posX > 8 || posY < 0 || posY > 8) {
+                            if (posX < 0 || posX > 7 || posY < 0 || posY > 7) {
                                 found = true;
                             }
                             else {
@@ -157,7 +164,6 @@ public class ReversiController implements Controller {
                                         if (posX > -1 && posX < 8 && posY > -1 && posY < 8) {
                                             current = model.getSymbol(posY, posX);
                                             oppSymbol = color == 'b' ? 'w' : 'b';
-                                            System.out.println("Current: " + current + " opp: " + oppSymbol);
                                             while (current == oppSymbol) {
                                                 model.setSymbol(posY, posX, color);
                                                 posX -= x;
