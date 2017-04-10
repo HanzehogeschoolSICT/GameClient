@@ -17,7 +17,7 @@
         <RowConstraints prefHeight="300" />
         <RowConstraints prefHeight="300" />
     </rowConstraints>
-    <Label id="timer" text="00:10" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+    <Label fx:id="timer" text="00:10" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
     <Label text=" ... " GridPane.rowIndex="1" GridPane.columnIndex="0" />
     <GridPane fx:id="winLoseGrid" id="wonLose" GridPane.rowIndex="2" GridPane.columnIndex="0" visible="false">
         <rowConstraints>
@@ -43,8 +43,8 @@
         </columnConstraints>
         <Label text="B" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
         <Label text="W" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
-        <Label text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
-        <Label text="1" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
+        <Label fx:id = "scoreB" text="2" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
+        <Label fx:id = "scoreW" text="2" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
     </GridPane>
     <GridPane id="turnGrid" GridPane.rowIndex="4" GridPane.columnIndex="0">
         <rowConstraints>
@@ -55,6 +55,6 @@
             <ColumnConstraints prefWidth="180" />
         </columnConstraints>
         <Label text="Turn" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
-        <Label text="B or W" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+        <Label fx:id="turn" text="B or W" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
     </GridPane>
 </UtilityGridPane>
