@@ -77,7 +77,7 @@ public class ReversiController implements Controller {
 
         }
     private void drawO(char colour, int row, int column) {
-        Circle c1 = new Circle(0, 0, 35);
+        Circle c1 = new Circle(0, 0, 38);
         c1.setStroke(Color.BLACK);
         if(colour == 'b') {
             c1.setFill(Color.BLACK);
