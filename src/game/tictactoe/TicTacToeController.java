@@ -21,13 +21,19 @@ public class TicTacToeController implements Controller {
     private Model model;
     private char currentTurn;
     private boolean isWinner = false;
+    private String opponent;
+    private Integer difficulty;
     
     @FXML
     private GridPane winLoseGrid;
+    @FXML
+    private Label currentTurnText;
 
-    public TicTacToeController(char currentTurn) {
+    public TicTacToeController(char currentTurn, String opponent, Integer difficulty) {
         this.model = new Model();
         this.currentTurn = currentTurn;
+        this.opponent = opponent;
+        this.difficulty = difficulty;
     }
 
     private void doMove(char currentTurn, int column, int row) {
@@ -40,7 +46,6 @@ public class TicTacToeController implements Controller {
                 switchTurns(currentTurn);
             }
         }
-        
         if (isWinner) {
             showWinLoseGrid();
             System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
@@ -61,8 +66,10 @@ public class TicTacToeController implements Controller {
     private void switchTurns(char Turn) {
         if (Turn == 'x') {
             currentTurn = 'o';
+            currentTurnText.setText("O");
         } else {
             currentTurn = 'x';
+            currentTurnText.setText("X");
         }
 	new AI(model, currentTurn).nextMove();
     }

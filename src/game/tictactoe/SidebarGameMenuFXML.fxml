@@ -45,7 +45,7 @@
         <Label text="X" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
         <Label text="O" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
         <Label text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
-        <Label text="1" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
+        <Label text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
     </GridPane>
     <GridPane id="turnGrid" GridPane.rowIndex="4" GridPane.columnIndex="0">
         <rowConstraints>
@@ -56,6 +56,6 @@
             <ColumnConstraints prefWidth="180" />
         </columnConstraints>
         <Label text="Turn" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
-        <Label text="X or O" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+        <Label fx:id="currentTurnText" text="X or O" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
     </GridPane>
 </UtilityGridPane>

@@ -47,6 +47,8 @@ public class TicTacToeSettings implements Controller {
     private String location;
 
     private char playSymbol = 'x';
+    private String opponent;
+    private Integer difficulty = null;
     
     public TicTacToeSettings(){
         location = "../game/tictactoe/SettingsFXML.fxml";
@@ -69,6 +71,7 @@ public class TicTacToeSettings implements Controller {
         opponentComputerButton.setStyle("-fx-background-color: #000");
         opponentPlayerButton.setStyle("");
         opponentSearchButton.setStyle("");
+        opponent = "AI";
     }
     
     @FXML
@@ -82,7 +85,9 @@ public class TicTacToeSettings implements Controller {
         opponentPlayerButton.setStyle("-fx-background-color: #000");
         opponentComputerButton.setStyle("");
         opponentSearchButton.setStyle("");
+        opponent = "PLAYER";
     }
+    
     @FXML
     private void handleOpponentSearchButton(ActionEvent event) {
         ServerController sc = new ServerController();
@@ -99,6 +104,7 @@ public class TicTacToeSettings implements Controller {
         difficultyEasyButton.setStyle("-fx-background-color: #000");
         difficultyNormalButton.setStyle("");
         difficultyHardButton.setStyle("");
+        difficulty = 1;
     }
     
     @FXML
@@ -106,6 +112,7 @@ public class TicTacToeSettings implements Controller {
         difficultyNormalButton.setStyle("-fx-background-color: #000");
         difficultyEasyButton.setStyle("");
         difficultyHardButton.setStyle("");
+        difficulty = 2;
     }
     
     @FXML
@@ -113,6 +120,7 @@ public class TicTacToeSettings implements Controller {
         difficultyHardButton.setStyle("-fx-background-color: #000");
         difficultyNormalButton.setStyle("");
         difficultyEasyButton.setStyle("");
+        difficulty = 3;
     }
     
     @FXML
@@ -131,7 +139,7 @@ public class TicTacToeSettings implements Controller {
     
     @FXML
     private void handleStartButton(ActionEvent event) {
-        TicTacToeController ctrl = new TicTacToeController(playSymbol);
+        TicTacToeController ctrl = new TicTacToeController(playSymbol, opponent, difficulty);
         GameClient.load(ctrl, "CENTER");
         GameClient.load(ctrl, "LEFT", "../game/tictactoe/SidebarGameMenuFXML.fxml");
     }
