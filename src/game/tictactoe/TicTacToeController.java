@@ -1,7 +1,10 @@
 package game.tictactoe;
 
 import framework.interfaces.Controller;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -18,6 +21,9 @@ public class TicTacToeController implements Controller {
     private Model model;
     private char currentTurn;
     private boolean isWinner = false;
+    
+    @FXML
+    private GridPane winLoseGrid;
 
     public TicTacToeController(char currentTurn) {
         this.model = new Model();
@@ -25,12 +31,18 @@ public class TicTacToeController implements Controller {
     }
 
     private void doMove(char currentTurn, int column, int row) {
+        
         if (checkLegalMove(column, row) && !isWinner) {
             model.setSymbol(column, row, currentTurn);
             updateBoard(model.getBoard(), grid);
-            switchTurns(currentTurn);
+            checkWinner();
+            if(!isWinner){
+                switchTurns(currentTurn);
+            }
         }
+        
         if (isWinner) {
+            showWinLoseGrid();
             System.out.println("We hebben een winnaar! De winnaar is: " + currentTurn);
         }
     }
@@ -52,7 +64,7 @@ public class TicTacToeController implements Controller {
         } else {
             currentTurn = 'x';
         }
-		new AI(model, currentTurn).nextMove();
+	new AI(model, currentTurn).nextMove();
     }
 
     private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {
@@ -90,15 +102,23 @@ public class TicTacToeController implements Controller {
                 }
             }
         }
-
     }
 
-    public void checkWinner(char currentTurn) {
+    public void checkWinner() {
         if (model.getWinner() != ' ') {
             isWinner = true;
         }
     }
-
+    
+    public void showWinLoseGrid(){
+        ObservableList<Node> children = winLoseGrid.getChildren(); 
+        for(Node n : children){
+            if(n instanceof Label){
+                ((Label) n).setText(currentTurn + " won!");
+            }
+        }
+        winLoseGrid.setVisible(true);
+    }
 
     @FXML
     public void squareClicked(MouseEvent event) {
