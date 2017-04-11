@@ -163,7 +163,6 @@ and open the template in the editor.
 }
 
 .acceptChallengeButton:hover {
-    /*-fx-background-color: #66bb6a;*/
     -fx-background-color: #43a047;
     -fx-text-fill: white;
     -fx-font-weight: bold;
