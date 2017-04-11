@@ -60,7 +60,7 @@ public class ReversiController implements Controller {
 
     public void doMove(int column, int row) {
         if(legalMove(column, row, currentTurn, true)) {
-            remainSec = 10;
+            remainSec = STARTTIME;
             model.setSymbol(column, row, currentTurn);
             changeTurns();
             drawBoard();
