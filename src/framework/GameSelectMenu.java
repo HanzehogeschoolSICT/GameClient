@@ -25,28 +25,21 @@ import javafx.scene.text.Text;
  * @author Wouter
  */
 public class GameSelectMenu implements Controller, Messagable{
-    @FXML
-    private Text text;
-    @FXML
-    private BorderPane parent;
-    @FXML 
-    private Button TicTacToeButton;
-    @FXML
-    private Button ReversiButton;
-    @FXML
-    private ImageView imageView;
+    @FXML private Text text;
+    @FXML private BorderPane parent;
+    @FXML private Button TicTacToeButton;
+    @FXML private Button ReversiButton;
+    @FXML private Button TournamentButton;
+    @FXML private ImageView imageView;
 
-    @FXML
-    public void initialize(){
-        Image image = new Image("framework/assets/spooky.png");
-        imageView.setImage(image);
-        GameClient.setParent(parent);
-    }
+    private String location = "../framework/assets/Menu.fxml";
+    private boolean isTournament = false;
+    
     @FXML
     private void handleReversiButtonAction(ActionEvent event) {
         TicTacToeButton.setStyle("");
         ReversiButton.setStyle("-fx-background-color:#525254");
-        GameClient.load(new ReversiSettings(), parent, "CENTER");
+        GameClient.load(new ReversiSettings(), "CENTER");
     }
     
     @FXML
@@ -56,12 +49,39 @@ public class GameSelectMenu implements Controller, Messagable{
         GameClient.load(new TicTacToeSettings(), "CENTER");
     }
 
+    @FXML
+    private void handleTournament(ActionEvent event){
+        isTournament = !isTournament;
+        if(isTournament){
+            TournamentButton.setStyle("-fx-background-color:#44AA33");
+        }
+        else{
+            TournamentButton.setStyle("-fx-background-color:#AA3322");
+        }
+            
+        Object[] args = new Object[1];
+        args[0] = new Boolean(isTournament);
+        MessageBus.getBus().call("GAME", "tournament mode toggle", args);
+    }
     @Override
     public String getLocation() {
-        return "../framework/assets/FXML.fxml";
+        return location;
     }
-
+    public void initialize(){
+        if(TournamentButton != null){
+            TournamentButton.setStyle("-fx-background-color:#AA3322");
+            isTournament = false;
+        }
+    }
     @Override
     public void call(String message, Object[] args) {
+        if(message.equals("tournament mode on")){
+            location = "../framework/assets/Menu_tournament.fxml";
+            GameClient.load(this, "LEFT");
+        }
+        if(message.equals("tournament mode off")){
+            location = "../framework/assets/Menu.fxml";
+            GameClient.load(this, "LEFT");
+        }
     }
 }

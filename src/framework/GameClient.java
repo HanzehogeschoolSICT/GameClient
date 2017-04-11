@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * This is the main Application Class. Runs in JavaFX thread. 
@@ -27,13 +30,15 @@ import java.util.logging.Logger;
  * It will hold the loaded Game Objects. 
  * @author Wouter
  */
-public class GameClient extends Application{
+public class GameClient extends Application implements Controller{
 
-    private Parent root;
+    private BorderPane root;
     private Thread consoleThread;
     private Thread networkThread;
     private Network nw;
     private Console c;
+    
+    @FXML private ImageView imageView;
 
     private static BorderPane parent;
     /**
@@ -45,10 +50,13 @@ public class GameClient extends Application{
 
     @Override
     public void start(Stage primaryStage){
-        initialize();
+        
+        root = (BorderPane) loadPane(this, getLocation());
+        GameClient.setParent(root);
         GameSelectMenu gsm = new GameSelectMenu();
         MessageBus.getBus().register("MENU", gsm);
-        root = loadPane(gsm, gsm.getLocation());
+        System.out.println(root);
+        GameClient.load(gsm, "LEFT");
         
         Scene scene = new Scene(root,1000,750);
         primaryStage.setTitle("Simply Fun");
@@ -115,7 +123,11 @@ public class GameClient extends Application{
         return null;
     }
 
-    private void initialize() {
+    public void initialize() {
+        Image image = new Image("framework/assets/spooky.png");
+        imageView.setImage(image);
+        
+        
         MessageBus bus = MessageBus.getBus();
         nw = new Network();
         c = new Console();
@@ -132,5 +144,10 @@ public class GameClient extends Application{
     
     public static void setParent(BorderPane parent) {
         GameClient.parent = parent;
+    }
+
+    @Override
+    public String getLocation() {
+        return "../framework/assets/SpookyRoot.fxml";
     }
 }

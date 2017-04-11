@@ -22,8 +22,8 @@ import java.util.ArrayList;
  */
 public class ServerController extends AbstractServerController {
 
-    private final String game = "Tic-tac-toe";
-    private boolean cross_turn = true;
+    private final String game = "Reversi";
+    private boolean isTournament = false;
     
     @FXML
     private GridPane grid;
@@ -33,6 +33,7 @@ public class ServerController extends AbstractServerController {
         GameClient.load(lc,"CENTER");
         MessageBus mb = MessageBus.getBus();
         mb.register("LOBBY", lc);
+        mb.call("MENU", "tournament mode on", null);
         lc.init();
         initHandlers();
     }
@@ -45,12 +46,16 @@ public class ServerController extends AbstractServerController {
         super.registerHandler("SVR GAME MATCH", this::handleMatchStarted);
         super.registerHandler("SVR GAME MOVE", this::handleMove);
         super.registerHandler("GAME CHALLENGE ACCEPT", this::handleChallengeAccept);
+        super.registerHandler("tournament mode toggle", this::setTournamentMode);
     }
 
     @Override
     public void putData(ArrayList<String> messages) {
     }
 
+    private void setTournamentMode(String message, Object[] args){
+        isTournament = !isTournament;
+    }
     private void handleChallenge(String message, Object[] args) {
         // Since the server string isn't valid JSON, we'll have to pry out our answers.
         String parsedMessage = message.substring(19)
@@ -89,18 +94,10 @@ public class ServerController extends AbstractServerController {
                 .split("\\s+");
         System.out.println(parsedMessage[1]);
         int position = Integer.parseInt(parsedMessage[1]);
-        int row = (position - (position % 3)) / 3;
+        int row = (position - (position % 8)) / 8;
         System.out.println(row);
-        int col = position - row*3;
+        int col = position - row*8;
         System.out.println(col);
-        if(cross_turn){
-            Platform.runLater( ()-> drawX(row, col, grid) );
-            cross_turn = false;
-        }
-        else{
-            Platform.runLater( ()-> drawO(row, col, grid) );
-            cross_turn = true;
-        }
     }
 
     private void handleChallengeAccept(String message, Object[] args) {
@@ -109,33 +106,10 @@ public class ServerController extends AbstractServerController {
         mb.call("NETWORK", "challenge accept " + args[0], null);
     }
 
-    // Dit hoort hier niet, dit is een controller niet een view!
-    private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {
-        Line line = new Line();
-        line.setStartX(beginX);
-        line.setStartY(endX);
-        line.setEndX(beginY);
-        line.setEndY(endY);
-        grid.add(line, column, row);
-    }
-
-    private void drawO(int row, int column, GridPane grid) {
-        Circle c1 = new Circle(50, 50, 100);
-        c1.setStroke(Color.BLACK);
-        c1.setFill(null);
-        c1.setStrokeWidth(3);
-        grid.add(c1, column, row);
-    }
-
-    private void drawX(int row, int column, GridPane grid) {
-        double x = 166;
-        double y = 125;
-        createLine(x - 100, y - 100, x + 100, y + 100, column, row, grid);
-        createLine(x + 100, y - 100, x - 100, y + 100, column, row, grid);
-    }
+    
     @Override
     public String getLocation() {
-        return "../game/tictactoe/TicTacToeBoard.fxml";
+        return "../game/reversi/ReversiBoard.fxml";
     }
     @FXML
     public void squareClicked(MouseEvent event) {
