@@ -28,6 +28,7 @@ class Model {
 
     void setSymbol(int row, int column, char symbol) {
         board[row][column] = symbol;
+        System.out.println("Added on " + row + "," + column);
     }
 
     char[][] getBoard() {
