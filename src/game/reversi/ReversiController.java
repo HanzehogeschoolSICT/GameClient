@@ -14,6 +14,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import java.awt.Point;
 
 /**
  * Created by markshizzle on 6-4-2017.
@@ -41,6 +42,7 @@ public class ReversiController implements Controller {
     private int amountLegalMovesB;
     private int amountLegalMovesW;
     private Timeline timeline;
+    private char ai = ' ';
 
 
     public ReversiController(char currentTurn) {
@@ -49,18 +51,25 @@ public class ReversiController implements Controller {
         setTimer();
     }
 
-    public void doMove(int row, int column) {
-        if(legalMove(row, column, currentTurn, true)) {
+    public void setAI(boolean b) {
+        if (b) {
+            if (currentTurn == 'b') ai = 'w';
+            else ai = 'b';
+        }
+    }
+
+    public void doMove(int column, int row) {
+        if(legalMove(column, row, currentTurn, true)) {
             remainSec = 10;
-            model.setSymbol(row, column, currentTurn);
+            model.setSymbol(column, row, currentTurn);
             changeTurns();
             drawBoard();
-            countDown();
-
         }
         else {
-        createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
+            createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
+            return;
         }
+
         calcPoints();
         // Berekent de volgende legale zetten
         getLegalMoves();
@@ -76,6 +85,11 @@ public class ReversiController implements Controller {
             changeTurns();
             createDialog("Geen mogelijke zetten", "Er zijn geen mogelijke zetten meer, de beurt wordt omgedraaid.");
             return;
+        }
+
+        if (currentTurn == ai) {
+            Point m = new AI(model, ai).nextMove();
+            doMove(m.x, m.y);
         }
     }
     private boolean checkIfLegalMove(char currentTurn) {
@@ -156,7 +170,7 @@ public class ReversiController implements Controller {
         scoreW.setText("" + totalW);
     }
 
-    private void drawO(char colour, int row, int column) {
+    private void drawO(char colour, int column, int row) {
         Circle c1 = new Circle(0, 0, 38);
         c1.setStroke(Color.BLACK);
         if(colour == 'b') {
@@ -283,13 +297,13 @@ public class ReversiController implements Controller {
             currentTurn = 'b';
             turn.setText("Black");
         }
-
     }
+
     @FXML
     public void squareClicked(MouseEvent event) {
         if(!endGame) {
             Label l = (Label) event.getSource();
-            doMove(GridPane.getRowIndex(l), GridPane.getColumnIndex(l));
+            doMove(GridPane.getColumnIndex(l), GridPane.getRowIndex(l));
         }
     }
 

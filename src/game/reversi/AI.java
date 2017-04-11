@@ -26,21 +26,29 @@ public class AI {
 
         Model n = new Model(model);
 
-        for (Pair<Point, Integer> p : options) {
-            n.setSymbol(p.getKey().x, p.getKey().y, (char)(p.getValue() + '0'));
-            double chance = (double)p.getValue();
+        for (Pair<Point, Integer> pair : options) {
+            Point p = pair.getKey();
+            double chance = (double)pair.getValue();
+            if ((p.x == 0 || p.x == 7) &&
+                (p.y == 0 || p.y == 7)) {
+                chance += 4.5;
+            }
+
+            if ((p.x == 1 || p.x == 6) &&
+                (p.y == 1 || p.y == 6)) {
+                chance -= 3.1;
+            }
+
+            if (((p.x == 1 || p.x == 6) && (p.y == 0 || p.y == 7)) ||
+                ((p.y == 1 || p.y == 6) && (p.x == 0 || p.x == 7))) {
+                chance -= 2.05;
+            }
+
+            n.setSymbol(p.x, p.y, (char)(chance + '0'));
             if (chance > bestChance || bestPoint == null) {
-                bestPoint = p.getKey();
+                bestPoint = p;
                 bestChance = chance;
             }
-        }
-
-        for (char[] c : n.getBoard()) {
-            for (char r : c) {
-                if (r == '\u0000') r = '.';
-                System.out.print(r + " ");
-            }
-            System.out.println();
         }
 
         return bestPoint;
@@ -61,9 +69,8 @@ public class AI {
                 if (board[x][y] != '\u0000') {
                     continue;
                 }
-                boolean valid = false;
-                int points = 0;
 
+                int points = 0;
                 for (Point dir : dirs) {
                     int count = 0;
                     int en = 0;
@@ -72,8 +79,6 @@ public class AI {
 
                         Point n = new Point(x + (count * dir.x), y + (count * dir.y));
                         if (n.x < 0 || n.y < 0 || n.x >= board.length || n.y >= board.length) {
-                            en = 0;
-                            count = 0;
                             break;
                         }
 
@@ -82,15 +87,12 @@ public class AI {
                             continue;
                         }
                         if (board[n.x][n.y] == whoami && en > 0) {
-                            valid = true;
                             points += en;
                         }
-                        en = 0;
-                        count = 0;
                         break;
                     }
                 }
-                if (valid) options.add(new Pair<>(new Point(x, y), new Integer(points)));
+                if (points > 0) options.add(new Pair<>(new Point(x, y), new Integer(points)));
             }
         }
 
