@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,9 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -39,7 +38,8 @@ public class LobbyController implements Networkable, Messagable, Controller{
     @FXML 
     private ListView toChallenge;
     
-    private ObservableList<ListObject> players_to_challenge = FXCollections.observableArrayList();
+    private ObservableList<ListObject> playersToChallenge = FXCollections.observableArrayList();
+    private ObservableList<ChallengeObject> incomingChallenges = FXCollections.observableArrayList();
     private String game;
     
     public LobbyController(String game_to_play){
@@ -47,7 +47,8 @@ public class LobbyController implements Networkable, Messagable, Controller{
     }
 
     public void init(){
-        toChallenge.setItems(players_to_challenge); // Hoeft maar 1 keer aangeroepen te worden
+        toChallenge.setItems(playersToChallenge); // Hoeft maar 1 keer aangeroepen te worden
+        challenges.setItems(incomingChallenges);
         refreshPlayerList();
         MessageBus.getBus().call("NETWORK", "login", null);
     }
@@ -76,7 +77,7 @@ public class LobbyController implements Networkable, Messagable, Controller{
 
             // Filter duplicaten
             // TODO: filter eigen naam
-            Iterator<ListObject> it = players_to_challenge.iterator();
+            Iterator<ListObject> it = playersToChallenge.iterator();
             while (it.hasNext()) {
                 ListObject obj = it.next();
                 if (!playerList.contains(obj.getPlayerName())) {
@@ -88,7 +89,7 @@ public class LobbyController implements Networkable, Messagable, Controller{
 
             // Voeg nieuwe toe
             for (String player : playerList) {
-                players_to_challenge.add( new ListObject(player));
+                playersToChallenge.add( new ListObject(player));
             }
         } catch (ParseException ex) {
             Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,11 +97,24 @@ public class LobbyController implements Networkable, Messagable, Controller{
         
     }
 
+    private void addChallenge(String challenger, String challengeNumber) {
+        Platform.runLater( () -> incomingChallenges.add(new ChallengeObject(challenger, challengeNumber)) );
+    }
+
+    private void acceptChallenge(ChallengeObject challenge) {
+        MessageBus.getBus().call("GAME", "GAME CHALLENGE ACCEPT", new String[] {challenge.getChallengeNumber()} );
+    }
+
+    private void removeChallenge(ChallengeObject challenge) {
+        // Negeer challenge
+        incomingChallenges.remove(challenge);
+    }
+
     @Override
     public void call(String message, Object[] args){
-       // hier ontvang je messages waar je niet om vraagt.
-       // Challenges, Turn, Loss, Win, dat soort grappen.
-        System.out.println("message");
+        if (message.equals("CHALLENGE")) {
+            addChallenge((String) args[0], (String) args[1]);
+        }
     }
 
     @Override
@@ -128,13 +142,13 @@ public class LobbyController implements Networkable, Messagable, Controller{
         private Label playerLabel;
         private Button playerButton;
 
-        ListObject(String playerName) {
+        private ListObject(String playerName) {
             this.playerName = playerName;
             playerLabel = new Label(playerName);
             playerButton = createButton();
 
             // De button kan gestyled worden met de .challengebutton class
-            playerButton.getStyleClass().add(".challengebutton");
+            playerButton.getStyleClass().add("challengebutton");
 
             this.add(playerLabel, 0, 0);
             this.add(playerButton, 1, 0);
@@ -142,18 +156,18 @@ public class LobbyController implements Networkable, Messagable, Controller{
             setConstrains();
         }
 
-        String getPlayerName() {
+        private String getPlayerName() {
             return playerName;
         }
 
-        void setPlayerName(String playerName) {
+        private void setPlayerName(String playerName) {
             this.playerName = playerName;
         }
 
         private Button createButton() {
             Button btn = new Button("Challenge");
 
-            btn.setOnAction( (event) ->
+            btn.setOnAction( event ->
                 MessageBus.getBus().call("NETWORK", "challenge \"" + this.playerName + "\" \"" + game +"\"", null)
             );
 
@@ -165,6 +179,69 @@ public class LobbyController implements Networkable, Messagable, Controller{
             constraints.setFillWidth(true);
             constraints.setHgrow(Priority.ALWAYS);
             this.getColumnConstraints().add(constraints);
+        }
+    }
+
+    /**
+     * Deze private class zorgt voor een nette vertoning en afhandeling van alle binnenkomende challenges.
+     * (Moet mogelijk verplaatst worden naar LobbyView)
+     */
+    private class ChallengeObject extends GridPane {
+        private String playerName;
+        private String challengeNumber;
+
+        private Label nameLabel;
+        private Button acceptButton;
+        private Button declineButton;
+
+        private ChallengeObject(String playerName, String challengeNumber) {
+            this.playerName = playerName;
+            this.challengeNumber = challengeNumber;
+
+            nameLabel = new Label(playerName);
+            acceptButton = createAcceptButton();
+            declineButton = createDeclineButton();
+
+            this.add(nameLabel, 0, 0);
+            this.add(new HBox(acceptButton, declineButton), 1, 0);
+
+            setConstrains();
+        }
+
+        private Button createAcceptButton() {
+            Button btn = new Button("Accept");
+
+            btn.getStyleClass().add("acceptChallengeButton");
+
+            btn.setOnAction(event -> acceptChallenge(this));
+
+            return btn;
+        }
+
+        private Button createDeclineButton() {
+            Button btn = new Button("Decline");
+
+            btn.getStyleClass().add("declineChallengeButton");
+
+            btn.setOnAction(event -> removeChallenge(this));
+
+            return btn;
+        }
+
+        public String getPlayerName() {
+            return playerName;
+        }
+
+        public String getChallengeNumber() {
+            return challengeNumber;
+        }
+
+        private void setConstrains() {
+            ColumnConstraints cc1 = new ColumnConstraints();
+            cc1.setFillWidth(true);
+            cc1.setHgrow(Priority.ALWAYS);
+
+            this.getColumnConstraints().add(cc1);
         }
     }
 }

@@ -60,10 +60,10 @@ public class ServerController implements Networkable, Messagable, Controller{
                         .replace("\"", "");
                 String[] parts = parsedMessage.split("\\s+");
                 if(parts[2].equals(game)){  // We don't care about games we're not playing
-                    System.out.println("We're playing against " + parts[0]);
+                    System.out.println("Incoming challenge from " + parts[0]);
                     MessageBus mb = MessageBus.getBus();
-                    mb.call("NETWORK", "challenge accept " + parts[1], null); // Accept the challenge
-                    
+//                    mb.call("NETWORK", "challenge accept " + parts[1], null); // Accept the challenge
+                    mb.call("LOBBY", "CHALLENGE", new String[] { parts[0], parts[1], parts[2]}); // Send te challenge to the lobby
                 }
             }
         }
@@ -93,18 +93,18 @@ public class ServerController implements Networkable, Messagable, Controller{
             int col = position - row*3;
             System.out.println(col);
             if(cross_turn){
-                Platform.runLater(()->{
-                    drawX(row, col, grid);
-                });
+                Platform.runLater( ()-> drawX(row, col, grid) );
                 cross_turn = false;
             }
             else{
-                Platform.runLater(()->{
-                    drawO(row, col, grid);
-                });
-                
+                Platform.runLater( ()-> drawO(row, col, grid) );
                 cross_turn = true;
             }
+        }
+        if (message.startsWith("GAME CHALLENGE ACCEPT")) {
+            System.out.println("Accepting challenge " + args[0]);
+            MessageBus mb = MessageBus.getBus();
+            mb.call("NETWORK", "challenge accept " + args[0], null);
         }
     }
     private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {

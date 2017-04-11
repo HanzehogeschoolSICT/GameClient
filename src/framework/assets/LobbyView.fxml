@@ -15,7 +15,5 @@
     <children>
         <ListView fx:id="toChallenge" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
         <ListView fx:id="challenges" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <!--<Button onAction="#challengePlayer" text="Challenge" GridPane.rowIndex="1" GridPane.columnIndex="0"/>-->
-        <Button onAction="#acceptChallenge" text="Accept" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
     </children>
 </GridPane>
