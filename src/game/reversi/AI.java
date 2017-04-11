@@ -28,22 +28,22 @@ public class AI {
             Point p = pair.getKey();
             double chance = (double)pair.getValue() + getBias(model, p);
 
-			Model n = new Model(model);
-			n.setSymbol(p.x, p.y, whoami);
+            Model n = new Model(model);
+            n.setSymbol(p.x, p.y, whoami);
 
-			// Calculate best enemy move
-			Pair<Point, Double> ep = getBestMove(n, p, enemy, whoami);
-			if (ep.getKey() != null) {
-				chance -= (ep.getValue() * 0.9);
+            // Calculate best enemy move
+            Pair<Point, Double> ep = getBestMove(n, p, enemy, whoami);
+            if (ep.getKey() != null) {
+                chance -= (ep.getValue() * 0.9);
 
-				n.setSymbol(ep.getKey().x, ep.getKey().y, enemy);
+                n.setSymbol(ep.getKey().x, ep.getKey().y, enemy);
 
-				// Calculate best next move
-				Pair<Point, Double> np = getBestMove(n, p, whoami, enemy);
-				if (ep.getKey() != null) {
-					chance += (np.getValue() * 0.6);
-				}
-			}
+                // Calculate best next move
+                Pair<Point, Double> np = getBestMove(n, p, whoami, enemy);
+                if (ep.getKey() != null) {
+                    chance += (np.getValue() * 0.6);
+                }
+            }
 
             if (chance > bestChance || bestPoint == null) {
                 bestPoint = p;
@@ -55,30 +55,29 @@ public class AI {
     }
 
     private double getBias(Model m, Point p) {
-		int xc = ((int)p.x/4)*7;
-		int yc = ((int)p.y/4)*7;
+        int xc = ((int)p.x/4)*7;
+        int yc = ((int)p.y/4)*7;
 
-		if (m.getBoard()[xc][yc] == '\u0000') {
-			if ((p.x == 0 || p.x == 7) &&
-            	(p.y == 0 || p.y == 7)) {
-            	return 4;
-        	}
+        if (m.getBoard()[xc][yc] == '\u0000') {
+            if ((p.x == 0 || p.x == 7) &&
+                (p.y == 0 || p.y == 7)) {
+                return 4;
+            }
 
-        	if ((p.x == 1 || p.x == 6) &&
-            	(p.y == 1 || p.y == 6)) {
-            	return -3.25;
-        	}
+            if ((p.x == 1 || p.x == 6) &&
+                (p.y == 1 || p.y == 6)) {
+                return -3.25;
+            }
 
-        	if (((p.x == 1 || p.x == 6) && (p.y == 0 || p.y == 7)) ||
-            	((p.y == 1 || p.y == 6) && (p.x == 0 || p.x == 7))) {
-            	return -2.125;
-        	}
+            if (((p.x == 1 || p.x == 6) && (p.y == 0 || p.y == 7)) ||
+                ((p.y == 1 || p.y == 6) && (p.x == 0 || p.x == 7))) {
+                return -2.125;
+            }
+        }
 
-		}
-
-		if (p.x == 0 || p.y == 0 || p.x == 7 || p.y == 7) {
-			return 1.1;
-		}
+        if (p.x == 0 || p.y == 0 || p.x == 7 || p.y == 7) {
+            return 1.1;
+        }
 
         return 0;
     }
@@ -132,14 +131,14 @@ public class AI {
         List<Pair<Point,Integer>> enemyOptions = getOptions(m, me, op);
 
         Double bestChance = 0.0;
-		Point bestPoint = null;
+        Point bestPoint = null;
 
         for (Pair<Point, Integer> ep : enemyOptions) {
             double chance = (double)ep.getValue() + (0.70*getBias(m, ep.getKey()));
             if (chance > bestChance || bestPoint == null) {
-				bestChance = chance;
-				bestPoint = ep.getKey();
-			}
+                bestChance = chance;
+                bestPoint = ep.getKey();
+            }
         }
 
         return new Pair<Point, Double>(bestPoint, bestChance);
