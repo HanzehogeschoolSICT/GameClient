@@ -11,12 +11,12 @@ class Model {
         board = new char[3][3];
     }
 
-	Model(Model src) {
-		board = new char[3][3];
-		for (int i = 0; i < 9; i++) {
-			setSymbol(i%3, i/3, src.getSymbol(i%3, i/3));
-		}
-	}
+    Model(Model src) {
+            board = new char[3][3];
+            for (int i = 0; i < 9; i++) {
+                    setSymbol(i%3, i/3, src.getSymbol(i%3, i/3));
+            }
+    }
 
     public char getSymbol(int row, int column) {
         return board[row][column];

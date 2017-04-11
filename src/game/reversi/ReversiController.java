@@ -1,6 +1,9 @@
 package game.reversi;
 
 import framework.interfaces.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -10,42 +13,133 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import java.awt.Point;
+import javafx.util.Duration;
 
 /**
  * Created by markshizzle on 6-4-2017.
  */
 public class ReversiController implements Controller {
-    @FXML private GridPane grid;
-    @FXML private TextFlow flow;
+    @FXML GridPane grid;
+    @FXML TextFlow flow;
+    @FXML Label timer;
+    @FXML GridPane winLoseGrid;
+    @FXML Label scoreB;
+    @FXML Label scoreW;
+    @FXML Label turn;
+
     private Text text;
     private Model model;
     private char currentTurn;
-    private boolean isFull = false;
-    char[][] board;
-    boolean[][] legalMoves = new boolean[8][8];
-    int totalW;
-    int totalB;
+    private boolean[][] legalMovesW = new boolean[8][8];
+    private boolean[][] legalMovesB = new boolean[8][8];
+    private final int STARTTIME = 10;
+    private int remainSec = STARTTIME;
+    private boolean endGame;
+    private String winner;
+    private int totalW = 0;
+    private int totalB = 0;
+    private int amountLegalMovesB;
+    private int amountLegalMovesW;
+    private Timeline timeline;
+
 
     public ReversiController(char currentTurn) {
         this.model = new Model();
         this.currentTurn = currentTurn;
-        board = model.getBoard();
-
+        setTimer();
     }
 
     public void doMove(int row, int column) {
         if(legalMove(row, column, currentTurn, true)) {
+            remainSec = 10;
             model.setSymbol(row, column, currentTurn);
-            //legalMove(row, column, currentTurn);
             changeTurns();
             drawBoard();
+            countDown();
 
         }
         else {
         createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
+        }
+        calcPoints();
+        // Berekent de volgende legale zetten
+        getLegalMoves();
+        // Als er van beide kanten geen zetten meer mogelijk zijn is het einde van het spel bereikt.
+        if(amountLegalMovesB == 0 && amountLegalMovesW == 0) {
+            endGame = true;
+            checkWinner();
+            createDialog("Gefeliciteerd!", "Het spel is afgelopen. De winnaar is: " + winner);
+            return;
+        }
+        // Als de huidige kleur niet kan, wordt de beurt doorgegeven.
+        if (!checkIfLegalMove(currentTurn)) {
+            changeTurns();
+            createDialog("Geen mogelijke zetten", "Er zijn geen mogelijke zetten meer, de beurt wordt omgedraaid.");
+            return;
+        }
+    }
+    private boolean checkIfLegalMove(char currentTurn) {
+        if(currentTurn == 'b') {
+            if(amountLegalMovesB == 0) {
+                return false;
+            }
+        }
+
+        if(currentTurn == 'w') {
+            if (amountLegalMovesW == 0) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+    private void checkWinner() {
+        if(totalW > totalB) {
+            winner = "Wit";
+        }
+        else if(totalW < totalB) {
+            winner = "Black";
+        }
+        else {
+            // 'g' staat voor gelijkspel.
+            winner = "Niemand";
+        }
+    }
+    private void setTimer() {
+        timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> countDown()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+    private void countDown() {
+        remainSec--;
+        if(endGame) {
+            timeline.stop();
+        }
+        if(remainSec == 0 || remainSec < 0) {
+            createDialog("Afgelopen", "Helaas, jou zet duurde helaas te lang");
+            endGame = true;
+            timeline.stop();
+        }
+        timer.setText("00:0" + remainSec);
+    }
+
+     void drawBoard() {
+         for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (model.getSymbol(i,j) == 'b') {
+                        drawO('b', i, j);
+                    }
+                    if (model.getSymbol(i,j) == 'w') {
+                        drawO('w', i, j);
+                    }
+                }
+            }
 
         }
+
+    private void calcPoints() {
         totalW = 0;
         totalB = 0;
         for (int i = 0; i < 8; i++) {
@@ -58,26 +152,12 @@ public class ReversiController implements Controller {
                 }
             }
         }
-        Text text = new Text("Zwart heeft: " + totalB+ " punt(en) en Wit heeft: " + totalW + " punt(en).");
-        flow.getChildren().clear();
-        flow.getChildren().add(text);
+        scoreB.setText("" + totalB);
+        scoreW.setText("" + totalW);
     }
 
-     void drawBoard() {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (model.getSymbol(i,j) == 'b') {
-                        drawO('b', i, j);
-                    }
-                    if (model.getSymbol(i,j) == 'w') {
-                        drawO('w', i, j);
-                    }
-                }
-            }
-
-        }
     private void drawO(char colour, int row, int column) {
-        Circle c1 = new Circle(0, 0, 35);
+        Circle c1 = new Circle(0, 0, 38);
         c1.setStroke(Color.BLACK);
         if(colour == 'b') {
             c1.setFill(Color.BLACK);
@@ -95,14 +175,23 @@ public class ReversiController implements Controller {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
-
-        alert.showAndWait();
+        alert.show();
     }
 
     public void getLegalMoves() {
+        amountLegalMovesB = 0;
+        amountLegalMovesW = 0;
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                legalMoves[i][j] = legalMove(i,j,currentTurn,false);
+                legalMovesW[i][j] = legalMove(i,j,currentTurn,false);
+                if(legalMove(i,j,'w',false)) {
+                    amountLegalMovesW++;
+                }
+
+                legalMovesB[i][j] = legalMove(i,j,currentTurn,false);
+                if(legalMove(i,j,'b',false)) {
+                    amountLegalMovesB++;
+                }
             }
         }
     }
@@ -188,15 +277,20 @@ public class ReversiController implements Controller {
     private void changeTurns() {
         if(currentTurn == 'b') {
             currentTurn = 'w';
+            turn.setText("White");
         }
         else {
             currentTurn = 'b';
+            turn.setText("Black");
         }
+
     }
     @FXML
     public void squareClicked(MouseEvent event) {
-        Label l = (Label) event.getSource();
-        doMove(GridPane.getRowIndex(l),GridPane.getColumnIndex(l));
+        if(!endGame) {
+            Label l = (Label) event.getSource();
+            doMove(GridPane.getRowIndex(l), GridPane.getColumnIndex(l));
+        }
     }
 
     @Override
