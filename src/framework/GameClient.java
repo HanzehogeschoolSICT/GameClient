@@ -46,13 +46,9 @@ public class GameClient extends Application{
     @Override
     public void start(Stage primaryStage){
         initialize();
-        root = new Group();
-        try {
-            root = FXMLLoader.load(getClass().getResource("assets/FXML.fxml"));
-        } catch (IOException ex) {
-            System.out.println("Can't find file");
-            System.exit(1);
-        }
+        GameSelectMenu gsm = new GameSelectMenu();
+        MessageBus.getBus().register("MENU", gsm);
+        root = loadPane(gsm, gsm.getLocation());
         
         Scene scene = new Scene(root,1000,750);
         primaryStage.setTitle("Simply Fun");

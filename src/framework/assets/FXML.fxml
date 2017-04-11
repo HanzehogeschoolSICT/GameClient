@@ -11,8 +11,7 @@
 
 <BorderPane
     fx:id="parent"   
-    xmlns:fx="http://javafx.com/fxml/1" 
-    fx:controller="framework.GameSelectMenu"  >
+    xmlns:fx="http://javafx.com/fxml/1"  >
     <left>
         <VBox
             id="sidebar"

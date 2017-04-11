@@ -5,6 +5,8 @@
  */
 package framework;
 
+import framework.interfaces.Controller;
+import framework.interfaces.Messagable;
 import game.reversi.ReversiSettings;
 import game.tictactoe.TicTacToeSettings;
 import javafx.event.ActionEvent;
@@ -22,7 +24,7 @@ import javafx.scene.text.Text;
  * On select tell the GameLoader to swap game modules. 
  * @author Wouter
  */
-public class GameSelectMenu {
+public class GameSelectMenu implements Controller, Messagable{
     @FXML
     private Text text;
     @FXML
@@ -52,5 +54,14 @@ public class GameSelectMenu {
         TicTacToeButton.setStyle("-fx-background-color:#525254");
         ReversiButton.setStyle("");
         GameClient.load(new TicTacToeSettings(), "CENTER");
+    }
+
+    @Override
+    public String getLocation() {
+        return "../framework/assets/FXML.fxml";
+    }
+
+    @Override
+    public void call(String message, Object[] args) {
     }
 }

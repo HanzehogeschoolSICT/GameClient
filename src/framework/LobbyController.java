@@ -41,6 +41,7 @@ public class LobbyController implements Networkable, Messagable, Controller{
     private ObservableList<ListObject> playersToChallenge = FXCollections.observableArrayList();
     private ObservableList<ChallengeObject> incomingChallenges = FXCollections.observableArrayList();
     private String game;
+    private boolean tourny_mode = false;
     
     public LobbyController(String game_to_play){
         game = game_to_play;
