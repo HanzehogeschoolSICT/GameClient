@@ -75,7 +75,7 @@ public class ServerController extends AbstractServerController {
         legalMovesW = new boolean[8][8];
         legalMovesB = new boolean[8][8];
         our_colour = ' ';
-        currentTurn = 'w';
+        currentTurn = 'b';
         drawBoard();
     }
     public void registerGame() {
@@ -97,12 +97,15 @@ public class ServerController extends AbstractServerController {
     }
 
     private void turnStart(String message, Object[] args){
-        if(turns == 0){
-            our_colour = 'w';
+        if (our_colour == ' ') {
+            if(turns == 0){
+                our_colour = 'b';
+            }
+            else{
+                our_colour = 'w';
+            }
         }
-        else{
-            our_colour = 'b';
-        }
+        System.out.println("We are: " + our_colour);
         
         can_move = true;
         if(isTournament){
@@ -110,6 +113,8 @@ public class ServerController extends AbstractServerController {
             // Berekent de volgende legale zetten
             getLegalMoves();
             Point m = new AI(model, our_colour).nextMove();
+            System.out.println("Next:" + m.x + ", " + m.y);
+
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
