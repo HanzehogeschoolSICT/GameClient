@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
+
+
+<VBox
+    id="sidebar"
+    fx:id="sidebar"
+    xmlns:fx="http://javafx.com/fxml/1"  
+>
+    <Button
+        id="sidebarButton"
+        fx:id="TicTacToeButton"
+        text="Tic-Tac-Toe"
+        onAction="#handleTictactoeButtonAction" />
+    <Button
+        id="sidebarButton" 
+        fx:id="ReversiButton"
+        text="Reversi"
+        onAction="#handleReversiButtonAction"    />
+</VBox>
+   

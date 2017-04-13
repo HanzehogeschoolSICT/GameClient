@@ -6,8 +6,10 @@
 package game.reversi;
 
 import framework.GameClient;
+import framework.MessageBus;
 import framework.interfaces.Controller;
 import framework.models.UtilityGridPane;
+import game.reversi.ServerController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -81,8 +83,12 @@ public class ReversiSettings implements Controller{
     @FXML
     private void handleOpponentSearchButton(ActionEvent event) {
         ai = false;
+        ServerController sc = new ServerController();
+        MessageBus mb = MessageBus.getBus();
+        mb.register("GAME", sc);
         settingsPane.removeRowsExcept(0);
         setStyleOneButton(opponentSearchButton, opponentPlayerButton, opponentComputerButton, "-fx-background-color: #000");
+
     }
     
     @FXML

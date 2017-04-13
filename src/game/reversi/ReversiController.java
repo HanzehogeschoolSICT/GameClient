@@ -1,5 +1,8 @@
 package game.reversi;
 
+import framework.GameClient;
+import framework.GameSelectMenu;
+import framework.MessageBus;
 import framework.interfaces.Controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,6 +18,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import java.awt.Point;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 
 /**
  * Created by markshizzle on 6-4-2017.
@@ -42,15 +47,27 @@ public class ReversiController implements Controller {
     private int amountLegalMovesB;
     private int amountLegalMovesW;
     private Timeline timeline;
+    private char playerColor;
     private char ai = ' ';
 
 
     public ReversiController(char currentTurn) {
-        this.model = new Model();
+        this.playerColor = currentTurn;
         this.currentTurn = currentTurn;
+        newGame();
+    }
+    
+    private void newGame(){
+        this.model = new Model();
+        remainSec = STARTTIME;
+        totalW = 0;
+        totalB = 0;
+        endGame = false;
+        legalMovesW = new boolean[8][8];
+        legalMovesB = new boolean[8][8];
         setTimer();
     }
-
+    
     public void setAI(boolean b) {
         if (b) {
             if (currentTurn == 'b') ai = 'w';
@@ -77,6 +94,7 @@ public class ReversiController implements Controller {
         if(amountLegalMovesB == 0 && amountLegalMovesW == 0) {
             endGame = true;
             checkWinner();
+            showWinLoseGrid();
             createDialog("Gefeliciteerd!", "Het spel is afgelopen. De winnaar is: " + winner);
             return;
         }
@@ -128,13 +146,15 @@ public class ReversiController implements Controller {
     }
     private void countDown() {
         remainSec--;
-        if(endGame) {
-            timeline.stop();
-        }
+
         if(remainSec == 0 || remainSec < 0) {
             createDialog("Afgelopen", "Helaas, jou zet duurde helaas te lang");
             endGame = true;
             timeline.stop();
+        }
+        if(endGame) {
+            timeline.stop();
+            showWinLoseGrid();
         }
         timer.setText("00:0" + remainSec);
     }
@@ -284,7 +304,6 @@ public class ReversiController implements Controller {
                 }
             }
         }
-
         return legal;
     }
 
@@ -310,6 +329,39 @@ public class ReversiController implements Controller {
     @Override
     public String getLocation() {
         return "../game/reversi/ReversiBoard.fxml";
+    }
+    
+    @FXML
+    public void handlePlayAgainButton(){
+        GameClient.load(this, "CENTER");
+        GameClient.load(this, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
+        newGame();
+        drawBoard();
+        currentTurn = playerColor;
+        if(currentTurn == 'b') {
+            turn.setText("Black");
+        }
+        else {
+            turn.setText("White");
+        }
+    }
+    
+    @FXML
+    public void handleQuitButton(){
+        Controller ctrl = new GameSelectMenu();
+        GameClient.load(ctrl, "LEFT", ctrl.getLocation());
+        MessageBus.getBus().call("CLIENT", "display home", null);
+
+    }
+    
+    public void showWinLoseGrid(){
+        ObservableList<Node> children = winLoseGrid.getChildren(); 
+        for(Node n : children){
+            if(n instanceof Label){
+                ((Label) n).setText(winner + " won!");
+            }
+        }
+        winLoseGrid.setVisible(true);
     }
 }
 

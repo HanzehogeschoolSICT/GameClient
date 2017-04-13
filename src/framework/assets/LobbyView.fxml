@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="symbol" xmlns:fx="http://javafx.com/fxml/1" >
+<GridPane id="symbol" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="110.0" />
@@ -13,7 +18,16 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <ListView fx:id="toChallenge" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <ListView fx:id="challenges" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <ListView fx:id="toChallenge" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ListView fx:id="challenges" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+         <children>
+            <Button fx:id="subscribeButton" mnemonicParsing="false" onAction="#handleSubscribe" text="Subscribe" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefresh" text="Refresh" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
     </children>
 </GridPane>
