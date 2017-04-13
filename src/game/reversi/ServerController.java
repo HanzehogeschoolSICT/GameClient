@@ -83,11 +83,12 @@ public class ServerController extends AbstractServerController {
     }
 
     private void initHandlers() {
-        super.registerHandler("SVR GAME CHALLENGE ", this::handleChallenge);
+        super.registerHandler("SVR GAME CHALLENGE", this::handleChallenge);
         super.registerHandler("SVR GAME MATCH", this::handleMatchStarted);
         super.registerHandler("SVR GAME MOVE", this::handleMove);
         super.registerHandler("SVR GAME YOURTURN", this::turnStart);
         super.registerHandler("GAME CHALLENGE ACCEPT", this::handleChallengeAccept);
+        super.registerHandler("GAME SUBSCRIBE", this::handleSubscribe);
         super.registerHandler("tournament mode toggle", this::setTournamentMode);
     }
 
@@ -215,6 +216,9 @@ public class ServerController extends AbstractServerController {
         mb.call("NETWORK", "challenge accept " + args[0], null);
     }
 
+    private void handleSubscribe(String message, Object[] args) {
+        MessageBus.getBus().call("NETWORK", "subscribe " + this.game, null);
+    }
     
     @Override
     public String getLocation() {

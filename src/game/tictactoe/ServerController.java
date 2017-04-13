@@ -41,10 +41,11 @@ public class ServerController extends AbstractServerController {
     }
 
     private void initHandlers() {
-        super.registerHandler("SVR GAME CHALLENGE ", this::handleChallenge);
+        super.registerHandler("SVR GAME CHALLENGE", this::handleChallenge);
         super.registerHandler("SVR GAME MATCH", this::handleMatchStarted);
         super.registerHandler("SVR GAME MOVE", this::handleMove);
         super.registerHandler("GAME CHALLENGE ACCEPT", this::handleChallengeAccept);
+        super.registerHandler("GAME SUBSCRIBE", this::handleSubscribe);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ServerController extends AbstractServerController {
         if(parts[2].equals(game)){  // We don't care about games we're not playing
             System.out.println("Incoming challenge from " + parts[0]);
             MessageBus mb = MessageBus.getBus();
-            mb.call("LOBBY", "CHALLENGE", new String[] { parts[0], parts[1], parts[2]}); // Send te challenge to the lobby
+            mb.call("LOBBY", "CHALLENGE", new String[] { parts[0], parts[1], parts[2]}); // Send the challenge to the lobby
         }
     }
 
@@ -109,6 +110,10 @@ public class ServerController extends AbstractServerController {
         mb.call("NETWORK", "challenge accept " + args[0], null);
     }
 
+    private void handleSubscribe(String message, Object[] args) {
+        MessageBus.getBus().call("NETWORK", "subscribe " + this.game, null);
+    }
+
     // Dit hoort hier niet, dit is een controller niet een view!
     private void createLine(double beginX, double endX, double beginY, double endY, int column, int row, GridPane grid) {
         Line line = new Line();
@@ -133,10 +138,12 @@ public class ServerController extends AbstractServerController {
         createLine(x - 100, y - 100, x + 100, y + 100, column, row, grid);
         createLine(x + 100, y - 100, x - 100, y + 100, column, row, grid);
     }
+
     @Override
     public String getLocation() {
         return "../game/tictactoe/TicTacToeBoard.fxml";
     }
+
     @FXML
     public void squareClicked(MouseEvent event) {
         Label l = (Label) event.getSource();

@@ -37,6 +37,12 @@ public class LobbyController implements Networkable, Messagable, Controller{
     private ListView challenges;
     @FXML 
     private ListView toChallenge;
+
+    @FXML
+    private Button subscribeButton;
+
+    @FXML
+    private Button refreshButton;
     
     private ObservableList<ListObject> playersToChallenge = FXCollections.observableArrayList();
     private ObservableList<ChallengeObject> incomingChallenges = FXCollections.observableArrayList();
@@ -98,6 +104,18 @@ public class LobbyController implements Networkable, Messagable, Controller{
         
     }
 
+    @FXML
+    private void handleSubscribe(ActionEvent event) {
+        System.out.println("LobbyController.handleSubscribe");
+        MessageBus.getBus().call("GAME", "GAME SUBSCRIBE", null);
+    }
+
+    @FXML
+    private void handleRefresh(ActionEvent event) {
+        System.out.println("LobbyController.handleRefresh");
+        refreshPlayerList();
+    }
+
     private void addChallenge(String challenger, String challengeNumber) {
         Platform.runLater( () -> incomingChallenges.add(new ChallengeObject(challenger, challengeNumber)) );
     }
@@ -123,15 +141,10 @@ public class LobbyController implements Networkable, Messagable, Controller{
         return "../framework/assets/LobbyView.fxml";
     }
     
-    public void refreshPlayerList() {
+    private void refreshPlayerList() {
         Object[] args = new Object[1];
         args[0] = this;
         MessageBus.getBus().call("NETWORK", "get players", args);
-    }
-
-    @FXML
-    public void acceptChallenge(ActionEvent e){
-        System.out.println("Lol mag nieee");
     }
 
     /**
