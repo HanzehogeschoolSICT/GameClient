@@ -7,6 +7,7 @@ package framework;
 
 import debug.Console;
 import framework.interfaces.Controller;
+import framework.interfaces.Messagable;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -30,7 +32,7 @@ import javafx.scene.image.ImageView;
  * It will hold the loaded Game Objects. 
  * @author Wouter
  */
-public class GameClient extends Application implements Controller{
+public class GameClient extends Application implements Controller, Messagable{
 
     private BorderPane root;
     private Thread consoleThread;
@@ -41,6 +43,7 @@ public class GameClient extends Application implements Controller{
     @FXML private ImageView imageView;
 
     private static BorderPane parent;
+
     /**
      * @param args the command line arguments
      */
@@ -54,7 +57,9 @@ public class GameClient extends Application implements Controller{
         root = (BorderPane) loadPane(this, getLocation());
         GameClient.setParent(root);
         GameSelectMenu gsm = new GameSelectMenu();
-        MessageBus.getBus().register("MENU", gsm);
+        MessageBus mb  = MessageBus.getBus();
+        mb.register("MENU", gsm);
+        mb.register("CLIENT", this);
         System.out.println(root);
         GameClient.load(gsm, "LEFT");
         
@@ -85,7 +90,7 @@ public class GameClient extends Application implements Controller{
         putPane(newPane, parent, position);
     }
     
-    private static void putPane(Pane to_place, BorderPane p, String position){
+    private static void putPane(Node to_place, BorderPane p, String position){
         Platform.runLater(() -> {
             switch(position){
                 case "CENTER":
@@ -145,9 +150,23 @@ public class GameClient extends Application implements Controller{
     public static void setParent(BorderPane parent) {
         GameClient.parent = parent;
     }
+    
+    private void drawSpooky(){
+        Image image = new Image("framework/assets/spooky.png");
+        imageView.setImage(image);
+      
+        putPane(imageView, GameClient.parent, "CENTER");
+    }
 
     @Override
     public String getLocation() {
         return "../framework/assets/SpookyRoot.fxml";
+    }
+
+    @Override
+    public void call(String message, Object[] args) {
+        if("display home".equals(message)){
+            drawSpooky();
+        }
     }
 }
