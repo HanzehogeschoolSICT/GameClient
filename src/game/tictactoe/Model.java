@@ -37,11 +37,21 @@ class Model {
 
         for (char[] p : pos) {
             if (p[0] == p[1] && p[1] == p[2] && p[0] != ' ' && p[0] != '\u0000') {
-                return p[0];
+                return p[0]; // A winner
             }
         }
-
-        return ' ';
+        
+        // Checking for a draw
+        boolean isAllSet = true;
+        for (int i = 0; i < 3; i++) {
+            for (int y = 0; y < 3; y++){
+                if(getSymbol(i,y) != 'x' && getSymbol(i,y) != 'o') // Wat zit er in eerste instantie in?
+                    isAllSet = false;
+            }
+        }
+        if(isAllSet)
+            return 'd'; // It's a draw, return 'd'
+        return ' '; // No winner yet, return ' '
     }
 
     char[][] getBoard() {

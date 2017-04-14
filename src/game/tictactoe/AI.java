@@ -17,7 +17,7 @@ public class AI {
         }
     }
 
-    void nextMove() {
+    public Point nextMove() {
         List<Point> options = getOptions(model);
 
         Point bestPoint = null;
@@ -27,7 +27,7 @@ public class AI {
             double chance = calcMoveChance(model, p);
             if (chance == 100.0) {
                 System.out.println("Found winning move! x: " + p.x + ", y: " + p.y);
-                return;
+                return p;
             }
             if (chance > bestChance || bestPoint == null) {
                 bestPoint = p;
@@ -36,8 +36,9 @@ public class AI {
         }
 
         if (bestPoint != null) {
-            System.out.println(bestChance + "% x: " + bestPoint.x + ", y: " + bestPoint.y);
+            return bestPoint;
         }
+        return null;
     }
 
     private List<Point> getOptions(Model m) {
