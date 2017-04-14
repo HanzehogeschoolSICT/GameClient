@@ -24,6 +24,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
 //import org.json.simple.*;
 //import org.json.simple.parser.*;
 /**
@@ -115,11 +118,11 @@ public class ServerController extends AbstractServerController {
             Point m = new AI(model, our_colour).nextMove();
             System.out.println("Next:" + m.x + ", " + m.y);
 
-            try {
+           /* try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
             MessageBus.getBus().call("NETWORK", "move " + (m.y * 8 + m.x), null);
         }
         
@@ -188,25 +191,35 @@ public class ServerController extends AbstractServerController {
     }
 
     private void handleMove(String message, Object[] args) {
-        String[] parsedMessage = message.substring(14)
-                .replace("{PLAYER: ","")
-                .replace(", MOVE:", "")
-                .replace(", DETAILS:", "")
-                .replace("\"", "")
+        String parsedMessage = message.substring(14)
+                .replace("PLAYER","\"PLAYER\"")
+                .replace("MOVE", "\"MOVE\"")
+                .replace("DETAILS", "\"DETAILS\"");
+                /*.replace("\"", "")
                 .replace("}", "")
-                .split("\\s+");
+                .split("\\s+");*/
         
-        int position = Integer.parseInt(parsedMessage[1]);
-        int row = (position - (position % 8)) / 8;
-        int col = position - row*8;
-        System.out.println("x: " + col + " y: " + row);
-        turns++;
-        
-        legalMove(col, row, currentTurn, true);
-        model.setSymbol(col, row, currentTurn);
-        
-        currentTurn = currentTurn == 'b' ? 'w' : 'b'; // swap turns;
-        drawBoard();
+        Object o;
+        try {
+            JSONParser parser = new JSONParser();
+            o = parser.parse(parsedMessage);
+            JSONObject playerJSON = (JSONObject) o;
+      
+            System.out.println(playerJSON.get("MOVE"));
+            int position = Integer.parseInt((String) playerJSON.get("MOVE"));
+            int row = (position - (position % 8)) / 8;
+            int col = position - row*8;
+            System.out.println("x: " + col + " y: " + row);
+            turns++;
+
+            legalMove(col, row, currentTurn, true);
+            model.setSymbol(col, row, currentTurn);
+
+            currentTurn = currentTurn == 'b' ? 'w' : 'b'; // swap turns;
+            drawBoard();
+        } catch (ParseException ex) {
+            Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void handleChallengeAccept(String message, Object[] args) {

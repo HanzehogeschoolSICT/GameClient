@@ -284,6 +284,7 @@ public class ReversiController implements Controller {
                 }
             }
         }
+
         return legal;
     }
 
