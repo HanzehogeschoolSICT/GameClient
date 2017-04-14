@@ -37,6 +37,7 @@ public class GameSelectMenu implements Controller, Messagable{
     
     @FXML
     private void handleReversiButtonAction(ActionEvent event) {
+        MessageBus.getBus().call("NETWORK", "exit", null); // Dit staat hier totdat ik een betere plaats heb gevonden
         TicTacToeButton.setStyle("");
         ReversiButton.setStyle("-fx-background-color:#525254");
         GameClient.load(new ReversiSettings(), "CENTER");
@@ -44,6 +45,7 @@ public class GameSelectMenu implements Controller, Messagable{
     
     @FXML
     private void handleTictactoeButtonAction(ActionEvent event) {
+        MessageBus.getBus().call("NETWORK", "exit", null); // Dit staat hier totdat ik een betere plaats heb gevonden
         TicTacToeButton.setStyle("-fx-background-color:#525254");
         ReversiButton.setStyle("");
         GameClient.load(new TicTacToeSettings(), "CENTER");

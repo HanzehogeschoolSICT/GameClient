@@ -36,7 +36,7 @@ public class GameClient extends Application implements Controller, Messagable{
 
     private BorderPane root;
     private Thread consoleThread;
-    private Thread networkThread;
+//    private Thread networkThread;
     private Network nw;
     private Console c;
     
@@ -72,7 +72,7 @@ public class GameClient extends Application implements Controller, Messagable{
     public void stop() throws Exception{
         nw.exit();
         c.exit();
-        networkThread.interrupt();
+//        networkThread.interrupt();
         consoleThread.interrupt();
     }
 
@@ -82,9 +82,9 @@ public class GameClient extends Application implements Controller, Messagable{
     }
     
     public static void load(Controller v, String position){
-        Pane newPane = loadPane(v, v.getLocation());
-        putPane(newPane, parent, position);
+        load(v, position, v.getLocation());
     }
+
     public static void load(Controller v, String position, String location){
         Pane newPane = loadPane(v, location);
         putPane(newPane, parent, position);
@@ -134,13 +134,13 @@ public class GameClient extends Application implements Controller, Messagable{
         
         
         MessageBus bus = MessageBus.getBus();
-        nw = new Network();
+        nw = Network.getInstance();
         c = new Console();
-        networkThread = new Thread(nw);
+//        networkThread = new Thread(nw);
         consoleThread = new Thread(c);
         
         consoleThread.start();
-        networkThread.start();
+//        networkThread.start();
         
         bus.register("NETWORK", nw);
         //bus.call("NETWORK", "login", null);
