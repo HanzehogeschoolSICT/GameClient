@@ -20,6 +20,9 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -163,17 +166,17 @@ public class ServerController extends AbstractServerController implements Networ
     
     private void handleChallenge(String message, Object[] args) {
         // Since the server string isn't valid JSON, we'll have to pry out our answers.
-        String parsedMessage = message.substring(19)
-                .replace("{CHALLENGER: ", "")           // Parts[0]     opponent name
-                .replace(", CHALLENGENUMBER:", "")      // Parts[1]     Challenge number
-                .replace(", GAMETYPE:", "")             // Parts[2]     Game we got challenged for
-                .replace("}","")
-                .replace("\"", "");
-        String[] parts = parsedMessage.split("\\s+");
-        if(parts[2].equals(game)){  // We don't care about games we're not playing
-            System.out.println("Incoming challenge from " + parts[0]);
-            MessageBus mb = MessageBus.getBus();
-            mb.call("LOBBY", "CHALLENGE", new String[] { parts[0], parts[1], parts[2]}); // Send te challenge to the lobby
+        String toParse = message.substring(19);
+        Pattern p = Pattern.compile("\\{CHALLENGER: \"(.*?)\", CHALLENGENUMBER: \"(\\d*?)\", GAMETYPE: \"(.*?)\"\\}");
+        Matcher m = p.matcher(toParse);
+
+        if (m.find()) {
+            if (m.group(3).equals(game)) {
+                System.out.println("Incoming challenge from " + m.group(1));
+                MessageBus.getBus().call("LOBBY",
+                        "CHALLENGE",
+                        new String[] { m.group(1), m.group(2), m.group(3)});
+            }
         }
     }
 
