@@ -64,9 +64,7 @@ public class ReversiSettings implements Controller{
         settingsPane.add(symbolSettings, 0, 2);
         Pane start = GameClient.loadPane(this, "../game/reversi/StartFXML.fxml");
         settingsPane.add(start, 0, 3);
-        opponentComputerButton.setStyle("-fx-background-color: #000");
-        opponentPlayerButton.setStyle("");
-        opponentSearchButton.setStyle("");
+        setStyleOneButton(opponentComputerButton, opponentPlayerButton, opponentSearchButton, "-fx-background-color: #000");
         ai = true;
     }
 
@@ -79,9 +77,7 @@ public class ReversiSettings implements Controller{
         blub.setText("Player 1: Choose a symbol.");
         Pane start = GameClient.loadPane(this, "../game/reversi/StartFXML.fxml");
         settingsPane.add(start, 0, 2);
-        opponentPlayerButton.setStyle("-fx-background-color: #000");
-        opponentComputerButton.setStyle("");
-        opponentSearchButton.setStyle("");
+        setStyleOneButton(opponentPlayerButton, opponentComputerButton, opponentSearchButton, "-fx-background-color: #000");
     }
 
     @FXML
@@ -91,11 +87,10 @@ public class ReversiSettings implements Controller{
         MessageBus mb = MessageBus.getBus();
         mb.register("GAME", sc);
         settingsPane.removeRowsExcept(0);
-        opponentSearchButton.setStyle("-fx-background-color: #000");
-        opponentComputerButton.setStyle("");
-        opponentPlayerButton.setStyle("");
-        
+        setStyleOneButton(opponentSearchButton, opponentPlayerButton, opponentComputerButton, "-fx-background-color: #000");
+
     }
+    
     @FXML
     private void handleDifficultyEasyButton(ActionEvent event) {
         setStyleOneButton(difficultyEasyButton, difficultyNormalButton, difficultyHardButton, "-fx-background-color:#000");
@@ -103,16 +98,12 @@ public class ReversiSettings implements Controller{
 
     @FXML
     private void handleDifficultyNormalButton(ActionEvent event) {
-        difficultyNormalButton.setStyle("-fx-background-color: #000");
-        difficultyEasyButton.setStyle("");
-        difficultyHardButton.setStyle("");
+        setStyleOneButton(difficultyNormalButton, difficultyEasyButton, difficultyHardButton, "-fx-background-color:#000");
     }
 
     @FXML
     private void handleDifficultyHardButton(ActionEvent event) {
-        difficultyHardButton.setStyle("-fx-background-color: #000");
-        difficultyNormalButton.setStyle("");
-        difficultyEasyButton.setStyle("");
+        setStyleOneButton(difficultyHardButton, difficultyNormalButton, difficultyEasyButton, "-fx-background-color:#000");
     }
 
     @FXML

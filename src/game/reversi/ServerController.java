@@ -1,8 +1,10 @@
 package game.reversi;
 
 import framework.GameClient;
+import framework.GameSelectMenu;
 import framework.LobbyController;
 import framework.MessageBus;
+import framework.interfaces.Controller;
 import game.abstraction.AbstractServerController;
 import java.awt.Point;
 import javafx.application.Platform;
@@ -20,6 +22,8 @@ import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -188,6 +192,7 @@ public class ServerController extends AbstractServerController {
                 .replace("}", "")
                 .split("\\s+");
         GameClient.load(this, "CENTER");
+        GameClient.load(this, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
         newGame();
     }
 
@@ -410,5 +415,28 @@ public class ServerController extends AbstractServerController {
         }
 
         return legal;
+    }
+    
+    @FXML
+    public void handlePlayAgainButton(){
+        
+    }
+    
+    @FXML
+    public void handleQuitButton(){
+        Controller ctrl = new GameSelectMenu();
+        GameClient.load(ctrl, "LEFT", ctrl.getLocation());
+        MessageBus.getBus().call("CLIENT", "display home", null);
+
+    }
+    
+    public void showWinLoseGrid(){
+        ObservableList<Node> children = winLoseGrid.getChildren(); 
+        for(Node n : children){
+            if(n instanceof Label){
+                ((Label) n).setText(winner + " won!");
+            }
+        }
+        winLoseGrid.setVisible(true);
     }
 }

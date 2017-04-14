@@ -332,6 +332,7 @@ public class ReversiController implements Controller {
         return "../game/reversi/ReversiBoard.fxml";
     }
     
+    // When the game finishes, click play again to start the game with the same settings again.
     @FXML
     public void handlePlayAgainButton(){
         GameClient.load(this, "CENTER");
@@ -347,6 +348,7 @@ public class ReversiController implements Controller {
         }
     }
     
+    // When the game finishes, click quit to go back to home
     @FXML
     public void handleQuitButton(){
         Controller ctrl = new GameSelectMenu();
@@ -355,6 +357,7 @@ public class ReversiController implements Controller {
 
     }
     
+    // When the game finishes, the grid with play again and quit appears
     public void showWinLoseGrid(){
         ObservableList<Node> children = winLoseGrid.getChildren(); 
         for(Node n : children){

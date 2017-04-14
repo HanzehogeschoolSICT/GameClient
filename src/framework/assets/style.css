@@ -177,3 +177,70 @@ and open the template in the editor.
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
+
+#tictactoeField{
+    -fx-border-color:#426ab7;
+    -fx-border-width:3px;
+    -fx-border-style:solid;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldLeft{
+    -fx-border-color:#426ab7;
+    -fx-border-style:solid solid solid hidden;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldRight{
+    -fx-border-color:#426ab7;
+    -fx-border-style:solid hidden solid solid;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldTop{
+    -fx-border-color:#426ab7;
+    -fx-border-style:hidden solid solid solid;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldTopLeft{
+    -fx-border-color:#426ab7;
+    -fx-border-style:hidden solid solid hidden;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldTopRight{
+    -fx-border-color:#426ab7;
+    -fx-border-style:hidden hidden solid solid;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldBottom{
+    -fx-border-color:#426ab7;
+    -fx-border-style:solid solid hidden solid;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldBottomLeft{
+    -fx-border-color:#426ab7;
+    -fx-border-style:solid solid hidden hidden;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeFieldBottomRight{
+    -fx-border-color:#426ab7;
+    -fx-border-style:solid hidden hidden solid;
+    -fx-border-width:3px;
+    -fx-background-color:#eaf0f9;
+}
+
+#tictactoeBoard{
+
+}

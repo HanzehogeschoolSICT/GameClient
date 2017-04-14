@@ -17,7 +17,7 @@
         <RowConstraints prefHeight="300" />
         <RowConstraints prefHeight="300" />
     </rowConstraints>
-    <Label id="timer" text="00:10" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+    <Label fx:id="timer" id="timer" text="00:10" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
     <Label text=" ... " GridPane.rowIndex="1" GridPane.columnIndex="0" />
     <GridPane fx:id="winLoseGrid" id="wonLose" GridPane.rowIndex="2" GridPane.columnIndex="0" visible="false">
         <rowConstraints>
@@ -29,8 +29,8 @@
             <ColumnConstraints prefWidth="180" />
         </columnConstraints>
         <Label id="wonLosetext" text="You Won" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
-        <Button id="wonLoseButton" text="Play again" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
-        <Button id="wonLoseButton" text="Quit" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
+        <Button id="wonLoseButton" text="Play again" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#handlePlayAgainButton"/>
+        <Button id="wonLoseButton" text="Quit" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#handleQuitButton"/>
     </GridPane>
     <GridPane id="score" GridPane.rowIndex="3" GridPane.columnIndex="0" >    
         <rowConstraints>
@@ -44,8 +44,8 @@
         
         <Label text="X" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
         <Label text="O" GridPane.rowIndex="0" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
-        <Label text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
-        <Label text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
+        <Label fx:id="xScore" text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="0" />
+        <Label fx:id="oScore" text="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.columnIndex="1" />
     </GridPane>
     <GridPane id="turnGrid" GridPane.rowIndex="4" GridPane.columnIndex="0">
         <rowConstraints>
