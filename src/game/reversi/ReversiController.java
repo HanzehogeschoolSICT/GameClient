@@ -83,7 +83,7 @@ public class ReversiController implements Controller {
             drawBoard();
         }
         else {
-            createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
+            createDialog("Invalid move", "This is an invalid move.");
             return;
         }
 
@@ -95,13 +95,13 @@ public class ReversiController implements Controller {
             endGame = true;
             checkWinner();
             showWinLoseGrid();
-            createDialog("Gefeliciteerd!", "Het spel is afgelopen. De winnaar is: " + winner);
+            createDialog("Congratulations", "The game is over and the winner is: " + winner);
             return;
         }
         // Als de huidige kleur niet kan, wordt de beurt doorgegeven.
         if (!checkIfLegalMove(currentTurn)) {
             changeTurns();
-            createDialog("Geen mogelijke zetten", "Er zijn geen mogelijke zetten meer, de beurt wordt omgedraaid.");
+            createDialog("No available moves", "There are no more moves available, the turn goes to the enemy.");
             return;
         }
 
@@ -127,14 +127,14 @@ public class ReversiController implements Controller {
     }
     private void checkWinner() {
         if(totalW > totalB) {
-            winner = "Wit";
+            winner = "White";
         }
         else if(totalW < totalB) {
             winner = "Black";
         }
         else {
             // 'g' staat voor gelijkspel.
-            winner = "Niemand";
+            winner = "No-one";
         }
     }
     private void setTimer() {
@@ -148,8 +148,12 @@ public class ReversiController implements Controller {
         remainSec--;
 
         if(remainSec == 0 || remainSec < 0) {
-            createDialog("Afgelopen", "Helaas, jou zet duurde helaas te lang");
+            createDialog("Game over", "You ran out of time!");
             endGame = true;
+            if(currentTurn == 'b')
+                winner = "White";
+            else
+                winner = "Black";
             timeline.stop();
         }
         if(endGame) {

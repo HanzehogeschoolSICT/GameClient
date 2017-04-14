@@ -245,7 +245,7 @@ public class ServerController extends AbstractServerController {
             model.setSymbol(column, row, our_colour);
         }
         else {
-            createDialog("Helaas", "Helaas het is niet mogelijk om deze zet te doen.");
+            createDialog("Invalid move", "This is an invalid move.");
             return;
         }
         calcPoints();
@@ -281,8 +281,12 @@ public class ServerController extends AbstractServerController {
             timeline.stop();
         }
         if(remainSec == 0 || remainSec < 0) {
-            createDialog("Afgelopen", "Helaas, jou zet duurde helaas te lang");
+            createDialog("Game over", "You ran out of time!");
             endGame = true;
+            if(currentTurn == 'b')
+                winner = "White";
+            else
+                winner = "Black";
             timeline.stop();
         }
         timer.setText("00:0" + remainSec);
