@@ -249,6 +249,11 @@ public class TicTacToeController implements Controller, Initializable {
         GameClient.load(ctrl, "LEFT", ctrl.getLocation());
         MessageBus.getBus().call("CLIENT", "display home", null);
     }
+    
+    @FXML 
+    public void handleForfeitButton(){
+        handleQuitButton();
+    }
 
     @Override
     public String getLocation() {

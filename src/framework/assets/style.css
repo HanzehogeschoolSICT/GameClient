@@ -72,13 +72,22 @@ and open the template in the editor.
 #sidebarButton {
     -fx-font-size:18px;
     -fx-pref-width:150px;
-    -fx-background-color:#7c7d7f, transparent;
+    -fx-background-color:
+        #000000,
+        linear-gradient(#e8e9ea, #8f9091),
+        linear-gradient(#aeaeaf, #77797a),
+        linear-gradient(#9b9b9b, #5d5e5e);
     -fx-border-insets: 0px;
     -fx-background-insets: 0px;
+    -fx-background-radius:5px;
 }
 
 #sidebarButton:hover{
-    -fx-background-color:#6c6d70;
+    -fx-background-color:
+        #000000,
+        linear-gradient(#cccfd1, #828282),
+        linear-gradient(#939393, #5e6060),
+        linear-gradient(#7a7a7a, #454747);
 }
 
 #settingButton {

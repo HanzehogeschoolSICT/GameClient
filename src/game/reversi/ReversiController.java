@@ -356,6 +356,11 @@ public class ReversiController implements Controller {
 
     }
     
+    @FXML 
+    public void handleForfeitButton(){
+        handleQuitButton();
+    }
+    
     // When the game finishes, the grid with play again and quit appears
     public void showWinLoseGrid(){
         ObservableList<Node> children = winLoseGrid.getChildren(); 

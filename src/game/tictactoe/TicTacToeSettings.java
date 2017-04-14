@@ -21,31 +21,19 @@ import javafx.scene.layout.Pane;
  * @author Talitha
  */
 public class TicTacToeSettings implements Controller {
-    @FXML
-    private UtilityGridPane settingsPane;
-    @FXML
-    private Button opponentComputerButton;
-    @FXML
-    private Button opponentPlayerButton;
-    @FXML
-    private Button opponentSearchButton;
-    @FXML
-    private Button difficultyEasyButton;
-    @FXML
-    private Button difficultyNormalButton;
-    @FXML
-    private Button difficultyHardButton;
-    @FXML
-    private Label blub;
-    @FXML
-    private Button symbolCrossButton;
-    @FXML
-    private Button symbolCircleButton;
-    @FXML
-    private BorderPane rightPane;
+    @FXML private UtilityGridPane settingsPane;
+    @FXML private Button opponentComputerButton;
+    @FXML private Button opponentPlayerButton;
+    @FXML private Button opponentSearchButton;
+    @FXML private Button difficultyEasyButton;
+    @FXML private Button difficultyNormalButton;
+    @FXML private Button difficultyHardButton;
+    @FXML private Label blub;
+    @FXML private Button symbolCrossButton;
+    @FXML private Button symbolCircleButton;
+    @FXML private BorderPane rightPane;
 
     private String location;
-
     private char playSymbol = 'x';
     private String opponent;
     private Integer difficulty = null;
@@ -68,9 +56,7 @@ public class TicTacToeSettings implements Controller {
         settingsPane.add(symbolSettings, 0, 2);
         Pane start = GameClient.loadPane(this, "../game/tictactoe/StartFXML.fxml");
         settingsPane.add(start, 0, 3);
-        opponentComputerButton.setStyle("-fx-background-color: #000");
-        opponentPlayerButton.setStyle("");
-        opponentSearchButton.setStyle("");
+        setStyleOneButton(opponentComputerButton, opponentPlayerButton, opponentSearchButton);
         opponent = "AI";
     }
     
@@ -82,9 +68,7 @@ public class TicTacToeSettings implements Controller {
         blub.setText("Player 1: Choose a symbol.");
         Pane start = GameClient.loadPane(this, "../game/tictactoe/StartFXML.fxml");
         settingsPane.add(start, 0, 2);
-        opponentPlayerButton.setStyle("-fx-background-color: #000");
-        opponentComputerButton.setStyle("");
-        opponentSearchButton.setStyle("");
+        setStyleOneButton(opponentPlayerButton, opponentComputerButton, opponentSearchButton);
         opponent = "PLAYER";
     }
     
@@ -94,46 +78,36 @@ public class TicTacToeSettings implements Controller {
         MessageBus mb = MessageBus.getBus();
         mb.register("GAME", sc);
         settingsPane.removeRowsExcept(0);
-        opponentSearchButton.setStyle("-fx-background-color: #000");
-        opponentComputerButton.setStyle("");
-        opponentPlayerButton.setStyle("");
+        setStyleOneButton(opponentSearchButton, opponentPlayerButton, opponentComputerButton);
     }
     
     @FXML
     private void handleDifficultyEasyButton(ActionEvent event) {
-        difficultyEasyButton.setStyle("-fx-background-color: #000");
-        difficultyNormalButton.setStyle("");
-        difficultyHardButton.setStyle("");
+        setStyleOneButton(difficultyEasyButton, difficultyNormalButton, difficultyHardButton);
         difficulty = 1;
     }
     
     @FXML
     private void handleDifficultyNormalButton(ActionEvent event) {
-        difficultyNormalButton.setStyle("-fx-background-color: #000");
-        difficultyEasyButton.setStyle("");
-        difficultyHardButton.setStyle("");
+        setStyleOneButton(difficultyNormalButton, difficultyEasyButton, difficultyHardButton);
         difficulty = 2;
     }
     
     @FXML
     private void handleDifficultyHardButton(ActionEvent event) {
-        difficultyHardButton.setStyle("-fx-background-color: #000");
-        difficultyNormalButton.setStyle("");
-        difficultyEasyButton.setStyle("");
+        setStyleOneButton(difficultyHardButton, difficultyNormalButton, difficultyEasyButton);
         difficulty = 3;
     }
     
     @FXML
     private void handleSymbolCrossButton(ActionEvent event) {
-        symbolCrossButton.setStyle("-fx-background-color: #000");
-        symbolCircleButton.setStyle("");
+        setStyleOneButton(symbolCrossButton, symbolCircleButton);
         playSymbol = 'x';
     }
     
     @FXML
     private void handleSymbolCircleButton(ActionEvent event) {
-        symbolCrossButton.setStyle("");
-        symbolCircleButton.setStyle("-fx-background-color: #000");
+        setStyleOneButton(symbolCircleButton, symbolCrossButton);
         playSymbol = 'o';
     }
     
@@ -142,5 +116,16 @@ public class TicTacToeSettings implements Controller {
         TicTacToeController ctrl = new TicTacToeController(playSymbol, opponent, difficulty);
         GameClient.load(ctrl, "CENTER");
         GameClient.load(ctrl, "LEFT", "../game/tictactoe/SidebarGameMenuFXML.fxml");
+    }
+    
+    private void setStyleOneButton(Button b1Styled, Button b2, Button b3){
+        b1Styled.setStyle("-fx-effect: innershadow(three-pass-box, #263e75, 20.0, 0.0, 5, 8);");
+        b2.setStyle("");
+        b3.setStyle("");
+    }
+    
+    private void setStyleOneButton(Button b1Styled, Button b2){
+        b1Styled.setStyle("-fx-effect: innershadow(three-pass-box, #263e75, 20.0, 0.0, 5, 8);");
+        b2.setStyle("");
     }
 }

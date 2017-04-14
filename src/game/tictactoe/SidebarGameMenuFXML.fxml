@@ -18,7 +18,7 @@
         <RowConstraints prefHeight="300" />
     </rowConstraints>
     <Label fx:id="timer" id="timer" text="00:10" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
-    <Label text=" ... " GridPane.rowIndex="1" GridPane.columnIndex="0" />
+    <Button id="sidebarButton" text="Forfeit" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#handleForfeitButton" />
     <GridPane fx:id="winLoseGrid" id="wonLose" GridPane.rowIndex="2" GridPane.columnIndex="0" visible="false">
         <rowConstraints>
             <RowConstraints prefHeight="100" />
