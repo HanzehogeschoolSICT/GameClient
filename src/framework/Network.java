@@ -27,7 +27,8 @@ public class Network implements Messagable {
 
     // The name we will appear with publically.
     //private final String public_name = "itv2d1.5";
-    private final String public_name = "test_client_v1";
+    private final String public_name = "Groep 1.5";
+    private String given_name = new String(public_name);
     private final String hostName = "localhost";
     private final int port = 7789;
 
@@ -76,11 +77,14 @@ public class Network implements Messagable {
         so we know what to do with it. 
         */
         System.out.println(message);
+
         String[] message_args = message.split("\\s+"); // split on whitespace
         ArrayList<String> messages_to_return = new ArrayList();
         ArrayList<String> match = new ArrayList();
 
-        if ((connection == null || !connection.isConnected()) && !message_args[0].equals("open"))
+        if ((       connection == null 
+                || !connection.isConnected()) 
+                && !"open".equals(message))
             return;
 
         switch(message_args[0]){
@@ -107,6 +111,12 @@ public class Network implements Messagable {
                     count++;
                     if(m.startsWith("OK") || m.startsWith("ERR Already logged in"))
                         name_set = true;
+                    if(m.startsWith("OK")){
+                        if(count - 1 > 0)
+                            given_name = public_name + "." + (count - 1);
+                        else
+                            given_name = new String(public_name);
+                    }
                 }
                 if(count == 0)
                     messages_to_return.add("logged_in:" + public_name);
@@ -121,9 +131,12 @@ public class Network implements Messagable {
                         messages_to_return.add(connection.sendAndReturn("get gamelist\n", match));
                         break;
                     case "players":
-                        System.out.println("Matched get players");
                         match.add("SVR PLAYER");
                         messages_to_return.add(connection.sendAndReturn("get playerlist\n", match));
+                        break;
+                    case "name":
+                        System.out.println("returning " + given_name);
+                        messages_to_return.add("name " + given_name);
                         break;
                 }
                 break;
@@ -163,6 +176,7 @@ public class Network implements Messagable {
 
             case "move":
                 connection.send(message + "\n");
+                break;
         }
         if(args != null){
             Networkable n = (Networkable) args[0];

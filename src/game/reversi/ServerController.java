@@ -5,6 +5,7 @@ import framework.GameSelectMenu;
 import framework.LobbyController;
 import framework.MessageBus;
 import framework.interfaces.Controller;
+import framework.interfaces.Networkable;
 import game.abstraction.AbstractServerController;
 import java.awt.Point;
 import javafx.application.Platform;
@@ -36,7 +37,7 @@ import org.json.simple.parser.*;
 /**
  * Created by markshizzle on 4-4-2017.
  */
-public class ServerController extends AbstractServerController {
+public class ServerController extends AbstractServerController implements Networkable{
     @FXML Label timer;
     @FXML GridPane winLoseGrid;
     @FXML Label scoreB;
@@ -47,6 +48,7 @@ public class ServerController extends AbstractServerController {
     private boolean isTournament = false;
     private int turns = 0;
     private char our_colour = ' ';
+    private char their_colour = ' ';
     private boolean can_move = false;
     
     private Text text;
@@ -63,6 +65,7 @@ public class ServerController extends AbstractServerController {
     private int amountLegalMovesB;
     private int amountLegalMovesW;
     private Timeline timeline;
+    private String our_name;
     
     @FXML
     private GridPane grid;
@@ -71,8 +74,10 @@ public class ServerController extends AbstractServerController {
         LobbyController lc = new LobbyController(game);
         GameClient.load(lc,"CENTER");
         MessageBus mb = MessageBus.getBus();
+        
         mb.register("LOBBY", lc);
         mb.call("MENU", "tournament mode on", null);
+        
         lc.init();
         initHandlers();
     }
@@ -81,7 +86,6 @@ public class ServerController extends AbstractServerController {
         turns = 0;
         legalMovesW = new boolean[8][8];
         legalMovesB = new boolean[8][8];
-        our_colour = ' ';
         currentTurn = 'b';
         drawBoard();
     }
@@ -101,33 +105,26 @@ public class ServerController extends AbstractServerController {
 
     @Override
     public void putData(ArrayList<String> messages) {
-        
+        for(String m : messages){
+            String[] parts = m.split("\\s+");
+            switch(parts[0]){
+                case "name":
+                    this.our_name = m.replace("name ", "");
+                    break;
+            }
+        }
     }
 
     private void turnStart(String message, Object[] args){
-        if (our_colour == ' ') {
-            if(turns == 0){
-                our_colour = 'b';
-            }
-            else{
-                our_colour = 'w';
-            }
-        }
-        System.out.println("We are: " + our_colour);
-        
         can_move = true;
         if(isTournament){
             calcPoints();
             // Berekent de volgende legale zetten
             getLegalMoves();
+            System.out.println("I think my colour is " + our_colour);
             Point m = new AI(model, our_colour).nextMove();
             System.out.println("Next:" + m.x + ", " + m.y);
 
-           /* try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
             MessageBus.getBus().call("NETWORK", "move " + (m.y * 8 + m.x), null);
         }
         
@@ -141,11 +138,9 @@ public class ServerController extends AbstractServerController {
             for (int j = 0; j < 8; j++) {
                 if (model.getSymbol(i,j) == 'b') {
                     drawO('b', i, j);
-                    System.out.println("I got a black move and I draw it!");
                 }
                 if (model.getSymbol(i,j) == 'w') {
                     drawO('w', i, j);
-                    System.out.println("I got a white move and I draw it!");
                 }
             }
         }
@@ -183,17 +178,38 @@ public class ServerController extends AbstractServerController {
     }
 
     private void handleMatchStarted(String message, Object[] args) {
-        System.out.println("LETS GO BOY");
-        String[] parsedMessage = message.substring(15)
-                .replace("{PLAYERTOMOVE: ","")
-                .replace(", GAMETYPE:", "")
-                .replace(", OPPONENT:", "")
-                .replace("\"", "")
-                .replace("}", "")
-                .split("\\s+");
-        GameClient.load(this, "CENTER");
-        GameClient.load(this, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
-        newGame();
+        MessageBus mb = MessageBus.getBus();
+        Object[] args_to_send = new Object[1];
+        args_to_send[0] = this;
+        mb.call("NETWORK", "get name", args_to_send);
+        String parsedMessage = message.substring(15)
+                .replace("PLAYERTOMOVE","\"PLAYERTOMOVE\"")
+                .replace("GAMETYPE", "\"GAMETYPE\"")
+                .replace("OPPONENT:", "\"OPPONENT\"");
+        Object o;
+        try {
+            
+            JSONParser parser = new JSONParser();
+            o = parser.parse(parsedMessage);
+            JSONObject playerJSON = (JSONObject) o;
+            String player_to_move = (String) playerJSON.get("PLAYERTOMOVE");
+            System.out.println(player_to_move + " " + our_name);
+            if(player_to_move.equals(our_name)){
+                our_colour = 'b';
+                their_colour = 'w';
+            }
+            else{
+                our_colour = 'w';
+                their_colour = 'b';
+            }
+            
+            GameClient.load(this, "CENTER");
+            GameClient.load(this, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
+            newGame();
+        }
+        catch (ParseException ex) {
+            Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void handleMove(String message, Object[] args) {
@@ -201,27 +217,25 @@ public class ServerController extends AbstractServerController {
                 .replace("PLAYER","\"PLAYER\"")
                 .replace("MOVE", "\"MOVE\"")
                 .replace("DETAILS", "\"DETAILS\"");
-                /*.replace("\"", "")
-                .replace("}", "")
-                .split("\\s+");*/
         
         Object o;
         try {
             JSONParser parser = new JSONParser();
             o = parser.parse(parsedMessage);
             JSONObject playerJSON = (JSONObject) o;
-      
-            System.out.println(playerJSON.get("MOVE"));
             int position = Integer.parseInt((String) playerJSON.get("MOVE"));
             int row = (position - (position % 8)) / 8;
             int col = position - row*8;
-            System.out.println("x: " + col + " y: " + row);
             turns++;
 
-            legalMove(col, row, currentTurn, true);
-            model.setSymbol(col, row, currentTurn);
+            char to_move;
+            if(( (String) playerJSON.get("PLAYER") ).equals(our_name))
+                to_move = our_colour;
+            else
+                to_move = their_colour;
+            legalMove(col, row, to_move, true);
+            model.setSymbol(col, row, to_move);
 
-            currentTurn = currentTurn == 'b' ? 'w' : 'b'; // swap turns;
             drawBoard();
         } catch (ParseException ex) {
             Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
