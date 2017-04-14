@@ -34,7 +34,7 @@ public class Network implements Runnable, Messagable{
         messages = new ArrayList();
         try {
             // Do connect things
-            server = new Socket("145.33.225.170", 7789);
+            server = new Socket("localhost", 7789);
             send_to_server = new DataOutputStream(server.getOutputStream());
         } catch (IOException ex) {
             Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);

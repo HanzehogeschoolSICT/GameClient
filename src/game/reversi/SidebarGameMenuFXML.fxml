@@ -29,7 +29,7 @@
             <ColumnConstraints prefWidth="180" />
         </columnConstraints>
         <Label id="wonLosetext" text="You Won" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
-        <Button id="wonLoseButton" text="Play again" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#handlePlayAgainButton" />
+        <Button fx:id="playAgainBtn" id="wonLoseButton" text="Play again" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#handlePlayAgainButton" />
         <Button id="wonLoseButton" text="Quit" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER" onAction="#handleQuitButton" />
     </GridPane>
     <GridPane id="score" GridPane.rowIndex="3" GridPane.columnIndex="0" >    
