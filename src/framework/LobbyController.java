@@ -35,6 +35,7 @@ public class LobbyController implements Networkable, Messagable, Controller{
     
     @FXML
     private ListView challenges;
+
     @FXML 
     private ListView toChallenge;
 
@@ -47,6 +48,7 @@ public class LobbyController implements Networkable, Messagable, Controller{
     private ObservableList<ListObject> playersToChallenge = FXCollections.observableArrayList();
     private ObservableList<ChallengeObject> incomingChallenges = FXCollections.observableArrayList();
     private String game;
+    private String playerName = "";
     private boolean tourny_mode = false;
     
     public LobbyController(String game_to_play){
@@ -56,8 +58,11 @@ public class LobbyController implements Networkable, Messagable, Controller{
     public void init(){
         toChallenge.setItems(playersToChallenge); // Hoeft maar 1 keer aangeroepen te worden
         challenges.setItems(incomingChallenges);
-        MessageBus.getBus().call("NETWORK", "open", null);
-        MessageBus.getBus().call("NETWORK", "login", null);
+
+        MessageBus mb = MessageBus.getBus();
+        mb.call("NETWORK", "open", null);
+        mb.call("NETWORK", "login", null);
+        mb.call("NETWORK", "get name", new Object[] {this});
         refreshPlayerList();
     }
 
@@ -68,6 +73,8 @@ public class LobbyController implements Networkable, Messagable, Controller{
             if(m.startsWith("SVR PLAYERLIST")){
                 // We received the playerlist we asked for. 
                 makePlayerList(m.substring(15));
+            } else if (m.startsWith("name")) {
+                playerName = m.substring(5);
             }
         }
     }
@@ -83,8 +90,9 @@ public class LobbyController implements Networkable, Messagable, Controller{
                 playerList.add((String) s);
             }
 
+            playerList.remove(playerName);
+
             // Filter duplicaten
-            // TODO: filter eigen naam
             Iterator<ListObject> it = playersToChallenge.iterator();
             while (it.hasNext()) {
                 ListObject obj = it.next();
@@ -107,13 +115,11 @@ public class LobbyController implements Networkable, Messagable, Controller{
 
     @FXML
     private void handleSubscribe(ActionEvent event) {
-        System.out.println("LobbyController.handleSubscribe");
         MessageBus.getBus().call("GAME", "GAME SUBSCRIBE", null);
     }
 
     @FXML
     private void handleRefresh(ActionEvent event) {
-        System.out.println("LobbyController.handleRefresh");
         refreshPlayerList();
     }
 
