@@ -3,10 +3,22 @@ import java.util.*;
 import java.awt.Point;
 import javafx.util.Pair;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 public class AI {
     private char whoami;
     private char enemy;
     private Model model;
+
+	public char getWhoami() {
+		return whoami;
+	}
+
+	public char getEnemy() {
+		return enemy;
+	}
 
     public AI(Model model, char whoami) {
         this.model = model;
@@ -19,122 +31,68 @@ public class AI {
     }
 
     public Point nextMove() {
-        List<Pair<Point, Integer>> options = getOptions(model, whoami, enemy);
+        List<Pair<Point, Integer>> options = model.legalMoves(whoami, enemy);
 
-        Point bestPoint = null;
-        double bestChance = -1;
+		ExecutorService ex = Executors.newFixedThreadPool(options.size());
 
         for (Pair<Point, Integer> pair : options) {
-            Point p = pair.getKey();
-            double chance = (double)pair.getValue() + getBias(model, p);
-
-            Model n = new Model(model);
-            n.setSymbol(p.x, p.y, whoami);
-
-            // Calculate best enemy move
-            Pair<Point, Double> ep = getBestMove(n, p, enemy, whoami);
-            if (ep.getKey() != null) {
-                chance -= (ep.getValue() * 0.9);
-
-                n.setSymbol(ep.getKey().x, ep.getKey().y, enemy);
-
-                // Calculate best next move
-                Pair<Point, Double> np = getBestMove(n, p, whoami, enemy);
-                if (ep.getKey() != null) {
-                    chance += (np.getValue() * 0.6);
-                }
-            }
-
-            if (chance > bestChance || bestPoint == null) {
-                bestPoint = p;
-                bestChance = chance;
-            }
+            ex.execute(new AIWorker(model, pair, this));
         }
+		ex.shutdown();
+		try {
+			ex.awaitTermination(8, TimeUnit.SECONDS);
+		} catch (Exception e) {}
 
         return bestPoint;
     }
 
-    private double getBias(Model m, Point p) {
+	private Point  bestPoint = null;
+	private double bestChance = 0.0;
+
+	protected synchronized void checkBestMove(Point p, double c) {
+		if (c > bestChance || bestPoint == null || (bestPoint.x == p.x && bestPoint.y == p.y)) {
+			System.out.println("Found better point " + p.x + "," + p.y + ": " + c);
+			bestPoint = p;
+			bestChance = c;
+		}
+	}
+
+    private static double getBias(Model m, Point p) {
         int xc = ((int)p.x/4)*7;
         int yc = ((int)p.y/4)*7;
 
         if (m.getBoard()[xc][yc] == '\u0000') {
             if ((p.x == 0 || p.x == 7) &&
                 (p.y == 0 || p.y == 7)) {
-                return 4;
+                return 10;
             }
 
             if ((p.x == 1 || p.x == 6) &&
                 (p.y == 1 || p.y == 6)) {
-                return -3.25;
+                return -8;
             }
 
             if (((p.x == 1 || p.x == 6) && (p.y == 0 || p.y == 7)) ||
                 ((p.y == 1 || p.y == 6) && (p.x == 0 || p.x == 7))) {
-                return -2.125;
+                return -6;
             }
         }
 
         if (p.x == 0 || p.y == 0 || p.x == 7 || p.y == 7) {
-            return 1.1;
+            return 3;
         }
 
         return 0;
     }
 
-    private Point[] dirs = new Point[]{
-        new Point(-1, -1), new Point( 0, -1), new Point( 1, -1),
-        new Point(-1,  0),                    new Point( 1,  0),
-        new Point(-1,  1), new Point( 0,  1), new Point( 1,  1),
-    };
-
-    private List<Pair<Point, Integer>> getOptions(Model m, char me, char op) {
-        List<Pair<Point, Integer>> options = new ArrayList<Pair<Point, Integer>>();
-
-        char[][] board = m.getBoard();
-        for (int x = 0; x < board.length; x++) {
-            for (int y = 0; y < board[x].length; y++) {
-                if (board[x][y] != '\u0000') {
-                    continue;
-                }
-
-                int points = 0;
-                for (Point dir : dirs) {
-                    int count = 0;
-                    int en = 0;
-                    while(true) {
-                        count++;
-
-                        Point n = new Point(x + (count * dir.x), y + (count * dir.y));
-                        if (n.x < 0 || n.y < 0 || n.x >= board.length || n.y >= board.length) {
-                            break;
-                        }
-
-                        if (board[n.x][n.y] == op) {
-                            en++;
-                            continue;
-                        }
-                        if (board[n.x][n.y] == me && en > 0) {
-                            points += en;
-                        }
-                        break;
-                    }
-                }
-                if (points > 0) options.add(new Pair<>(new Point(x, y), new Integer(points)));
-            }
-        }
-
-        return options;
-    }
-
-    private Pair<Point, Double> getBestMove(Model m, Point p, char me, char op) {
-        List<Pair<Point,Integer>> enemyOptions = getOptions(m, me, op);
+    protected static Pair<Point, Double> getBestMove(Model m, char me, char op) {
+        List<Pair<Point,Integer>> enemyOptions = m.legalMoves(me, op);
 
         Double bestChance = 0.0;
         Point bestPoint = null;
 
         for (Pair<Point, Integer> ep : enemyOptions) {
-            double chance = (double)ep.getValue() + (0.70*getBias(m, ep.getKey()));
+            double chance = (double)ep.getValue() + getBias(m, ep.getKey());
             if (chance > bestChance || bestPoint == null) {
                 bestChance = chance;
                 bestPoint = ep.getKey();
@@ -143,4 +101,72 @@ public class AI {
 
         return new Pair<Point, Double>(bestPoint, bestChance);
     }
+}
+
+class AIWorker implements Runnable {
+	private Point original;
+	private double chance;
+	private Model m;
+	private double mult = 1.0;
+	private double MULT_DROPOFF = 0.075;
+	private int skip = 0;
+	private char whoami;
+	private char enemy;
+	private char me;
+	private char op;
+	private AI ai;
+
+	public AIWorker(Model m, Pair<Point, Integer> p, AI ai) {
+		original = p.getKey();
+		this.ai = ai;
+		this.whoami = ai.getWhoami();
+		this.enemy = ai.getEnemy();
+		me = whoami;
+		op = enemy;
+		this.m = new Model(m);
+		update(p.getKey(), (Double)(double)p.getValue());
+		switchSides();
+	}
+
+	public void run() {
+		while (next()) {
+			ai.checkBestMove(original, (Double)chance);
+		}
+		ai.checkBestMove(original, (Double)chance);
+	}
+
+	public boolean next() {
+		Pair<Point, Double> n = AI.getBestMove(m, me, op);
+		if (n.getKey() == null) {
+			skip++;
+		} else {
+			update(n.getKey(), n.getValue());
+			skip = 0;
+		}
+
+		if (skip < 2 && mult > 0) {
+			switchSides();
+			return true;
+		}
+		if (skip == 2) {
+			System.out.println("Skip == 2");
+			if (m.getWinner() == whoami) {
+				chance += 15 * mult;
+			} else {
+				chance -= 15 * mult;
+			}
+		}
+		return false;
+	}
+
+	private void update(Point p, Double c) {
+		m.move(p.x, p.y, me, op);
+		chance += (double)c * mult * (me == enemy ? -1 : 1);
+		mult -= MULT_DROPOFF;
+	}
+
+	private void switchSides() {
+		me = ((me == whoami) ? enemy : whoami);
+		op = ((op == enemy) ? whoami : enemy);
+	}
 }
