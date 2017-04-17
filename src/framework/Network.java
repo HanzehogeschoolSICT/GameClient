@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,22 +29,35 @@ public class Network implements Messagable {
     private static Network instance;
 
     // The name we will appear with publically.
-    //private final String public_name = "itv2d1.5";
     private final String public_name = "Groep 1.5";
-    private String given_name = new String(public_name);
+    private String given_name = public_name;
     private final String hostName = "localhost";
     private final int port = 7789;
 
     private NetworkRunnable connection;
     private Thread connectionThread;
+    private HashMap<String, BiConsumer<String, Object[]>> handlers = new HashMap<>();
 
-    private Network(){ }
+    private Network(){
+        setupHandlers();
+    }
 
     static Network getInstance() {
         if (instance == null)
             instance = new Network();
 
         return instance;
+    }
+
+    private void setupHandlers() {
+        handlers.put("open", (t,u) -> open());
+        handlers.put("exit", (t,u) -> exit());
+        handlers.put("login", this::handleLogin);
+        handlers.put("challenge", this::handleChallenge);
+        handlers.put("get", this::handleGet);
+        handlers.put("subscribe", this::handleSubscribe);
+        handlers.put("forfeit", this::handleForfeit);
+        handlers.put("move", this::handleMove);
     }
 
     void open() {
@@ -78,114 +94,100 @@ public class Network implements Messagable {
         */
         System.out.println(message);
 
-        String[] message_args = message.split("\\s+"); // split on whitespace
-        ArrayList<String> messages_to_return = new ArrayList();
-        ArrayList<String> match = new ArrayList();
-
-        if ((       connection == null 
+        if ((       connection == null
                 || !connection.isConnected()) 
                 && !"open".equals(message))
             return;
 
-        switch(message_args[0]){
-            case "open":
-                open();
-                break;
-                
-            case "exit":
-                exit();
-                break;
+        String key = message.split("\\s+")[0];
+        if (handlers.containsKey(key))
+            handlers.get(key).accept(message, args);
+    }
 
-            case "login":
-                int count = 0;
-                match.add("OK");
-                match.add("ERR Duplicate name exists");
-                match.add("ERR Already logged in");
-                boolean name_set = false;
-                while(!name_set){
-                    String m;
-                    if(count == 0)
-                        m = connection.sendAndReturn("login " + public_name +"\n", match);
-                    else
-                        m = connection.sendAndReturn("login " + public_name + "." + count + "\n", match);
-                    count++;
-                    if(m.startsWith("OK") || m.startsWith("ERR Already logged in"))
-                        name_set = true;
-                    if(m.startsWith("OK")){
-                        if(count - 1 > 0)
-                            given_name = public_name + "." + (count - 1);
-                        else
-                            given_name = new String(public_name);
-                    }
-                }
-                if(count == 0)
-                    messages_to_return.add("logged_in:" + public_name);
+    private void handleLogin(String message, Object[] args) {
+        int count = 0;
+        ArrayList<String> match = new ArrayList<>();
+        match.add("OK");
+        match.add("ERR Duplicate name exists");
+        match.add("ERR Already logged in");
+        boolean name_set = false;
+        while(!name_set) {
+            String m;
+            if(count == 0)
+                m = connection.sendAndReturn("login " + public_name +"\n", match);
+            else
+                m = connection.sendAndReturn("login " + public_name + "." + count + "\n", match);
+            count++;
+            if(m.startsWith("OK") || m.startsWith("ERR Already logged in"))
+                name_set = true;
+            if(m.startsWith("OK")) {
+                if(count - 1 > 0)
+                    given_name = public_name + "." + (count - 1);
                 else
-                    messages_to_return.add("logged_in:" + public_name + "." + count);
-                break;
-
-            case "get":
-                switch(message_args[1]){
-                    case "games":
-                        match.add("SVR GAMELIST");
-                        messages_to_return.add(connection.sendAndReturn("get gamelist\n", match));
-                        break;
-                    case "players":
-                        match.add("SVR PLAYER");
-                        messages_to_return.add(connection.sendAndReturn("get playerlist\n", match));
-                        break;
-                    case "name":
-                        System.out.println("returning " + given_name);
-                        messages_to_return.add("name " + given_name);
-                        break;
-                }
-                break;
-            
-            case "challenge":
-                switch(message_args[1]){
-                    case "accept":
-                        match.add("ERR Invalid challenge number");
-                        match.add("ERR Illegal argument(s) for command");
-                        match.add("OK");
-                        connection.send(message + "\n");
-                        break;
-                    default:
-                        match.add("OK");
-                        match.add("ERR Unknown player:");
-                        match.add("ERR Unknown game:");
-                        messages_to_return.add(connection.sendAndReturn(message + "\n", match));
-                        break;
-                }
-                // Challenge a player based on name. must exist in playerlist.
-                break;
-
-            case "subscribe":
-                // Subscribe for a game
-                match.add("ERR No game name entered");
-                match.add("ERR Unknown game:");
-                match.add("ERR No game name entered");
-                match.add("OK");
-                messages_to_return.add(connection.sendAndReturn(message + "\n", match));
-                break;
-
-            case "forfeit":
-                match.add("OK");
-                match.add("ERR Not in any match");
-                messages_to_return.add(connection.sendAndReturn("forfeit\n", match));
-                break;
-
-            case "move":
-                connection.send(message + "\n");
-                break;
-        }
-        if(args != null){
-            Networkable n = (Networkable) args[0];
-            System.out.println("printing messages");
-            for(String m: messages_to_return){
-                System.out.println(m);
+                    given_name = public_name;
             }
-            n.putData(messages_to_return);
         }
+
+        returnData("logged_in:" + given_name, args);
+    }
+
+    private void handleChallenge(String message, Object[] args) {
+        ArrayList<String> match = new ArrayList<>();
+        if (message.startsWith("challenge accept "))
+            connection.send(message + "\n");
+        else {
+            match.add("OK");
+            match.add("ERR Unknown player:");
+            match.add("ERR Unknown game:");
+            returnData(connection.sendAndReturn(message + "\n", match), args);
+        }
+    }
+
+    private void handleSubscribe(String message, Object[] args) {
+        ArrayList<String> match = new ArrayList<>();
+        match.add("ERR No game name entered");
+        match.add("ERR Unknown game:");
+        match.add("ERR No game name entered");
+        match.add("OK");
+
+        returnData(connection.sendAndReturn(message + "\n", match), args);
+    }
+
+    private void handleGet(String message, Object[] args) {
+        ArrayList<String> match = new ArrayList<>();
+        switch(message.split("\\s+")[1]){
+            case "games":
+                match.add("SVR GAMELIST");
+                returnData(connection.sendAndReturn("get gamelist\n", match), args);
+                break;
+            case "players":
+                match.add("SVR PLAYER");
+                returnData(connection.sendAndReturn("get playerlist\n", match), args);
+                break;
+            case "name":
+                System.out.println("returning " + given_name);
+                returnData("name " + given_name, args);
+                break;
+        }
+    }
+
+    private void handleForfeit(String message, Object[] args) {
+        ArrayList<String> match = new ArrayList<>();
+        match.add("OK");
+        match.add("ERR Not in any match");
+        returnData(connection.sendAndReturn("forfeit\n", match), args);
+    }
+
+    private void handleMove(String message, Object[] args) {
+        connection.send(message + "\n");
+    }
+
+    private void returnData(String response, Object[] networkables) {
+        if (networkables != null)
+            ((Networkable) networkables[0]).putData(
+                    new ArrayList<>(
+                            Arrays.asList(
+                                    new String[] {response})));
     }
 
     private class NetworkRunnable implements Runnable {
