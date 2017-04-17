@@ -423,6 +423,11 @@ public class ServerController extends AbstractServerController {
 
     }
     
+    @FXML 
+    public void handleForfeitButton(){
+        handleQuitButton();
+    }
+    
     public void showWinLoseGrid(){
         ObservableList<Node> children = winLoseGrid.getChildren(); 
         for(Node n : children){

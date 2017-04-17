@@ -151,9 +151,9 @@ public class ReversiController implements Controller {
             createDialog("Game over", "You ran out of time!");
             endGame = true;
             if(currentTurn == 'b')
-                winner = "White";
+                winner = "White"; // White wins if black ran out of time
             else
-                winner = "Black";
+                winner = "Black"; // Black wins if white ran out of time
             timeline.stop();
         }
         if(endGame) {
