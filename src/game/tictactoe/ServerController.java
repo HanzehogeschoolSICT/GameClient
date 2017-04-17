@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import org.json.simple.*;
-//import org.json.simple.parser.*;
 /**
  * Created by markshizzle on 4-4-2017.
  */
@@ -83,26 +81,24 @@ public class ServerController extends AbstractServerController {
     }
 
     private void handleMove(String message, Object[] args) {
-        String[] parsedMessage = message.substring(14)
-                .replace("{PLAYER: ","")
-                .replace(", MOVE:", "")
-                .replace(", DETAILS:", "")
-                .replace("\"", "")
-                .replace("}", "")
-                .split("\\s+");
-        System.out.println(parsedMessage[1]);
-        int position = Integer.parseInt(parsedMessage[1]);
-        int row = (position - (position % 3)) / 3;
-        System.out.println(row);
-        int col = position - row*3;
-        System.out.println(col);
-        if(cross_turn){
-            Platform.runLater( ()-> drawX(row, col, grid) );
-            cross_turn = false;
-        }
-        else{
-            Platform.runLater( ()-> drawO(row, col, grid) );
-            cross_turn = true;
+        String toParse = message.substring(14);
+        Pattern p = Pattern.compile("\\{PLAYER: \"(.*?)\", MOVE: \"(\\d*?)\", DETAILS: \"(.*?)\"\\}");
+        Matcher m = p.matcher(toParse);
+
+        if (m.find()) {
+            System.out.println(m.group(1));
+            int position = Integer.parseInt(m.group(2));
+            int row = (position - (position % 3)) / 3;
+            System.out.println(row);
+            int col = position - row * 3;
+            System.out.println(col);
+            if (cross_turn) {
+                Platform.runLater(() -> drawX(row, col, grid));
+                cross_turn = false;
+            } else {
+                Platform.runLater(() -> drawO(row, col, grid));
+                cross_turn = true;
+            }
         }
     }
 

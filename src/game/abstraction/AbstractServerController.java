@@ -2,17 +2,17 @@ package game.abstraction;
 
 import framework.interfaces.Controller;
 import framework.interfaces.Messagable;
-import framework.interfaces.MessageHandler;
 import framework.interfaces.Networkable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 
 /**
  * Created by SJongeJongeJonge on 11-4-2017.
  */
 public abstract class AbstractServerController implements Networkable, Messagable, Controller {
-    private HashMap<String, MessageHandler> handlers;
+    private HashMap<String, BiConsumer<String, Object[]>> handlers;
 
     protected AbstractServerController() {
         handlers = new HashMap<>();
@@ -31,7 +31,7 @@ public abstract class AbstractServerController implements Networkable, Messagabl
         // Wordt nog niet afgevangen
     }
 
-    protected void registerHandler(String prefix, MessageHandler handler) {
+    protected void registerHandler(String prefix, BiConsumer<String, Object[]> handler) {
         handlers.put(prefix, handler);
     }
 

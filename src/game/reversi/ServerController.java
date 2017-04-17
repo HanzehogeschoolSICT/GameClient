@@ -35,8 +35,6 @@ import javafx.util.Duration;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-//import org.json.simple.*;
-//import org.json.simple.parser.*;
 /**
  * Created by markshizzle on 4-4-2017.
  */
