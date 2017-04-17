@@ -70,6 +70,7 @@ and open the template in the editor.
 }
 
 #sidebarButton {
+    -fx-text-fill: white;
     -fx-font-size:18px;
     -fx-pref-width:150px;
     -fx-background-color:
