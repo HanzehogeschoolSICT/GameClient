@@ -34,7 +34,7 @@ public class Network implements Messagable {
 
     private NetworkRunnable connection;
     private Thread connectionThread;
-    
+
     private Network(){ }
 
     static Network getInstance() {

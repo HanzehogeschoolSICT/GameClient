@@ -26,6 +26,7 @@ import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -43,6 +44,7 @@ public class ServerController extends AbstractServerController implements Networ
     @FXML Label scoreB;
     @FXML Label scoreW;
     @FXML Label turn;
+    @FXML Button playAgainBtn;
     
     private final String game = "Reversi";
     private boolean isTournament = false;
@@ -451,6 +453,7 @@ public class ServerController extends AbstractServerController implements Networ
                 ((Label) n).setText(winner + " won!");
             }
         }
+        children.remove(playAgainBtn);
         winLoseGrid.setVisible(true);
     }
 }
