@@ -141,7 +141,7 @@ public class ReversiSettings implements Controller{
     }
     
     private void setStyleOneButton(Button b1Styled, Button b2, Button b3){
-        b1Styled.setStyle("-fx-effect: innershadow(three-pass-box, #263e75, 20.0, 0.0, 5, 8);");
+        b1Styled.setStyle("-fx-background-color: #02c937; -fx-effect: innershadow(three-pass-box, #01701e, 20.0, 0.0, 5, 8);");
         b2.setStyle("");
         b3.setStyle("");
     }
