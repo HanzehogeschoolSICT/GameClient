@@ -56,8 +56,9 @@ public class LobbyController implements Networkable, Messagable, Controller{
     public void init(){
         toChallenge.setItems(playersToChallenge); // Hoeft maar 1 keer aangeroepen te worden
         challenges.setItems(incomingChallenges);
-        refreshPlayerList();
+        MessageBus.getBus().call("NETWORK", "open", null);
         MessageBus.getBus().call("NETWORK", "login", null);
+        refreshPlayerList();
     }
 
     @Override
