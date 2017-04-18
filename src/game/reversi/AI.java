@@ -70,17 +70,17 @@ public class AI {
         if (m.getBoard()[xc][yc] == '\u0000') {
             if ((p.x == 0 || p.x == 7) &&
                 (p.y == 0 || p.y == 7)) {
-                return 10;
+                return 25;
             }
 
             if ((p.x == 1 || p.x == 6) &&
                 (p.y == 1 || p.y == 6)) {
-                return -8;
+                return -20;
             }
 
             if (((p.x == 1 || p.x == 6) && (p.y == 0 || p.y == 7)) ||
                 ((p.y == 1 || p.y == 6) && (p.x == 0 || p.x == 7))) {
-                return -6;
+                return -15;
             }
         }
 

@@ -11,8 +11,6 @@ import framework.interfaces.Messagable;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -36,7 +34,6 @@ public class GameClient extends Application implements Controller, Messagable{
 
     private BorderPane root;
     private Thread consoleThread;
-//    private Thread networkThread;
     private Network nw;
     private Console c;
     
@@ -72,7 +69,6 @@ public class GameClient extends Application implements Controller, Messagable{
     public void stop() throws Exception{
         nw.exit();
         c.exit();
-//        networkThread.interrupt();
         consoleThread.interrupt();
     }
 
@@ -136,15 +132,11 @@ public class GameClient extends Application implements Controller, Messagable{
         MessageBus bus = MessageBus.getBus();
         nw = Network.getInstance();
         c = new Console();
-//        networkThread = new Thread(nw);
         consoleThread = new Thread(c);
         
         consoleThread.start();
-//        networkThread.start();
-        
+
         bus.register("NETWORK", nw);
-        //bus.call("NETWORK", "login", null);
-        //bus.call("NETWORK", "get players", null);
     }
     
     public static void setParent(BorderPane parent) {

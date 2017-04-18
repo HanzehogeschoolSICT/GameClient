@@ -116,13 +116,13 @@ public class Network implements Messagable {
             if(count == 0)
                 m = connection.sendAndReturn("login " + public_name +"\n", match);
             else
-                m = connection.sendAndReturn("login " + public_name + "." + count + "\n", match);
+                m = connection.sendAndReturn("login " + public_name + "punt" + count + "\n", match);
             count++;
             if(m.startsWith("OK") || m.startsWith("ERR Already logged in"))
                 name_set = true;
             if(m.startsWith("OK")) {
                 if(count - 1 > 0)
-                    given_name = public_name + "." + (count - 1);
+                    given_name = public_name + "punt" + (count - 1);
                 else
                     given_name = public_name;
             }
