@@ -70,17 +70,17 @@ public class AI {
         if (m.getBoard()[xc][yc] == '\u0000') {
             if ((p.x == 0 || p.x == 7) &&
                 (p.y == 0 || p.y == 7)) {
-                return 25;
+                return 35;
             }
 
             if ((p.x == 1 || p.x == 6) &&
                 (p.y == 1 || p.y == 6)) {
-                return -20;
+                return -30;
             }
 
             if (((p.x == 1 || p.x == 6) && (p.y == 0 || p.y == 7)) ||
                 ((p.y == 1 || p.y == 6) && (p.x == 0 || p.x == 7))) {
-                return -15;
+                return -25;
             }
         }
 
@@ -156,12 +156,12 @@ class AIWorker implements Runnable {
 			switchSides();
 			return true;
 		}
-		if (skip == 2) {
+		if (skip == 2 && me == whoami) {
 			System.out.println("Skip == 2");
 			if (m.getWinner() == whoami) {
-				chance += 15 * mult;
+				chance += 10 * mult;
 			} else {
-				chance -= 15 * mult;
+				chance -= 10 * mult;
 			}
 		}
 		return false;
