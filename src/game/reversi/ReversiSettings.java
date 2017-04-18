@@ -46,6 +46,7 @@ public class ReversiSettings implements Controller{
 
     private char playSymbol;
     private boolean ai;
+	private double aiDropoff = 0.5;
 
     public ReversiSettings(){
         location = "../game/reversi/OpponentSettingsFXML.fxml";
@@ -93,16 +94,19 @@ public class ReversiSettings implements Controller{
     
     @FXML
     private void handleDifficultyEasyButton(ActionEvent event) {
+		aiDropoff = 0.5;
         setStyleOneButton(difficultyEasyButton, difficultyNormalButton, difficultyHardButton);
     }
 
     @FXML
     private void handleDifficultyNormalButton(ActionEvent event) {
+		aiDropoff = 0.25;
         setStyleOneButton(difficultyNormalButton, difficultyEasyButton, difficultyHardButton);
     }
 
     @FXML
     private void handleDifficultyHardButton(ActionEvent event) {
+		aiDropoff = 0.075;
         setStyleOneButton(difficultyHardButton, difficultyNormalButton, difficultyEasyButton);
     }
 
@@ -123,7 +127,7 @@ public class ReversiSettings implements Controller{
     @FXML
     private void handleStartButton(ActionEvent event) {
         ReversiController ctrl = new ReversiController(playSymbol);
-        ctrl.setAI(ai);
+        ctrl.setAI(ai, aiDropoff);
         GameClient.load(ctrl, "CENTER");
         GameClient.load(ctrl, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
         ctrl.drawBoard();

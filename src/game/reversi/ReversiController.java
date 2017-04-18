@@ -49,6 +49,7 @@ public class ReversiController implements Controller {
     private Timeline timeline;
     private char playerColor;
     private char ai = ' ';
+	private double dropoff = 0;
 
 
     public ReversiController(char currentTurn) {
@@ -68,7 +69,8 @@ public class ReversiController implements Controller {
         setTimer();
     }
     
-    public void setAI(boolean b) {
+    public void setAI(boolean b, double dropoff) {
+		this.dropoff = dropoff;
         if (b) {
             if (currentTurn == 'b') ai = 'w';
             else ai = 'b';
@@ -106,7 +108,7 @@ public class ReversiController implements Controller {
         }
 
         if (currentTurn == ai) {
-            Point m = new AI(model, ai).nextMove();
+            Point m = new AI(model, ai, dropoff).nextMove();
             doMove(m.x, m.y);
         }
     }

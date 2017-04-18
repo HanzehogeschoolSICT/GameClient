@@ -125,7 +125,7 @@ public class ServerController extends AbstractServerController implements Networ
             // Berekent de volgende legale zetten
             getLegalMoves();
             System.out.println("I think my colour is " + our_colour);
-            Point m = new AI(model, our_colour).nextMove();
+            Point m = new AI(model, our_colour, 0.075).nextMove();
             System.out.println("Next:" + m.x + ", " + m.y);
 
             MessageBus.getBus().call("NETWORK", "move " + (m.y * 8 + m.x), null);

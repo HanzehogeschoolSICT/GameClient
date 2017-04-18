@@ -11,6 +11,7 @@ public class AI {
     private char whoami;
     private char enemy;
     private Model model;
+	private double dropoff = 0.075;
 
 	public char getWhoami() {
 		return whoami;
@@ -20,9 +21,14 @@ public class AI {
 		return enemy;
 	}
 
-    public AI(Model model, char whoami) {
+	public double getDropoff() {
+		return dropoff;
+	}
+
+    public AI(Model model, char whoami, double dropoff) {
         this.model = model;
         this.whoami = whoami;
+		this.dropoff = dropoff;
         if (whoami == 'w') {
             enemy = 'b';
         } else {
@@ -119,6 +125,8 @@ class AIWorker implements Runnable {
 	public AIWorker(Model m, Pair<Point, Integer> p, AI ai) {
 		original = p.getKey();
 		this.ai = ai;
+		this.MULT_DROPOFF = ai.getDropoff();
+		System.out.println("Dropoff: " +MULT_DROPOFF);
 		this.whoami = ai.getWhoami();
 		this.enemy = ai.getEnemy();
 		me = whoami;
