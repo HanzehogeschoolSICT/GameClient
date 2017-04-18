@@ -29,9 +29,9 @@ public class Network implements Messagable {
     private static Network instance;
 
     // The name we will appear with publically.
-    private final String public_name = "Groep 1.5";
+    private final String public_name = "ITV2D1punt5";
     private String given_name = public_name;
-    private final String hostName = "localhost";
+    private final String hostName = "145.33.225.170";
     private final int port = 7789;
 
     private NetworkRunnable connection;

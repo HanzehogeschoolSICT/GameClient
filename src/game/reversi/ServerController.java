@@ -8,6 +8,7 @@ import framework.interfaces.Controller;
 import framework.interfaces.Networkable;
 import game.abstraction.AbstractServerController;
 import java.awt.Point;
+import java.net.URL;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -27,6 +29,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -39,7 +42,7 @@ import org.json.simple.parser.*;
 /**
  * Created by markshizzle on 4-4-2017.
  */
-public class ServerController extends AbstractServerController implements Networkable{
+public class ServerController extends AbstractServerController implements Networkable,Initializable{
     @FXML Label timer;
     @FXML GridPane winLoseGrid;
     @FXML Label scoreB;
@@ -72,8 +75,10 @@ public class ServerController extends AbstractServerController implements Networ
     
     @FXML
     private GridPane grid;
+    @FXML
+    private Label turnLabel;
     
-    public ServerController() {
+    public ServerController(){
         LobbyController lc = new LobbyController(game);
         GameClient.load(lc,"CENTER");
         MessageBus mb = MessageBus.getBus();
@@ -95,7 +100,16 @@ public class ServerController extends AbstractServerController implements Networ
     public void registerGame() {
 
     }
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        String loc = location.toString();
+        System.out.println(loc);
+        if(loc.endsWith("SidebarGameMenuFXML.fxml")){
+            turnLabel.setText("Our colour is");
+            String colour = (our_colour == 'w') ? "white" : "black";
+            turn.setText(colour);
+        }
+    }
     private void initHandlers() {
         super.registerHandler("SVR GAME CHALLENGE", this::handleChallenge);
         super.registerHandler("SVR GAME MATCH", this::handleMatchStarted);
@@ -205,9 +219,9 @@ public class ServerController extends AbstractServerController implements Networ
                 our_colour = 'w';
                 their_colour = 'b';
             }
-            
             GameClient.load(this, "CENTER");
             GameClient.load(this, "LEFT", "../game/reversi/SidebarGameMenuFXML.fxml");
+            
             newGame();
         }
         catch (ParseException ex) {

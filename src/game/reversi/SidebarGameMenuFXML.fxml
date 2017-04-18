@@ -54,7 +54,7 @@
         <columnConstraints>
             <ColumnConstraints prefWidth="180" />
         </columnConstraints>
-        <Label text="Turn" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+        <Label fx:id="turnLabel" text="Turn" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
         <Label fx:id="turn" text="B or W" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
     </GridPane>
 </UtilityGridPane>
