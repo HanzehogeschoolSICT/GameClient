@@ -45,8 +45,8 @@ import org.json.simple.parser.*;
 public class ServerController extends AbstractServerController implements Networkable,Initializable{
     @FXML Label timer;
     @FXML GridPane winLoseGrid;
-    @FXML Label scoreB;
-    @FXML Label scoreW;
+    @FXML private Label scoreB;
+    @FXML private Label scoreW;
     @FXML Label turn;
     @FXML Button playAgainBtn;
     
@@ -151,16 +151,26 @@ public class ServerController extends AbstractServerController implements Networ
     }
     
     void drawBoard() {
+        int countBlack = 0;
+        int countWhite = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (model.getSymbol(i,j) == 'b') {
                     drawO('b', i, j);
+                    countBlack++;
                 }
                 if (model.getSymbol(i,j) == 'w') {
                     drawO('w', i, j);
+                    countWhite++;
                 }
             }
         }
+        String whiteString = countWhite+"";
+        String blackString = countBlack+"";
+        Platform.runLater(()->{
+            scoreW.setText(whiteString);
+            scoreB.setText(blackString);
+        });
     }
     
     private void drawO(char colour, int column, int row) {
